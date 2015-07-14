@@ -1,20 +1,20 @@
 
 package com.jsloves.election.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import org.json.simple.*;
-import android.widget.*;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import org.json.simple.JSONArray;
+
 import java.lang.reflect.Type;
 import java.util.List;
-import android.util.Log;
-import android.support.v7.app.ActionBarActivity;
 
-public class SearchActivity extends ActionBarActivity {
+public class SearchActivity extends AppCompatActivity {
     JSONArray array1 = new JSONArray();
     JSONArray array2 = new JSONArray();
     JSONArray array3 = new JSONArray();

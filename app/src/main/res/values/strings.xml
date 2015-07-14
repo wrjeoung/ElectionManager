@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="hello">Hello World, Main!</string>
-    <string name="app_name">PasswordManager</string>
+    <string name="app_name">선거구관리시스템</string>
     <string name="main_title">구역이동</string>
     <string name="sub_title1">주소</string>
     <string name="sub_title2">지도</string>

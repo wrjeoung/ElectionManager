@@ -3,11 +3,11 @@
  */
 package com.jsloves.election.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.jsloves.election.util.PhoneInfo;
 
-public class ElectionManagerActivity extends Activity {
+public class ElectionManagerActivity extends AppCompatActivity {
     private  EditText mEtPass;
     private TextView mTvPass;
 
