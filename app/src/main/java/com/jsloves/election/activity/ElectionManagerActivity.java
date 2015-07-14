@@ -5,20 +5,23 @@ package com.jsloves.election.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.jsloves.election.util.PhoneInfo;
 
 public class ElectionManagerActivity extends Activity {
-    private  EditText mEditText;
+    private  EditText mEtPass;
+    private TextView mTvPass;
 
     private boolean isCheckPassWord() {
-        return mEditText.getText().toString().equals("0000");
+        return mEtPass.getText().toString().equals("0000");
     }
 
     @Override
@@ -30,9 +33,9 @@ public class ElectionManagerActivity extends Activity {
         if ( true){
             Log.d("JS", "isIMIEcheck");
             setContentView(R.layout.lockscreen);
-            mEditText = (EditText) findViewById(R.id.editText1);
+            mEtPass = (EditText) findViewById(R.id.editText1);
 
-            mEditText.addTextChangedListener(new TextWatcher() {
+            mEtPass.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -45,7 +48,8 @@ public class ElectionManagerActivity extends Activity {
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    if(mEditText.getText().toString().length() == 4) {
+                    if(mEtPass.getText().toString().length() == 4) {
+                        mTvPass = (TextView) findViewById(R.id.tv_pass);
                         if(( isCheckPassWord())) {
                             Intent intent = new Intent(ElectionManagerActivity.this, ElectionMainActivity.class);
                             //intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -53,7 +57,11 @@ public class ElectionManagerActivity extends Activity {
                             finish();
                         }
                         else {
-
+                            Vibrator vr = (Vibrator)getSystemService(VIBRATOR_SERVICE);
+                            vr.vibrate(700);
+                            mEtPass.getText().clear();
+                            mTvPass.setTextColor(Color.parseColor("#ff4444"));
+                            mTvPass.setText("암호가 일치하지 않습니다.");
 
                         }
                     }
