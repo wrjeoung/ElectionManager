@@ -7,4 +7,6 @@
     <string name="sub_title2">지도</string>
     <string name="sub_title3">현재위치</string>
     <string name="search">검색</string>
+    <string name="group_prompt">그룹목록</string>
+    <string name="class_prompt">권한목록</string>
 </resources>
