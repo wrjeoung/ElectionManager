@@ -36,7 +36,7 @@ public class JoinActivity extends Activity {
             String imei = telephonyManager.getDeviceId();
             String imsi = telephonyManager.getSubscriberId();
 
-            setContentView(R.layout.Join);
+            setContentView(R.layout.join);
 
             spinner1= (Spinner) findViewById(R.id.spinner1);
             ArrayAdapter adapter1 = ArrayAdapter.createFromResource(this, R.array.group, android.R.layout.simple_spinner_dropdown_item);
