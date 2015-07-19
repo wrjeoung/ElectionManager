@@ -1,22 +1,23 @@
 package com.jsloves.election.activity;
 
-import com.jsloves.election.util.HttpConnection;
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.telephony.TelephonyManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
-import android.telephony.TelephonyManager;
 import android.widget.Spinner;
+import android.widget.Toast;
 
-import org.json.simple.parser.JSONParser;
-import org.json.simple.JSONObject;
+import com.jsloves.election.util.HttpConnection;
+
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
-public class JoinActivity extends Activity {
+public class JoinActivity extends AppCompatActivity {
 
         EditText user_id = null;
 	    EditText passwords = null;

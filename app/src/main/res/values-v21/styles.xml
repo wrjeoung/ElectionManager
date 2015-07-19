@@ -10,6 +10,17 @@
         <item name="colorControlNormal">#FF0000</item>
     </style>
 
+    <style name="AppTheme2" parent="AppTheme.Base"/>
+
+    <style name="AppTheme.Base" parent="Theme.AppCompat">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+
+    </style>
+
     <style name="AppSpinner" parent="Widget.AppCompat.Spinner">
         <item name="android:background">#303F9F</item>
     </style>

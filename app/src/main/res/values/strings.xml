@@ -9,4 +9,6 @@
     <string name="search">검색</string>
     <string name="group_prompt">그룹목록</string>
     <string name="class_prompt">권한목록</string>
+    <string name="drawer_open">drawer_open</string>
+    <string name="drawer_close">drawer_close</string>    
 </resources>
