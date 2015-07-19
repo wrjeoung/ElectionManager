@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import com.jsloves.election.util.PhoneInfo;
 
 public class ElectionManagerActivity extends AppCompatActivity {
@@ -77,7 +78,6 @@ public class ElectionManagerActivity extends AppCompatActivity {
             Intent intent = new Intent(ElectionManagerActivity.this, ElectionSignUpActivity.class);
             startActivity(intent);
         }
-
         handler.postDelayed(mRunnable,1000);
     }
 
