@@ -24,4 +24,7 @@
         <item name="spinBars">true</item>
         <item name="color">@android:color/white</item>
     </style>
+    <style name="panel">
+        <item name="android:padding">10dp</item>
+    </style>
 </resources>
