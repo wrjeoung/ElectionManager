@@ -10,5 +10,6 @@
     <string name="group_prompt">그룹목록</string>
     <string name="class_prompt">권한목록</string>
     <string name="drawer_open">drawer_open</string>
-    <string name="drawer_close">drawer_close</string>    
+    <string name="drawer_close">drawer_close</string>
+    <string name="server_url">http://222.122.149.161:7070/Woori/MobileReq.jsp</string>
 </resources>

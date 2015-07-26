@@ -5,22 +5,20 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
-import java.math.BigInteger;
-import java.util.Map;
-
 public class PrimesFragment extends Fragment {
 
     private AsyncListener<Integer,String> listener;
     private PrimesTask task;
-    private String url;
-    private Map<String, String> params;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        task = new PrimesTask();
-        task.execute(url,params);
+        Bundle bundle = getArguments();
+        if(bundle != null) {
+            task = new PrimesTask();
+            task.execute(bundle);
+        }
     }
 
     @Override
@@ -35,6 +33,10 @@ public class PrimesFragment extends Fragment {
         listener = null;
     }
 
+    protected String doInBackground2(Object... args) {
+        return "return result";
+    }
+
     public void cancel() {
         task.cancel(false);
     }
@@ -47,16 +49,15 @@ public class PrimesFragment extends Fragment {
 
         @Override
         protected String doInBackground(Object... args) {
-            int primeToFind = 2000;
-            String prime = "ab";
+            /* int primeToFind = 2000;
             for (int i=0; i<primeToFind; i++) {
                 int percentComplete = (int)((i * 100f)/primeToFind);
                 publishProgress(percentComplete);
 
                 if (isCancelled())
                     break;
-            }
-            return prime;
+            }*/
+            return doInBackground2(args);
         }
 
         @Override
