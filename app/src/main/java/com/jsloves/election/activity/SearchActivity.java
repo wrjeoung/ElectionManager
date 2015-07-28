@@ -1,6 +1,8 @@
 
 package com.jsloves.election.activity;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -12,6 +14,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jsloves.election.fragment.AsyncFragment;
 import com.jsloves.election.fragment.AsyncListener;
+import com.jsloves.election.fragment.PrimesFragment;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -22,6 +25,7 @@ import java.util.List;
 
 public class SearchActivity extends AppCompatActivity implements AsyncListener<Integer, String> {
     public static final String ASYNC = "async";
+    private ProgressDialog dialog;
     JSONArray array1 = new JSONArray();
     JSONArray array2 = new JSONArray();
     JSONArray array3 = new JSONArray();
@@ -98,7 +102,24 @@ public class SearchActivity extends AppCompatActivity implements AsyncListener<I
             transaction.commit();
         }
     }
+
+    private void prepareProgressDialog() {
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("Please wait...");
+        dialog.setCancelable(true);
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                AsyncFragment async = (AsyncFragment)
+                        getSupportFragmentManager().findFragmentByTag(ASYNC);
+                async.cancel();
+            }
+        });
+        //dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+    }
     private void cleanUp() {
+        dialog.dismiss();
+        dialog = null;
         FragmentManager fm = getSupportFragmentManager();
         AsyncFragment async = (AsyncFragment) fm.findFragmentByTag(ASYNC);
         fm.beginTransaction().remove(async).commit();
@@ -106,7 +127,10 @@ public class SearchActivity extends AppCompatActivity implements AsyncListener<I
 
     @Override
     public void onPreExecute() {
-
+        if (dialog == null) {
+            prepareProgressDialog();
+        }
+        dialog.show();
     }
 
     @Override
