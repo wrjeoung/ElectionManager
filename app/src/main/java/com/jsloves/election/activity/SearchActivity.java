@@ -14,7 +14,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jsloves.election.fragment.AsyncFragment;
 import com.jsloves.election.fragment.AsyncListener;
-import com.jsloves.election.fragment.PrimesFragment;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -38,8 +37,9 @@ public class SearchActivity extends AppCompatActivity implements AsyncListener<I
         try {
             JSONObject json1 = new JSONObject();
             json1.put("TYPE", "SELECTITEMS");
-            json1.put("TARGET","SIGUNGU");
+            json1.put("TARGET", "SIGUNGU");
             setUp(getString(R.string.server_url),json1.toString());
+            //setUp(getString(R.string.server_url_test),"mode=haengjoungdong");
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -154,6 +154,16 @@ public class SearchActivity extends AppCompatActivity implements AsyncListener<I
                 List<String> list1 =  converter.fromJson(sigungu.toString(), type);
                 Spinner spinner_1 = (Spinner)findViewById(R.id.spinner_1);
                 ArrayAdapter sp1_Adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,list1);
+                sp1_Adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinner_1.setAdapter(sp1_Adapter);
+            } else { // Test code
+                JSONArray sigungu = (JSONArray) par.parse(resultData);
+                Type type = new TypeToken<List<JSONObject>>() {
+                }.getType();
+                Gson converter = new Gson();
+                List<JSONObject> list1 = converter.fromJson(sigungu.toString(), type);
+                Spinner spinner_1 = (Spinner) findViewById(R.id.spinner_1);
+                ArrayAdapter sp1_Adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, list1);
                 sp1_Adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinner_1.setAdapter(sp1_Adapter);
             }

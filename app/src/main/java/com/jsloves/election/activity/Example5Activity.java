@@ -9,10 +9,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
 import com.jsloves.election.fragment.AsyncListener;
 import com.jsloves.election.fragment.PrimesFragment;
-
-import java.math.BigInteger;
 
 public class Example5Activity extends FragmentActivity
 implements AsyncListener<Integer, String> {

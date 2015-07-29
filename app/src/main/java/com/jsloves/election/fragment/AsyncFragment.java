@@ -12,5 +12,6 @@ public class AsyncFragment extends PrimesFragment {
         String url = bundle.getString("URL");
         String params = bundle.getString("PARAMS");
         return HttpConnection.PostData(url,params);
+        //return HttpConnection.GetData(url+"?"+params);
     }
 }
