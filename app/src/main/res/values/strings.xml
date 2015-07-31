@@ -11,6 +11,7 @@
     <string name="class_prompt">권한목록</string>
     <string name="drawer_open">drawer_open</string>
     <string name="drawer_close">drawer_close</string>
+    <string name="area_info">구역정보</string>
     <string name="server_url">http://222.122.149.161:7070/Woori/MobileReq.jsp</string>
     <string name="server_url_test">http://222.122.149.174:8080/Woori/AddressServlet</string>
 </resources>

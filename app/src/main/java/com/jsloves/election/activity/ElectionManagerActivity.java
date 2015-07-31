@@ -75,7 +75,7 @@ public class ElectionManagerActivity extends AppCompatActivity {
             });
         } else {
             finish();
-            Intent intent = new Intent(ElectionManagerActivity.this, ElectionSignUpActivity.class);
+            Intent intent = new Intent(ElectionManagerActivity.this, JoinActivity.class);
             startActivity(intent);
         }
         handler.postDelayed(mRunnable,1000);

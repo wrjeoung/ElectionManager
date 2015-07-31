@@ -6,7 +6,10 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -25,6 +28,7 @@ import java.util.List;
 public class SearchActivity extends AppCompatActivity implements AsyncListener<Integer, String> {
     public static final String ASYNC = "async";
     private ProgressDialog dialog;
+    private Toolbar toolbar;
     JSONArray array1 = new JSONArray();
     JSONArray array2 = new JSONArray();
     JSONArray array3 = new JSONArray();
@@ -34,6 +38,20 @@ public class SearchActivity extends AppCompatActivity implements AsyncListener<I
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_main);
         setContentView(R.layout.activity_search);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            ActionBar actionBar = getSupportActionBar();
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(getString(R.string.area_info));
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
+                }
+            });
+        }
+
         try {
             JSONObject json1 = new JSONObject();
             json1.put("TYPE", "SELECTITEMS");
