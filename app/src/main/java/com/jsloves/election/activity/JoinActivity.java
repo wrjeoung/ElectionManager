@@ -1,19 +1,21 @@
 package com.jsloves.election.activity;
 
-import com.jsloves.election.util.HttpConnection;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.telephony.TelephonyManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import android.telephony.TelephonyManager;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.JSONObject;
+
+import com.jsloves.election.util.HttpConnection;
+
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 public class JoinActivity extends Activity {
 
@@ -174,6 +176,7 @@ public class JoinActivity extends Activity {
                             Toast.makeText(JoinActivity.this, "회원가입 성공", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(JoinActivity.this, ElectionManagerActivity.class);
                             startActivity(intent);
+                            finish();
                         }else{
                             System.out.println("FAILED");
                             Toast.makeText(JoinActivity.this, "회원가입 실패", Toast.LENGTH_SHORT).show();
