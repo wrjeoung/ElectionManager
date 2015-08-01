@@ -1,4 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
+<com.jsloves.election.layout.DashboardLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_weight="1"
+    android:background="#f8f9fe" >
+
+    <Button
+        android:id="@+id/btn_goHomepage"
+        style="@style/DashboardButton"
+        android:drawableTop="@drawable/ic_launcher"
+        android:text="홈페이지 이동" />
+
+
+    <Button
+        android:id="@+id/btn_area_search"
+        style="@style/DashboardButton"
+        android:drawableTop="@drawable/ic_launcher"
+        android:text="구역찾기" />
+
+    <Button
+        android:id="@+id/btn_politics"
+        style="@style/DashboardButton"
+        android:drawableTop="@drawable/ic_launcher"
+        android:text="정치환경" />
+
+    <Button
+        android:id="@+id/btn_society"
+        style="@style/DashboardButton"
+        android:drawableTop="@drawable/ic_launcher"
+        android:text="사회환경" />
+
+    <Button
+        android:id="@+id/btn_business"
+        style="@style/DashboardButton"
+        android:drawableTop="@drawable/ic_launcher"
+        android:text="주요사업" />
+
+    <Button
+        android:id="@+id/btn_organization"
+        style="@style/DashboardButton"
+        android:drawableTop="@drawable/ic_launcher"
+        android:text="기관 및 단체" />
+
+</com.jsloves.election.layout.DashboardLayout>
+<!--
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
     <TextView
@@ -6,3 +52,4 @@
         android:layout_height="match_parent"
         android:text="메인 메뉴 화면!!"/>
 </LinearLayout>
+-->
