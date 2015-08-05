@@ -64,7 +64,7 @@ public class JoinActivity extends Activity {
         idcheck_but.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("onClick idcheck");
+                System.out.println("onClick idcheck ssss");
 
                 if (user_id.getText().toString().equals(null) || user_id.getText().toString().equals("")) {
                     Toast.makeText(JoinActivity.this, "아이디를 입력하여 주세요.", Toast.LENGTH_SHORT).show();
