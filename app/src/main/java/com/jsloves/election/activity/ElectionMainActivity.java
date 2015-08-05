@@ -2,17 +2,20 @@ package com.jsloves.election.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 /**
  * Created by wooram.jeong on 2015-07-07.
  */
 public class ElectionMainActivity extends AppCompatActivity {
 
+    public static final String TAG = ElectionMainActivity.class.getSimpleName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_menu);
-
+        Log.d(TAG, "onCreate");
         /*Button btn_area_search = (Button) findViewById(R.id.btn_area_search);
         // Listening to News Feed button click
         btn_area_search.setOnClickListener(new View.OnClickListener() {
