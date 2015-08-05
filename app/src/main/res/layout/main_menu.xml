@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<!--<?xml version="1.0" encoding="utf-8"?>
 <com.jsloves.election.layout.DashboardLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
@@ -43,8 +43,8 @@
         android:drawableTop="@drawable/ic_launcher"
         android:text="기관 및 단체" />
 
-</com.jsloves.election.layout.DashboardLayout>
-<!--
+</com.jsloves.election.layout.DashboardLayout>-->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
     <TextView
@@ -52,4 +52,3 @@
         android:layout_height="match_parent"
         android:text="메인 메뉴 화면!!"/>
 </LinearLayout>
--->
