@@ -24,5 +24,6 @@ public class ElectionMainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });*/
+
     }
 }
