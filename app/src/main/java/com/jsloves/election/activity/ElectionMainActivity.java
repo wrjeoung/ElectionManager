@@ -83,17 +83,20 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
+                // 좌측 메뉴
                 switch (position) {
                     case 0:
                         mDrawerList.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
                         toolbar.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
                         slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
+                        pager.setCurrentItem(position);
                         mDrawerLayout.closeDrawer(GravityCompat.START);
                         break;
                     case 1:
                         //mDrawerList.setBackgroundColor(getResources().getColor(R.color.red));
                         //toolbar.setBackgroundColor(getResources().getColor(R.color.red));
                         //slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.red));
+                        pager.setCurrentItem(position);
                         mDrawerLayout.closeDrawer(GravityCompat.START);
 
                         break;
@@ -101,6 +104,7 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
                         //mDrawerList.setBackgroundColor(getResources().getColor(R.color.blue));
                         //toolbar.setBackgroundColor(getResources().getColor(R.color.blue));
                         //slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.blue));
+                        pager.setCurrentItem(position);
                         mDrawerLayout.closeDrawer(GravityCompat.START);
 
                         break;
@@ -108,12 +112,18 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
                         //mDrawerList.setBackgroundColor(getResources().getColor(R.color.material_blue_grey_800));
                         //toolbar.setBackgroundColor(getResources().getColor(R.color.material_blue_grey_800));
                         //slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.material_blue_grey_800));
+                        pager.setCurrentItem(position);
                         mDrawerLayout.closeDrawer(GravityCompat.START);
 
                         break;
                     case 4:
+                        pager.setCurrentItem(position);
+                        mDrawerLayout.closeDrawer(GravityCompat.START);
 
+                        break;
 
+                    case 5:
+                        pager.setCurrentItem(position);
                         mDrawerLayout.closeDrawer(GravityCompat.START);
 
                         break;
