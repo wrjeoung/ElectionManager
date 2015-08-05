@@ -34,13 +34,10 @@
             android:name="com.jsloves.election.activity.ElectionSignUpActivity"
             android:label="@string/app_name" />
         <activity
-            android:name="com.jsloves.election.activity.ElectionMainActivity"
-            android:label="@string/app_name" />
-        <activity
             android:name="com.jsloves.election.activity.SearchActivity"/>
         <activity android:name="com.jsloves.election.activity.JoinActivity"
             android:label="@string/app_name" />
-        <activity android:name="com.jsloves.election.activity.SampleActivity"
+        <activity android:name=".ElectionMainActivity"
             android:label="@string/app_name" />
         <activity android:name="com.jsloves.election.activity.Example5Activity"
             android:label="@string/app_name" />
