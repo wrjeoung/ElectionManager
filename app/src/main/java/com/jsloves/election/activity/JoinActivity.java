@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -19,6 +20,7 @@ import org.json.simple.parser.JSONParser;
 
 public class JoinActivity extends Activity {
 
+    public static final String TAG = JoinActivity.class.getSimpleName();
     private EditText user_id = null;
     private EditText passwords = null;
     private EditText name = null;
@@ -34,7 +36,7 @@ public class JoinActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.d(TAG,"onCreate");
         TelephonyManager telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
         imei = telephonyManager.getDeviceId();
         imsi = telephonyManager.getSubscriberId();
@@ -64,7 +66,7 @@ public class JoinActivity extends Activity {
         idcheck_but.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("onClick idcheck");
+                System.out.println("onClick idcheck ssss");
 
                 if (user_id.getText().toString().equals(null) || user_id.getText().toString().equals("")) {
                     Toast.makeText(JoinActivity.this, "아이디를 입력하여 주세요.", Toast.LENGTH_SHORT).show();

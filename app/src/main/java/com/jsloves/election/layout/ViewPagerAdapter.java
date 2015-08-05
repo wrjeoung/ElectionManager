@@ -4,11 +4,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.jsloves.election.common.CommonValuesManager;
 import com.jsloves.election.fragment.SampleFragment;
 
-public class ViewPagerAdapter extends FragmentPagerAdapter {
+public class ViewPagerAdapter extends FragmentPagerAdapter implements CommonValuesManager {
 
-    final int PAGE_COUNT =8;
+
     private String titles[] ;
 
     public ViewPagerAdapter(FragmentManager fm, String[] titles2) {
@@ -32,10 +33,6 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
                 return SampleFragment.newInstance(position);
             case 5:
                 return SampleFragment.newInstance(position);
-            case 6:
-                return SampleFragment.newInstance(position);
-            case 7:
-                return SampleFragment.newInstance(position);
 
         }
         return null;
@@ -47,7 +44,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return PAGE_COUNT;
+        return CommonValuesManager.PAGE_COUNT;
     }
 
 }
