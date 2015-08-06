@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.jsloves.election.common.CommonValuesManager;
 import com.jsloves.election.fragment.SampleFragment;
+import com.jsloves.election.fragment.SearchFragment;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter implements CommonValuesManager {
 
@@ -22,7 +23,8 @@ public class ViewPagerAdapter extends FragmentPagerAdapter implements CommonValu
         switch (position) {
             // Open FragmentTab1.java
             case 0:
-                return SampleFragment.newInstance(position);
+                //return SampleFragment.newInstance(position);
+                return SearchFragment.newInstance("aa","bb");
             case 1:
                 return SampleFragment.newInstance(position);
             case 2:
