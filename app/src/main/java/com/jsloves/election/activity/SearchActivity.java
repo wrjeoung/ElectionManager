@@ -9,7 +9,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -25,7 +28,7 @@ import org.json.simple.parser.JSONParser;
 import java.lang.reflect.Type;
 import java.util.List;
 
-public class SearchActivity extends AppCompatActivity implements AsyncListener<Integer, String> {
+public class SearchActivity extends AppCompatActivity implements AsyncListener<Integer, String>,OnItemSelectedListener {
     public static final String ASYNC = "async";
     private ProgressDialog dialog;
     private Toolbar toolbar;
@@ -104,6 +107,16 @@ public class SearchActivity extends AppCompatActivity implements AsyncListener<I
 
     }
 
+    private void setUpSpinner(Spinner spinner,String items) {
+        Type type = new TypeToken<List<String>>(){}.getType();
+        Gson converter = new Gson();
+        List<String> list =  converter.fromJson(items.toString(), type);
+        ArrayAdapter sp_Adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,list);
+        sp_Adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(sp_Adapter);
+        spinner.setOnItemSelectedListener(SearchActivity.this);
+    }
+
     private void setUp(String url,String params) {
         AsyncFragment async = (AsyncFragment)
                 getSupportFragmentManager().findFragmentByTag(ASYNC);
@@ -119,6 +132,20 @@ public class SearchActivity extends AppCompatActivity implements AsyncListener<I
             transaction.add(async, ASYNC);
             transaction.commit();
         }
+    }
+
+    // OnItemSelectedListener interface의 abstract 메소드.
+    // Spinner를 통해 item의 select되었을때 호출되는 callback.
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Log.d("kjh","id = "+id);
+    }
+
+    // OnItemSelectedListener interface의 Abstract 메소드.
+    // Item list에서 아무것도 선택 하지 않았을때 발생하는 event를 위한 callback.
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        Log.d("kjh","onNothingSelected");
     }
 
     private void prepareProgressDialog() {
@@ -166,14 +193,9 @@ public class SearchActivity extends AppCompatActivity implements AsyncListener<I
             String result = (String) re.get("RESULT");
 
             if (result.equals("SUCCESS")) {
-                JSONArray sigungu = (JSONArray)re.get("SIGUNGU");
-                Type type = new TypeToken<List<String>>(){}.getType();
-                Gson converter = new Gson();
-                List<String> list1 =  converter.fromJson(sigungu.toString(), type);
-                Spinner spinner_1 = (Spinner)findViewById(R.id.spinner_1);
-                ArrayAdapter sp1_Adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,list1);
-                sp1_Adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spinner_1.setAdapter(sp1_Adapter);
+                JSONArray sigungu = (JSONArray) re.get("SIGUNGU");
+                sigungu.add("부천시 소사구");
+                setUpSpinner((Spinner)findViewById(R.id.spinner_1),sigungu.toString());
             } else { // Test code
                 JSONArray sigungu = (JSONArray) par.parse(resultData);
                 Type type = new TypeToken<List<JSONObject>>() {
@@ -188,8 +210,9 @@ public class SearchActivity extends AppCompatActivity implements AsyncListener<I
 
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            cleanUp();
         }
-        cleanUp();
     }
 
     @Override

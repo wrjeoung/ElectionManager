@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -35,6 +36,7 @@ public class JoinActivity extends AppCompatActivity implements AsyncListener<Int
     private ProgressDialog dialog;
     private Toolbar toolbar;
 
+    public static final String TAG = JoinActivity.class.getSimpleName();
     private EditText user_id = null;
     private EditText passwords = null;
     private EditText name = null;
@@ -50,7 +52,7 @@ public class JoinActivity extends AppCompatActivity implements AsyncListener<Int
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.d(TAG,"onCreate");
         TelephonyManager telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
         imei = telephonyManager.getDeviceId();
         imsi = telephonyManager.getSubscriberId();
