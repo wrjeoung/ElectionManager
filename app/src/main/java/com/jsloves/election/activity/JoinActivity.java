@@ -1,5 +1,14 @@
 package com.jsloves.election.activity;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,8 +26,15 @@ import com.jsloves.election.util.HttpConnection;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
-public class JoinActivity extends Activity {
+import com.jsloves.election.fragment.*;
+
+public class JoinActivity extends AppCompatActivity implements AsyncListener<Integer, String> {
+
+    public static final String ASYNC = "async";
+    private ProgressDialog dialog;
+    private Toolbar toolbar;
 
     public static final String TAG = JoinActivity.class.getSimpleName();
     private EditText user_id = null;
@@ -66,7 +82,7 @@ public class JoinActivity extends Activity {
         idcheck_but.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("onClick idcheck ssss");
+                System.out.println("onClick idcheck");
 
                 if (user_id.getText().toString().equals(null) || user_id.getText().toString().equals("")) {
                     Toast.makeText(JoinActivity.this, "아이디를 입력하여 주세요.", Toast.LENGTH_SHORT).show();
@@ -79,33 +95,14 @@ public class JoinActivity extends Activity {
                         jo1.put("TYPE", "IDCHECK");
                         jo1.put("USERID", user_id.getText().toString());
 
-                        System.out.println("[IDCHECK] before http call");
-
                         if(android.os.Build.VERSION.SDK_INT > 9) {
                             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                             StrictMode.setThreadPolicy(policy);
                         }
 
-                        String resultData = "";
-                        resultData = HttpConnection.PostData("http://222.122.149.161:7070/Woori/MobileReq.jsp", jo1.toString());
-                        System.out.println("resultData:" + resultData);
+                        System.out.println("[IDCHECK] before http call");
+                        setUp(getString(R.string.server_url), jo1.toString());
                         System.out.println("[IDCHECK] after http call");
-
-                        JSONObject re = null;
-                        JSONParser par = new JSONParser();
-                        re = (JSONObject) par.parse(resultData.toString());
-                        String result = (String) re.get("RESULT");
-
-                        if (result.equals("SUCCESS")) {
-                            System.out.println("SUCCESS");
-                            id_check = "SUCCESS";
-                            Toast.makeText(JoinActivity.this, "사용가능한 아이디", Toast.LENGTH_SHORT).show();
-                            passwords.requestFocus();
-                        } else {
-                            System.out.println("FAILED");
-                            Toast.makeText(JoinActivity.this, "중복된 아이디", Toast.LENGTH_SHORT).show();
-                            user_id.setText("");
-                        }
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -150,39 +147,19 @@ public class JoinActivity extends Activity {
                         jo2.put("USERNM",name.getText().toString());
                         jo2.put("PWD",passwords.getText().toString());
                         jo2.put("DEVICEID",imei);
-                        jo2.put("PHONENUMBER",phoneNumber);
+                        jo2.put("PHONENUMBER", phoneNumber);
                         //jo2.put("CLASSCD",classcodes.getText().toString());
                         contents.add(jo2);
                         jo1.put("CONTENTS", contents);
-
-                        System.out.println("[JOIN] before http call");
 
                         if(android.os.Build.VERSION.SDK_INT > 9) {
                             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                             StrictMode.setThreadPolicy(policy);
                         }
 
-                        String resultData = "";
-                        //resultData = HttpConnection.PostData("http://222.122.149.161:7070/Woori/MobileReq.jsp", "CMD=" + jo1.toString());
-                        resultData = HttpConnection.PostData("http://222.122.149.161:7070/Woori/MobileReq.jsp", jo1.toString());
-                        System.out.println("resultData:"+resultData);
-                        System.out.println("after http call");
-
-                        JSONObject re=null;
-                        JSONParser par = new JSONParser();
-                        re = (JSONObject) par.parse(resultData.toString());
-                        String result = (String) re.get("RESULT");
-
-                        if(result.equals("SUCCESS")){
-                            System.out.println("SUCCESS");
-                            Toast.makeText(JoinActivity.this, "회원가입 성공", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(JoinActivity.this, ElectionManagerActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }else{
-                            System.out.println("FAILED");
-                            Toast.makeText(JoinActivity.this, "회원가입 실패", Toast.LENGTH_SHORT).show();
-                        }
+                        System.out.println("[JOIN] before http call");
+                        setUp(getString(R.string.server_url), jo1.toString());
+                        System.out.println("[JOIN] after http call");
 
                     } catch (Exception e){
                         e.printStackTrace();
@@ -191,5 +168,116 @@ public class JoinActivity extends Activity {
             }
         });
 
+    }
+
+    private void setUp(String url,String params) {
+        AsyncFragment async = (AsyncFragment)
+                getSupportFragmentManager().findFragmentByTag(ASYNC);
+
+        if (async == null) {
+            async = new AsyncFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("URL",url);
+            bundle.putString("PARAMS",params);
+            async.setArguments(bundle);
+            FragmentTransaction transaction =
+                    getSupportFragmentManager().beginTransaction();
+            transaction.add(async, ASYNC);
+            transaction.commit();
+        }
+    }
+
+    private void prepareProgressDialog() {
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("Please wait...");
+        dialog.setCancelable(true);
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                AsyncFragment async = (AsyncFragment)
+                        getSupportFragmentManager().findFragmentByTag(ASYNC);
+                async.cancel();
+            }
+        });
+        //dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+    }
+
+    private void cleanUp() {
+        System.out.println("CleanUp");
+        dialog.dismiss();
+        dialog = null;
+        FragmentManager fm = getSupportFragmentManager();
+        AsyncFragment async = (AsyncFragment) fm.findFragmentByTag(ASYNC);
+        fm.beginTransaction().remove(async).commit();
+    }
+
+    @Override
+    public void onPreExecute() {
+        if (dialog == null) {
+            prepareProgressDialog();
+        }
+        dialog.show();
+    }
+
+    @Override
+    public void onProgressUpdate(Integer... progress) {
+
+    }
+
+    @Override
+    public void onPostExecute(String resultData) {
+
+        try {
+
+            System.out.println("resultData = "+resultData);
+            String result = "";
+            JSONObject re = null;
+            JSONParser par = new JSONParser();
+            re = (JSONObject) par.parse(resultData.toString());
+            String sType = (String) re.get("TYPE");
+
+            if(sType.equals("IDCHECK")) {
+
+                result = (String) re.get("RESULT");
+
+                if (result.equals("SUCCESS")) {
+                    System.out.println("SUCCESS");
+                    id_check = "SUCCESS";
+                    Toast.makeText(JoinActivity.this, "사용가능한 아이디", Toast.LENGTH_SHORT).show();
+                    passwords.requestFocus();
+                } else {
+                    System.out.println("FAILED");
+                    Toast.makeText(JoinActivity.this, "중복된 아이디", Toast.LENGTH_SHORT).show();
+                    user_id.setText("");
+                }
+            }else if(sType.equals("JOIN")){
+
+                result = (String) re.get("RESULT");
+
+                if(result.equals("SUCCESS")){
+                    System.out.println("SUCCESS");
+                    Toast.makeText(JoinActivity.this, "회원가입 성공", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(JoinActivity.this, ElectionManagerActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else{
+                    System.out.println("FAILED");
+                    Toast.makeText(JoinActivity.this, "회원가입 실패", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (Exception e){
+           e.printStackTrace();;
+        } finally{
+            cleanUp();
+        }
+    }
+
+    @Override
+    public void onCancelled(String s) {
+        cleanUp();
     }
 }
