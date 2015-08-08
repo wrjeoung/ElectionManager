@@ -20,6 +20,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter implements CommonValu
     @Override
     public Fragment getItem(int position) {
         switch (position) {
+            // 상단 메뉴
             // Open FragmentTab1.java
             case 0:
                 return SampleFragment.newInstance(position);

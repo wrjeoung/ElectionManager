@@ -9,7 +9,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -73,7 +72,7 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
                 getString(R.string.social_hwangyong),
                 getString(R.string.gigwan_info),
                 getString(R.string.jooyo_saup),
-                getString(R.string.board),
+                getString(R.string.board)
         };
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
