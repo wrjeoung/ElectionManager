@@ -1,12 +1,18 @@
 package com.jsloves.election.fragment;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -14,8 +20,11 @@ import android.widget.Spinner;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jsloves.election.activity.R;
+import com.jsloves.election.util.HttpConnection;
 
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -28,7 +37,7 @@ import java.util.List;
  * Use the {@link SearchFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SearchFragment extends Fragment {
+public class SearchFragment extends Fragment implements OnItemSelectedListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -42,6 +51,8 @@ public class SearchFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private SearchTask mTask;
+    private ProgressDialog dialog;
 
     /**
      * Use this factory method to create a new instance of
@@ -73,6 +84,12 @@ public class SearchFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        mTask = new SearchTask();
+        JSONObject json1 = new JSONObject();
+        json1.put("TYPE", "SELECTITEMS");
+        json1.put("TARGET", "SIGUNGU");
+        excuteTask(getString(R.string.server_url), json1.toString());
+
     }
 
     @Override
@@ -81,11 +98,7 @@ public class SearchFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
-        JSONArray sigungu = new JSONArray();
-        sigungu.add("부천시 소사구");
-        sigungu.add("부천시 오정구");
-        setUpSpinner((Spinner) view.findViewById(R.id.spinner_1), sigungu.toString());
-        JSONArray haejoung = new JSONArray();
+        /*JSONArray haejoung = new JSONArray();
         haejoung.add("신흥동");
         haejoung.add("고강1동");
         haejoung.add("오정동");
@@ -100,7 +113,7 @@ public class SearchFragment extends Fragment {
         tupo.add("제4투표구");
         tupo.add("제5투표구");
         tupo.add("제6투표구");
-        setUpSpinner((Spinner) view.findViewById(R.id.spinner_3),tupo.toString());
+        setUpSpinner((Spinner) view.findViewById(R.id.spinner_3),tupo.toString());*/
         final Button btn_search = (Button)view.findViewById(R.id.button_search);
         btn_search.setOnClickListener(new View.OnClickListener()
         {
@@ -111,6 +124,22 @@ public class SearchFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position,
+                               long id) {
+        // TODO Auto-generated method stub
+
+            Log.d("kjh","onItemSelected");
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> arg0) {
+        // TODO Auto-generated method stub
+        Log.d("kjh","onNothingSelected");
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -159,6 +188,84 @@ public class SearchFragment extends Fragment {
         ArrayAdapter sp_Adapter = new ArrayAdapter(getActivity().getApplicationContext(),android.R.layout.simple_spinner_item,list);
         sp_Adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(sp_Adapter);
-        //spinner.setOnItemSelectedListener(this);
+        spinner.setOnItemSelectedListener(SearchFragment.this);
+    }
+
+
+    public void cancel() {
+        mTask.cancel(false);
+    }
+
+    class SearchTask extends AsyncTask<Object, Integer, String> {
+        @Override
+        protected void onPreExecute() {
+            if (dialog == null) {
+                prepareProgressDialog();
+            }
+            dialog.show();
+        }
+
+        @Override
+        protected String doInBackground(Object... args) {
+            Bundle bundle = (Bundle)args[0];
+            String url = bundle.getString("URL");
+            String params = bundle.getString("PARAMS");
+            return HttpConnection.PostData(url, params);
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+        }
+
+        @Override
+        protected void onPostExecute(String resultData) {
+            try {
+                JSONObject re = null;
+                JSONParser par = new JSONParser();
+                System.out.println("resultData = "+resultData);
+                re = (JSONObject) par.parse(resultData);
+                String result = (String) re.get("RESULT");
+
+                if (result.equals("SUCCESS")) {
+                    JSONArray sigungu = (JSONArray) re.get("SIGUNGU");
+                    sigungu.add("부천시 소사구");
+                    sigungu.add("부천시 범박구");
+                    setUpSpinner((Spinner) getView().findViewById(R.id.spinner_1), sigungu.toString());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                cleanUp();
+            }
+        }
+
+        @Override
+        protected void onCancelled(String result) {
+            cleanUp();
+        }
+    }
+
+    private void excuteTask(String url,String params) {
+        Bundle bundle = new Bundle();
+        bundle.putString("URL",url);
+        bundle.putString("PARAMS", params);
+        mTask.execute(bundle);
+    }
+
+    private void prepareProgressDialog() {
+        dialog = new ProgressDialog(getActivity());
+        dialog.setMessage("Please wait...");
+        dialog.setCancelable(true);
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                cancel();
+            }
+        });
+        //dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+    }
+    private void cleanUp() {
+        dialog.dismiss();
+        dialog = null;
     }
 }
