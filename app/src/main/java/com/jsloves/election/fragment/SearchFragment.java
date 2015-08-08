@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.net.Uri;
+import android.net.http.SslError;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.CookieSyncManager;
+import android.webkit.SslErrorHandler;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -53,6 +59,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     private OnFragmentInteractionListener mListener;
     private SearchTask mTask;
     private ProgressDialog dialog;
+    private WebView myWebview;
 
     /**
      * Use this factory method to create a new instance of
@@ -92,12 +99,52 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
     }
 
+    private class MainWebViewClient extends WebViewClient {
+        @Override
+        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+            handler.proceed(); // SSL 에러가 발생해도 계속 진행!
+        }
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
+            view.loadUrl(url);
+            return true;
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            CookieSyncManager.getInstance().sync();
+
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search, container, false);
-
+        myWebview = (WebView) view.findViewById(
+                R.id.webView);
+        myWebview.setWebViewClient(new MainWebViewClient());
+        myWebview.setHorizontalScrollBarEnabled(true);
+        myWebview.setVerticalScrollBarEnabled(true);
+        WebSettings webSettings = myWebview.getSettings();
+        webSettings.setDefaultTextEncodingName("UTF-8");
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setDomStorageEnabled(true);
+        webSettings.setSupportZoom(false);
+        webSettings.setBuiltInZoomControls(false);
+        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
+        webSettings.setAllowFileAccess(true);
+        webSettings.setUseWideViewPort(false);
+        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            webSettings.setAllowFileAccessFromFileURLs(true);
+            webSettings.setAllowUniversalAccessFromFileURLs(true);
+        }
+        webSettings.setAllowContentAccess(true);
+        webSettings.setSaveFormData(true);
+        myWebview.loadUrl("http://222.122.149.161:7070/Woori/areaMap.jsp");
+        //browser.loadUrl("http://www.naver.com");
         /*JSONArray haejoung = new JSONArray();
         haejoung.add("신흥동");
         haejoung.add("고강1동");
@@ -180,7 +227,6 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
-
     private void setUpSpinner(Spinner spinner,String items) {
         Type type = new TypeToken<List<String>>(){}.getType();
         Gson converter = new Gson();
