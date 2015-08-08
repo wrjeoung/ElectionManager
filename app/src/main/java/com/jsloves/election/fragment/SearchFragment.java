@@ -178,7 +178,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                                long id) {
         // TODO Auto-generated method stub
 
-            Log.d("kjh","onItemSelected");
+        Log.d("kjh","onItemSelected");
 
     }
 
