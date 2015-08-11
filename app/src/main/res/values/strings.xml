@@ -20,6 +20,7 @@
     <string name="setting_lock_input">암호를 입력해주세요.</string>
     <string name="setting_lock_input_info">암호를 입력해주세요.</string>
     <string name="setting_lock_forget_info">암호를 잊었을 경우, 앱을 삭제하고 다시 설치해 주세요.</string>
+    <string name="right_menu">메뉴</string>
     <string name="popup_cancel">취 소</string>
 
 
