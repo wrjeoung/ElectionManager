@@ -5,9 +5,8 @@
     <item
         android:id="@+id/action_right_menu"
         android:icon="@drawable/swipe_left_100"
-        android:menuCategory="secondary"
+        android:menuCategory="alternative"
         android:orderInCategory="1"
         app:showAsAction="ifRoom"
         android:title="@string/right_menu" />
-
 </menu>

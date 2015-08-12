@@ -1,12 +1,13 @@
 package com.jsloves.election.activity;
 
+import android.app.Activity;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.StringRes;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.DrawerLayout.DrawerListener;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -22,21 +23,42 @@ import com.jsloves.election.common.CommonValuesManager;
 import com.jsloves.election.layout.SlidingTabLayout;
 import com.jsloves.election.layout.ViewPagerAdapter;
 
+import java.util.List;
 
-public class ElectionMainActivity extends AppCompatActivity implements CommonValuesManager{
 
-    private DrawerLayout mDrawerLayout;
-    private ActionBarDrawerToggle drawerToggle;
+public class ElectionMainActivity extends AppCompatActivity implements CommonValuesManager {
+
     private static final String TAG = ElectionMainActivity.class.getSimpleName();
+    private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
+    private ListView mDrawerListRight;
     private ViewPager pager;
     private String titles[] = new String[CommonValuesManager.PAGE_COUNT];
     private Toolbar toolbar;
     private MenuItem mRmIcon;
-    private DrawerListener mDrawLisner;
-
-
+    private ElectionDrawerListner mDrawLisner;
     private SlidingTabLayout slidingTabLayout;
+
+
+    class ElectionDrawerListner extends ActionBarDrawerToggle {
+
+        public ElectionDrawerListner(Activity activity, DrawerLayout drawerLayout, Toolbar toolbar, @StringRes int openDrawerContentDescRes, @StringRes int closeDrawerContentDescRes) {
+            super(activity, drawerLayout, toolbar, openDrawerContentDescRes, closeDrawerContentDescRes);
+        }
+
+        @Override
+        public void onDrawerClosed(View drawerView) {
+            super.onDrawerClosed(drawerView);
+            mRmIcon.setIcon(R.drawable.swipe_left_100);
+        }
+
+        @Override
+        public void onDrawerOpened(View drawerView) {
+            super.onDrawerOpened(drawerView);
+            mRmIcon.setIcon(R.drawable.swipe_right_100);
+        }
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +74,7 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.navdrawer);
+        mDrawerListRight = (ListView) findViewById(R.id.navdrawer_right);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
@@ -68,8 +91,9 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
                 return Color.WHITE;
             }
         });
-        drawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.app_name, R.string.app_name);
-        mDrawerLayout.setDrawerListener(drawerToggle);
+
+        mDrawLisner = new ElectionDrawerListner(this, mDrawerLayout, toolbar, R.string.app_name, R.string.app_name);
+        mDrawerLayout.setDrawerListener(mDrawLisner);
         String[] values = new String[]{
                 getString(R.string.area_info),
                 getString(R.string.jungchi_hwangyong),
@@ -131,7 +155,6 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
 
                         break;
                 }
-
             }
         });
     }
@@ -139,7 +162,7 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if (drawerToggle.onOptionsItemSelected(item)) {
+        if (mDrawLisner.onOptionsItemSelected(item)) {
             return true;
         }
 
@@ -165,7 +188,7 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         //return super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.toolbar_menu_items,menu);
+        getMenuInflater().inflate(R.menu.toolbar_menu_items, menu);
         mRmIcon = menu.findItem(R.id.action_right_menu);
         return true;
     }
@@ -173,14 +196,14 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        drawerToggle.syncState();
+        mDrawLisner.syncState();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
-        Log.d(TAG,"onConfigurationChanged");
+        Log.d(TAG, "onConfigurationChanged");
         super.onConfigurationChanged(newConfig);
-        drawerToggle.onConfigurationChanged(newConfig);
+        mDrawLisner.onConfigurationChanged(newConfig);
     }
 
 }

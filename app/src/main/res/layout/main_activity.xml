@@ -46,7 +46,7 @@
         android:drawSelectorOnTop="false"></ListView>
 
     <ListView
-        android:id="@+id/navdrawer2"
+        android:id="@+id/navdrawer_right"
         android:layout_width="@dimen/navdrawer_width"
         android:layout_height="match_parent"
         android:layout_gravity="end"
