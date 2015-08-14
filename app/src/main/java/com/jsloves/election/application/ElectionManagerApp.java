@@ -13,9 +13,15 @@ public class ElectionManagerApp extends Application {
     private static ElectionManagerApp instance;
     private static String selectItems= null;
     public static void setSelectItems(String s) { selectItems= new String(s); }
-    public static JSONObject getSelectItemsObject() throws ParseException {
-        JSONParser par = new JSONParser();
-        return (JSONObject) par.parse(selectItems);
+    public static JSONObject getSelectItemsObject() {
+        JSONObject jo = null;
+        try {
+            JSONParser par = new JSONParser();
+            jo = (JSONObject) par.parse(selectItems);
+        } catch(ParseException e) {
+            e.printStackTrace();
+        }
+        return jo;
     }
 
     public static ElectionManagerApp getInstance() {
