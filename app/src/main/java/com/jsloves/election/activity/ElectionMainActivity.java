@@ -1,10 +1,14 @@
 package com.jsloves.election.activity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -19,14 +23,18 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.jsloves.election.application.ElectionManagerApp;
 import com.jsloves.election.common.CommonValuesManager;
+import com.jsloves.election.fragment.AsyncFragment;
+import com.jsloves.election.fragment.AsyncListener;
 import com.jsloves.election.layout.SlidingTabLayout;
 import com.jsloves.election.layout.ViewPagerAdapter;
 
-import java.util.List;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 
-public class ElectionMainActivity extends AppCompatActivity implements CommonValuesManager {
+public class ElectionMainActivity extends AppCompatActivity implements CommonValuesManager,AsyncListener<Integer, String> {
 
     private static final String TAG = ElectionMainActivity.class.getSimpleName();
     private DrawerLayout mDrawerLayout;
@@ -38,6 +46,8 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
     private MenuItem mRmIcon;
     private ElectionDrawerListner mDrawLisner;
     private SlidingTabLayout slidingTabLayout;
+    private final String ASYNC = "async";
+    private ProgressDialog dialog;
 
 
     class ElectionDrawerListner extends ActionBarDrawerToggle {
@@ -157,6 +167,13 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
                 }
             }
         });
+        try {
+            JSONObject json1 = new JSONObject();
+            json1.put("TYPE", "SELECTITEMS2");
+            setUp(getString(R.string.server_url),json1.toString());
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -204,6 +221,82 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
         Log.d(TAG, "onConfigurationChanged");
         super.onConfigurationChanged(newConfig);
         mDrawLisner.onConfigurationChanged(newConfig);
+    }
+
+    private void setUp(String url,String params) {
+        AsyncFragment async = (AsyncFragment)
+                getSupportFragmentManager().findFragmentByTag(ASYNC);
+
+        if (async == null) {
+            async = new AsyncFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("URL",url);
+            bundle.putString("PARAMS",params);
+            async.setArguments(bundle);
+            FragmentTransaction transaction =
+                    getSupportFragmentManager().beginTransaction();
+            transaction.add(async, ASYNC);
+            transaction.commit();
+        }
+    }
+
+    private void prepareProgressDialog() {
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("Please wait...");
+        dialog.setCancelable(true);
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                AsyncFragment async = (AsyncFragment)
+                        getSupportFragmentManager().findFragmentByTag(ASYNC);
+                async.cancel();
+            }
+        });
+        //dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+    }
+    private void cleanUp() {
+        dialog.dismiss();
+        dialog = null;
+        FragmentManager fm = getSupportFragmentManager();
+        AsyncFragment async = (AsyncFragment) fm.findFragmentByTag(ASYNC);
+        fm.beginTransaction().remove(async).commit();
+    }
+
+    @Override
+    public void onPreExecute() {
+        if (dialog == null) {
+            prepareProgressDialog();
+        }
+        dialog.show();
+    }
+
+    @Override
+    public void onProgressUpdate(Integer... progress) {
+
+    }
+
+    @Override
+    public void onPostExecute(String resultData) {
+        try {
+            JSONObject re = null;
+            JSONParser par = new JSONParser();
+            re = (JSONObject) par.parse(resultData);
+            String result = (String) re.get("RESULT");
+
+            if (result.equals("SUCCESS")) {
+                ElectionManagerApp.getInstance().setSelectItems(((JSONObject)re.get("SELECTITEMS2")).toString());
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            cleanUp();
+        }
+    }
+
+    @Override
+    public void onCancelled(String s) {
+        cleanUp();
     }
 
 }
