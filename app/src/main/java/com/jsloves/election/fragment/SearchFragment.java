@@ -26,6 +26,7 @@ import android.widget.Spinner;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jsloves.election.activity.R;
+import com.jsloves.election.application.ElectionManagerApp;
 import com.jsloves.election.util.HttpConnection;
 
 import org.json.simple.JSONArray;
@@ -60,6 +61,9 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     private SearchTask mTask;
     private ProgressDialog dialog;
     private WebView myWebview;
+    private Spinner sp1;
+    private Spinner sp2;
+    private Spinner sp3;
 
     /**
      * Use this factory method to create a new instance of
@@ -95,7 +99,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         JSONObject json1 = new JSONObject();
         json1.put("TYPE", "SELECTITEMS");
         json1.put("TARGET", "SIGUNGU");
-        excuteTask(getString(R.string.server_url), json1.toString());
+        //excuteTask(getString(R.string.server_url), json1.toString());
 
     }
 
@@ -143,6 +147,13 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         }
         webSettings.setAllowContentAccess(true);
         webSettings.setSaveFormData(true);
+
+        sp1 = (Spinner) view.findViewById(R.id.spinner_1);
+        sp2 = (Spinner) view.findViewById(R.id.spinner_2);
+        sp3 = (Spinner) view.findViewById(R.id.spinner_3);
+
+        setUpSpinner(sp1, ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU").toString());
+
         myWebview.loadUrl("http://222.122.149.161:7070/Woori/areaMap.jsp");
         //browser.loadUrl("http://www.naver.com");
         /*JSONArray haejoung = new JSONArray();
@@ -167,7 +178,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
             @Override
             public void onClick(View v)
             {
-                //v.setVisibility(View.GONE);
+                Log.d("kjh","onclick_button");
             }
         });
         return view;
@@ -228,12 +239,14 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         public void onFragmentInteraction(Uri uri);
     }
     private void setUpSpinner(Spinner spinner,String items) {
+        System.out.println("items = "+items);
         Type type = new TypeToken<List<String>>(){}.getType();
         Gson converter = new Gson();
         List<String> list =  converter.fromJson(items, type);
         ArrayAdapter sp_Adapter = new ArrayAdapter(getActivity().getApplicationContext(),android.R.layout.simple_spinner_item,list);
         sp_Adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(sp_Adapter);
+        sp_Adapter.notifyDataSetChanged();
         spinner.setOnItemSelectedListener(SearchFragment.this);
     }
 

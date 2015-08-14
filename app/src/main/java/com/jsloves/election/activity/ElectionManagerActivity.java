@@ -15,11 +15,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.jsloves.election.application.ElectionManagerApp;
 import com.jsloves.election.fragment.AsyncFragment;
 import com.jsloves.election.fragment.AsyncListener;
 import com.jsloves.election.util.PhoneInfo;
@@ -49,7 +49,7 @@ public class ElectionManagerActivity extends AppCompatActivity
         return lockPassword.equals(mPwd);
     }
 
-    private Runnable r = null;
+    private Runnable r,mMainCallrunnable = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -111,6 +111,16 @@ public class ElectionManagerActivity extends AppCompatActivity
                     startActivity(intent);
                     finish();
                 }
+            }
+        };
+
+        mMainCallrunnable = new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(ElectionManagerActivity.this, ElectionMainActivity.class);
+                //intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                finish();
             }
         };
 
@@ -243,13 +253,19 @@ public class ElectionManagerActivity extends AppCompatActivity
             JSONParser par = new JSONParser();
             System.out.println("resultData = "+resultData);
             re = (JSONObject) par.parse(resultData);
-            mIsImeiExist = (Boolean) re.get("RESULT");
-            mPwd = (String)re.get("PWD");
+            String type = (String)re.get("TYPE");
+            if(type.equals("IMEICHECK")) {
+                mIsImeiExist = (Boolean) re.get("RESULT");
+                mPwd = (String) re.get("PWD");
+                mHandler.post(r);
+            } else if(type.equals("SELECTITEMS2")) {
+                ElectionManagerApp.getInstance().setSelectItems(((JSONObject) re.get("SELECTITEMS2")).toString());
+                mHandler.post(mMainCallrunnable);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
         cleanUp();
-        mHandler.post(r);
     }
 
     @Override
@@ -266,10 +282,13 @@ public class ElectionManagerActivity extends AppCompatActivity
             lockPassword = lockPassword.concat(String.valueOf(i));
             if( lockPassword.length()==4) {
                 if( isCheckPassWord()) {
-                    Intent intent = new Intent(ElectionManagerActivity.this, ElectionMainActivity.class);
+                    /*Intent intent = new Intent(ElectionManagerActivity.this, ElectionMainActivity.class);
                     //intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(intent);
-                    finish();
+                    finish();*/
+                    JSONObject json = new JSONObject();
+                    json.put("TYPE", "SELECTITEMS2");
+                    setUp(getString(R.string.server_url), json.toString());
                 }
                 else {
                     Vibrator vr = (Vibrator)getSystemService(VIBRATOR_SERVICE);
