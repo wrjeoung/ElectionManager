@@ -8,6 +8,7 @@ import android.net.http.SslError;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,11 +24,14 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jsloves.election.activity.R;
 import com.jsloves.election.application.ElectionManagerApp;
+import com.jsloves.election.util.GpsInfo;
 import com.jsloves.election.util.HttpConnection;
 
 import org.json.simple.JSONArray;
@@ -48,6 +52,7 @@ import java.util.List;
 public class SearchFragment extends Fragment implements OnItemSelectedListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    public static final String TAG = SearchFragment.class.getSimpleName();
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private JSONArray array1 = new JSONArray();
@@ -65,6 +70,11 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     private Spinner sp1;
     private Spinner sp2;
     private Spinner sp3;
+	
+	// GPS
+    private Button gpsSearchBtn;
+    private GpsInfo gps;
+    private TextView resultGpsText;
 
     /**
      * Use this factory method to create a new instance of
@@ -91,11 +101,13 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG,"onCreate");
         setRetainInstance(true);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        Log.d(TAG," mParam1 : " + mParam1 + " mParam2 : " + mParam2);
         mTask = new SearchTask();
         JSONObject json1 = new JSONObject();
         json1.put("TYPE", "SELECTITEMS");
@@ -111,6 +123,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         }
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            Log.d(TAG, "shouldOverrideUrlLoading url : " + url);
             view.loadUrl(url);
             return true;
         }
@@ -127,6 +140,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        Log.d(TAG,"onCreateView");
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         myWebview = (WebView) view.findViewById(
                 R.id.webView);
@@ -186,6 +200,33 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                     myWebview.setVisibility(View.VISIBLE);
             }
         });
+		
+		gpsSearchBtn = (Button) view.findViewById(R.id.gpsSearch);
+        gpsSearchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "gpsSearchBtn click");
+                gps = new GpsInfo(getActivity());
+                // GPS 사용유무 가져오기
+                if(gps.isGetLocation()){
+                    // 위도
+                    double latitude  = gps.getLatitude();
+                    // 경도
+                    double longitude = gps.getLongitude();
+
+                    String setText = "위도 : " + String.valueOf(latitude) + " 경도 : " + String.valueOf(longitude);
+                    Log.d(TAG," result : " + setText);
+                    String addr = gps.getAddress(latitude,longitude);
+                    Log.d(TAG, "addr : " + addr);
+                    Toast.makeText(getActivity().getApplicationContext(),"당신의 위치 - \n위도: " + latitude + "\n경도: " + longitude,Toast.LENGTH_SHORT).show();
+                }else{
+                    // GPS 를 사용할수 없으므로
+                    gps.showSettingsAlert();
+                }
+
+            }
+        });
+		
         return view;
     }
 
@@ -212,7 +253,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     @Override
     public void onNothingSelected(AdapterView<?> arg0) {
         // TODO Auto-generated method stub
-        //Log.d("kjh","onNothingSelected");
+        Log.d(TAG,"onNothingSelected");
 
     }
 
@@ -294,6 +335,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
         @Override
         protected void onPostExecute(String resultData) {
+            Log.d(TAG,"onPostExecute resultData : " + resultData);
             try {
                 JSONObject re = null;
                 JSONParser par = new JSONParser();
