@@ -63,6 +63,11 @@ public class ElectionManagerActivity extends AppCompatActivity
         setUp(getString(R.string.server_url), json.toString());
         r = new Runnable() {
             @Override
+            public boolean equals(Object o) {
+                return super.equals(o);
+            }
+
+            @Override
             public void run() {
                 if (mIsImeiExist) {
                     Log.d("JS", "isIMIEcheck");
