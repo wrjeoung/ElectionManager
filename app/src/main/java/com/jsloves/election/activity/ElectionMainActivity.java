@@ -19,9 +19,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.jsloves.election.adapter.AdapterSigunGu;
 import com.jsloves.election.common.CommonValuesManager;
 import com.jsloves.election.layout.SlidingTabLayout;
 import com.jsloves.election.layout.ViewPagerAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class ElectionMainActivity extends AppCompatActivity implements CommonValuesManager{
@@ -111,6 +115,66 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
                 switch (position) {
                     case 0:
                         mDrawerList.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
+                        toolbar.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
+                        slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
+                        pager.setCurrentItem(position);
+                        mDrawerLayout.closeDrawer(GravityCompat.START);
+                        break;
+                    case 1:
+                        //mDrawerList.setBackgroundColor(getResources().getColor(R.color.red));
+                        //toolbar.setBackgroundColor(getResources().getColor(R.color.red));
+                        //slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.red));
+                        pager.setCurrentItem(position);
+                        mDrawerLayout.closeDrawer(GravityCompat.START);
+
+                        break;
+                    case 2:
+                        //mDrawerList.setBackgroundColor(getResources().getColor(R.color.blue));
+                        //toolbar.setBackgroundColor(getResources().getColor(R.color.blue));
+                        //slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.blue));
+                        pager.setCurrentItem(position);
+                        mDrawerLayout.closeDrawer(GravityCompat.START);
+
+                        break;
+                    case 3:
+                        //mDrawerList.setBackgroundColor(getResources().getColor(R.color.material_blue_grey_800));
+                        //toolbar.setBackgroundColor(getResources().getColor(R.color.material_blue_grey_800));
+                        //slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.material_blue_grey_800));
+                        pager.setCurrentItem(position);
+                        mDrawerLayout.closeDrawer(GravityCompat.START);
+
+                        break;
+                    case 4:
+                        pager.setCurrentItem(position);
+                        mDrawerLayout.closeDrawer(GravityCompat.START);
+
+                        break;
+
+                    case 5:
+                        pager.setCurrentItem(position);
+                        mDrawerLayout.closeDrawer(GravityCompat.START);
+
+                        break;
+                }
+            }
+        });
+
+        List<String> ls = new ArrayList<String>();
+        ls.add("abcdefg");
+
+        AdapterSigunGu adapter2 = new AdapterSigunGu(this, R.layout.navigation_drawer_item, ls);
+        mDrawerListRight.setAdapter(adapter2);
+        mDrawerListRight.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                Log.d(TAG,"@@@@@@@@@@@@@@@@@"+position);
+
+
+                // 좌측 메뉴
+                switch (position) {
+                    case 0:
+                        mDrawerListRight.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
                         toolbar.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
                         slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
                         pager.setCurrentItem(position);
