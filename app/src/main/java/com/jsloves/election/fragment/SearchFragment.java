@@ -8,12 +8,13 @@ import android.net.http.SslError;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.ConsoleMessage;
 import android.webkit.CookieSyncManager;
 import android.webkit.SslErrorHandler;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -110,7 +111,6 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         }
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-
             view.loadUrl(url);
             return true;
         }
@@ -120,6 +120,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
             CookieSyncManager.getInstance().sync();
 
         }
+
     }
 
     @Override
@@ -153,32 +154,36 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         sp3 = (Spinner) view.findViewById(R.id.spinner_3);
 
         setUpSpinner(sp1, ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU").toString());
+        myWebview.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+                //Log.d("kjh", consoleMessage.message() + '\n' + consoleMessage.messageLevel() + '\n' + consoleMessage.sourceId());
+                return super.onConsoleMessage(consoleMessage);
+            }
+        });
+        myWebview.loadUrl(getString(R.string.mapView_url));
+        myWebview.setVisibility(View.GONE);
 
-        myWebview.loadUrl("http://222.122.149.161:7070/Woori/areaMap.jsp");
-        //browser.loadUrl("http://www.naver.com");
-        /*JSONArray haejoung = new JSONArray();
-        haejoung.add("신흥동");
-        haejoung.add("고강1동");
-        haejoung.add("오정동");
-        haejoung.add("고강1동");
-        haejoung.add("원종1동");
-        haejoung.add("원종2동");
-        setUpSpinner((Spinner) view.findViewById(R.id.spinner_2),haejoung.toString());
-        JSONArray tupo = new JSONArray();
-        tupo.add("제1투표구");
-        tupo.add("제2투표구");
-        tupo.add("제3투표구");
-        tupo.add("제4투표구");
-        tupo.add("제5투표구");
-        tupo.add("제6투표구");
-        setUpSpinner((Spinner) view.findViewById(R.id.spinner_3),tupo.toString());*/
         final Button btn_search = (Button)view.findViewById(R.id.button_search);
         btn_search.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                Log.d("kjh","onclick_button");
+                String sigungu = (String)sp1.getSelectedItem();
+                String haengjoungdong = (String)sp2.getSelectedItem();
+                String tupyoguStr = (String)sp3.getSelectedItem();
+                tupyoguStr = tupyoguStr.replace("제","");
+                tupyoguStr = tupyoguStr.replace("투표구","");
+
+                JSONObject jo = new JSONObject();
+                jo.put("TYPE","GEODATA");
+                jo.put("SIGUNGUTEXT",sigungu);
+                jo.put("HAENGTEXT",haengjoungdong);
+                jo.put("TUPYOGU_NUM", Integer.parseInt(tupyoguStr));
+                myWebview.loadUrl("javascript:drawMap('"+jo.toString()+"')");
+                if(myWebview.getVisibility()!= View.VISIBLE)
+                    myWebview.setVisibility(View.VISIBLE);
             }
         });
         return view;
@@ -189,14 +194,25 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                                long id) {
         // TODO Auto-generated method stub
 
-        Log.d("kjh","onItemSelected");
+        switch (parent.getId()) {
+            case R.id.spinner_1:
+                String sigungu = (String)parent.getSelectedItem();
+                JSONObject jo1 = (JSONObject)ElectionManagerApp.getInstance().getSelectItemsObject().get("HAENGJOUNGDONG");
+                setUpSpinner(sp2, jo1.get(sigungu).toString());
+                break;
+            case R.id.spinner_2:
+                String haengjoungdong = (String)parent.getSelectedItem();
+                JSONObject jo2 = (JSONObject)ElectionManagerApp.getInstance().getSelectItemsObject().get("TUPYOGU");
+                setUpSpinner(sp3, jo2.get(haengjoungdong).toString());
+                break;
+        }
 
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> arg0) {
         // TODO Auto-generated method stub
-        Log.d("kjh","onNothingSelected");
+        //Log.d("kjh","onNothingSelected");
 
     }
 
