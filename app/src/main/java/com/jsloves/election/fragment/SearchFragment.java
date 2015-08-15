@@ -101,7 +101,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG,"onCreate");
+        Log.d(TAG, "onCreate");
         setRetainInstance(true);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
@@ -215,10 +215,13 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                     double longitude = gps.getLongitude();
 
                     String setText = "위도 : " + String.valueOf(latitude) + " 경도 : " + String.valueOf(longitude);
-                    Log.d(TAG," result : " + setText);
+                    Log.d(TAG, " result : " + setText);
                     String addr = gps.getAddress(latitude,longitude);
                     Log.d(TAG, "addr : " + addr);
                     Toast.makeText(getActivity().getApplicationContext(),"당신의 위치 - \n위도: " + latitude + "\n경도: " + longitude,Toast.LENGTH_SHORT).show();
+
+                    // 구역이동 Spiner Value Setting
+                    setAreaFieldValue(addr);
                 }else{
                     // GPS 를 사용할수 없으므로
                     gps.showSettingsAlert();
@@ -228,6 +231,34 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         });
 		
         return view;
+    }
+
+    public void setAreaFieldValue(String addr){
+        Log.d(TAG,"setAreaFieldValue addr : " + addr);
+        String address[] = addr.split(" ");
+        String sigungu      = "";
+        String bubjoungdong = "";
+        String bunji        = "";
+        String gunmul       = "";
+
+        sigungu      += address[0] + address[1];
+        bubjoungdong += address[2];
+        bunji        += address[3];
+        Log.d(TAG, "sigungu : " + sigungu + " bubjoungdong : " + bubjoungdong + " bunji : " + bunji);
+        String url = "http://172.30.90.25:8080/Woori/MobileReq.jsp";
+        JSONObject json = new JSONObject();
+        json.put("TYPE", "GPS");
+        json.put("SIGUNGU", sigungu);
+        json.put("BUBJOUNGDONG", bubjoungdong);
+        json.put("bunji", bunji);
+        excuteTask(url, json.toString());
+
+        /*
+        JSONObject json1 = new JSONObject();
+        json1.put("TYPE", "SELECTITEMS");
+        json1.put("TARGET", "SIGUNGU");
+        //excuteTask(getString(R.string.server_url), json1.toString());
+        */
     }
 
     @Override
