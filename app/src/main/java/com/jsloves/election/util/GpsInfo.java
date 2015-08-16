@@ -15,7 +15,6 @@ import android.os.IBinder;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.util.List;
 import java.util.Locale;
@@ -181,7 +180,7 @@ public class GpsInfo extends Service implements LocationListener {
         String address = "";
         String address1 = "";
         // 위치정보를 활용하기 위한 구글 API 객체
-        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        Geocoder geocoder = new Geocoder(mContext, Locale.getDefault());
 
         // 주소 목록을 담기 위한 HashMap
         List<Address> list = null;
@@ -199,16 +198,16 @@ public class GpsInfo extends Service implements LocationListener {
 
         if(list.size() > 0){
             Address addr = list.get(0);
-            address = addr.getAdminArea() + " " + addr.getLocality() + " " + addr.getThoroughfare() + " " + addr.getFeatureName();
+            address = addr.getAdminArea() + " " + addr.getLocality() + " " + addr.getThoroughfare() + " " + addr.getFeatureName() + " " + addr.getSubLocality();
             address1 = addr.getUrl() + " " + addr.getExtras() + " " + addr.getSubLocality() + " " + addr.getSubThoroughfare() + " "
                       + addr.getSubAdminArea() + " " + addr.getCountryCode() + " " + addr.getCountryName() + " " + addr.getPhone() + " "
                       + addr.getPostalCode() + " " + addr.getPremises();
 
         }
         Log.d(TAG, "address : " + address);
-        Toast.makeText(mContext," address : " + address,Toast.LENGTH_SHORT).show();
+        //Toast.makeText(mContext," address : " + address,Toast.LENGTH_SHORT).show();
         Log.d(TAG, "address1 : " + address1);
-        Toast.makeText(mContext," address1 : " + address1,Toast.LENGTH_SHORT).show();
+        //Toast.makeText(mContext," address1 : " + address1,Toast.LENGTH_SHORT).show();
         return address;
     }
 

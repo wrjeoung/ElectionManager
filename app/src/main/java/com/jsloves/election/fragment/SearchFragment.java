@@ -237,28 +237,25 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         Log.d(TAG,"setAreaFieldValue addr : " + addr);
         String address[] = addr.split(" ");
         String sigungu      = "";
-        String bubjoungdong = "";
-        String bunji        = "";
+        String doroBubjoung = "";
+        String gunmulBunji        = "";
         String gunmul       = "";
+        String sigungutext  = "";
 
-        sigungu      += address[0] + address[1];
-        bubjoungdong += address[2];
-        bunji        += address[3];
-        Log.d(TAG, "sigungu : " + sigungu + " bubjoungdong : " + bubjoungdong + " bunji : " + bunji);
-        String url = "http://172.30.90.25:8080/Woori/MobileReq.jsp";
+        sigungu      += address[1] + address[4];
+        sigungutext  += address[1] + " " + address[4];
+        doroBubjoung += address[2];
+        gunmulBunji  += address[3];
+        Log.d(TAG, "sigungu : " + sigungu + " doroBubjoung : " + doroBubjoung + " gunmulBunji : " + gunmulBunji);
+        //String url = "http://192.168.0.3:8080/Woori/MobileReq.jsp";
         JSONObject json = new JSONObject();
         json.put("TYPE", "GPS");
         json.put("SIGUNGU", sigungu);
-        json.put("BUBJOUNGDONG", bubjoungdong);
-        json.put("bunji", bunji);
-        excuteTask(url, json.toString());
-
-        /*
-        JSONObject json1 = new JSONObject();
-        json1.put("TYPE", "SELECTITEMS");
-        json1.put("TARGET", "SIGUNGU");
-        //excuteTask(getString(R.string.server_url), json1.toString());
-        */
+        json.put("SIGUNGUTEXT", sigungutext);
+        json.put("DOROBUBJOUNG", doroBubjoung);
+        json.put("GUNMULBUNJI", gunmulBunji);
+        //excuteTask(url, json.toString());
+        excuteTask(getString(R.string.server_url), json.toString());
     }
 
     @Override
@@ -357,6 +354,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
             Bundle bundle = (Bundle)args[0];
             String url = bundle.getString("URL");
             String params = bundle.getString("PARAMS");
+            Log.d(TAG,"url : " + url + " params : " + params);
             return HttpConnection.PostData(url, params);
         }
 
@@ -372,13 +370,36 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 JSONParser par = new JSONParser();
                 System.out.println("resultData = "+resultData);
                 re = (JSONObject) par.parse(resultData);
+                String sType = (String) re.get("TYPE");
                 String result = (String) re.get("RESULT");
+                if(sType.equals("GPS")) {
+                    if (result.equals("SUCCESS")) {
+                        Log.d(TAG, "GPS SUCCESS");
 
-                if (result.equals("SUCCESS")) {
-                    JSONArray sigungu = (JSONArray) re.get("SIGUNGU");
-                    sigungu.add("부천시 소사구");
-                    sigungu.add("부천시 범박구");
-                    setUpSpinner((Spinner) getView().findViewById(R.id.spinner_1), sigungu.toString());
+
+                        ElectionManagerApp.getInstance().setSelectItems(((JSONObject) re.get("SELECTITEMS2")).toString());
+
+                        Log.d(TAG, ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU").toString());
+                        Log.d(TAG, ElectionManagerApp.getInstance().getSelectItemsObject().get("HAENGJOUNGDONG").toString());
+                        Log.d(TAG, ElectionManagerApp.getInstance().getSelectItemsObject().get("TUPYOGU").toString());
+
+                        if(ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU").toString().length() == 2
+                                || ElectionManagerApp.getInstance().getSelectItemsObject().get("HAENGJOUNGDONG").toString().length() == 2
+                                || ElectionManagerApp.getInstance().getSelectItemsObject().get("TUPYOGU").toString().length() == 2){
+                            Log.d(TAG,"매칭 데이터 없음");
+                            Toast.makeText(getActivity().getApplicationContext(),"현재 위치에 맞는 정보가 없습니다.",Toast.LENGTH_SHORT).show();
+                        }else{
+                            Log.d(TAG,"매칭 데이터 있음");
+                            setUpSpinner(sp1, ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU").toString());
+                        }
+                    }
+                }else{
+                    if (result.equals("SUCCESS")) {
+                        JSONArray sigungu = (JSONArray) re.get("SIGUNGU");
+                        sigungu.add("부천시 소사구");
+                        sigungu.add("부천시 범박구");
+                        setUpSpinner((Spinner) getView().findViewById(R.id.spinner_1), sigungu.toString());
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
