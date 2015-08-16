@@ -416,4 +416,12 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         dialog.dismiss();
         dialog = null;
     }
+
+    private int getPosition(Spinner sp, String value) {
+        int position = -1;
+        if (value != null) {
+            position = ((ArrayAdapter)sp.getAdapter()).getPosition(value);
+        }
+        return position;
+    }
 }
