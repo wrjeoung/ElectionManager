@@ -207,19 +207,21 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 gps = new GpsInfo(getActivity());
                 // GPS 사용유무 가져오기
                 if(gps.isGetLocation()){
-                    // 위도
-                    double latitude  = gps.getLatitude();
-                    // 경도
-                    double longitude = gps.getLongitude();
+                    if(gps.getLocation() != null){
+                        // 위도
+                        double latitude = gps.getLatitude();
+                        // 경도
+                        double longitude = gps.getLongitude();
 
-                    String setText = "위도 : " + String.valueOf(latitude) + " 경도 : " + String.valueOf(longitude);
-                    Log.d(TAG, " result : " + setText);
-                    String addr = gps.getAddress(latitude,longitude);
-                    Log.d(TAG, "addr : " + addr);
-                    Toast.makeText(getActivity().getApplicationContext(),"당신의 위치 - \n위도: " + latitude + "\n경도: " + longitude,Toast.LENGTH_SHORT).show();
+                        String setText = "위도 : " + String.valueOf(latitude) + " 경도 : " + String.valueOf(longitude);
+                        Log.d(TAG, " result : " + setText);
+                        String addr = gps.getAddress(latitude, longitude);
+                        Log.d(TAG, "addr : " + addr);
+                        Toast.makeText(getActivity().getApplicationContext(), "당신의 위치 - \n위도: " + latitude + "\n경도: " + longitude, Toast.LENGTH_SHORT).show();
 
-                    // 구역이동 Spiner Value Setting
-                    setAreaFieldValue(addr);
+                        // 구역이동 Spiner Value Setting
+                        setAreaFieldValue(addr);
+                    }
                 }else{
                     // GPS 를 사용할수 없으므로
                     gps.showSettingsAlert();
