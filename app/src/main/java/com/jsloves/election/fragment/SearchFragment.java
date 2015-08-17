@@ -70,6 +70,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     private Spinner sp1;
     private Spinner sp2;
     private Spinner sp3;
+    private boolean ignoreUpdate;
 	
 	// GPS
     private Button gpsSearchBtn;
@@ -103,17 +104,14 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
         setRetainInstance(true);
+        ignoreUpdate = false;
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        Log.d(TAG," mParam1 : " + mParam1 + " mParam2 : " + mParam2);
-        mTask = new SearchTask();
-        JSONObject json1 = new JSONObject();
-        json1.put("TYPE", "SELECTITEMS");
-        json1.put("TARGET", "SIGUNGU");
-        //excuteTask(getString(R.string.server_url), json1.toString());
 
+
+        Log.d(TAG, " mParam1 : " + mParam1 + " mParam2 : " + mParam2);
     }
 
     private class MainWebViewClient extends WebViewClient {
@@ -234,7 +232,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     }
 
     public void setAreaFieldValue(String addr){
-        Log.d(TAG,"setAreaFieldValue addr : " + addr);
+        Log.d(TAG, "setAreaFieldValue addr : " + addr);
         String address[] = addr.split(" ");
         String sigungu      = "";
         String doroBubjoung = "";
@@ -262,6 +260,10 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     public void onItemSelected(AdapterView<?> parent, View view, int position,
                                long id) {
         // TODO Auto-generated method stub
+        if(ignoreUpdate) {
+            ignoreUpdate = false;
+            return;
+        }
 
         switch (parent.getId()) {
             case R.id.spinner_1:
@@ -270,8 +272,8 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 setUpSpinner(sp2, jo1.get(sigungu).toString());
                 break;
             case R.id.spinner_2:
-                String haengjoungdong = (String)parent.getSelectedItem();
-                JSONObject jo2 = (JSONObject)ElectionManagerApp.getInstance().getSelectItemsObject().get("TUPYOGU");
+                String haengjoungdong = (String) parent.getSelectedItem();
+                JSONObject jo2 = (JSONObject) ElectionManagerApp.getInstance().getSelectItemsObject().get("TUPYOGU");
                 setUpSpinner(sp3, jo2.get(haengjoungdong).toString());
                 break;
         }
@@ -331,7 +333,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         ArrayAdapter sp_Adapter = new ArrayAdapter(getActivity().getApplicationContext(),android.R.layout.simple_spinner_item,list);
         sp_Adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(sp_Adapter);
-        sp_Adapter.notifyDataSetChanged();
+        //sp_Adapter.notifyDataSetChanged();
         spinner.setOnItemSelectedListener(SearchFragment.this);
     }
 
@@ -354,7 +356,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
             Bundle bundle = (Bundle)args[0];
             String url = bundle.getString("URL");
             String params = bundle.getString("PARAMS");
-            Log.d(TAG,"url : " + url + " params : " + params);
+            Log.d(TAG, "url : " + url + " params : " + params);
             return HttpConnection.PostData(url, params);
         }
 
@@ -373,7 +375,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 String sType = (String) re.get("TYPE");
                 String result = (String) re.get("RESULT");
                 if(sType.equals("GPS")) {
-                    if (result.equals("SUCCESS")) {
+                    /*if (result.equals("SUCCESS")) {
                         Log.d(TAG, "GPS SUCCESS");
 
 
@@ -392,13 +394,26 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                             Log.d(TAG,"매칭 데이터 있음");
                             setUpSpinner(sp1, ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU").toString());
                         }
-                    }
-                }else{
+                    }*/
                     if (result.equals("SUCCESS")) {
-                        JSONArray sigungu = (JSONArray) re.get("SIGUNGU");
-                        sigungu.add("부천시 소사구");
-                        sigungu.add("부천시 범박구");
-                        setUpSpinner((Spinner) getView().findViewById(R.id.spinner_1), sigungu.toString());
+                        Log.d(TAG, "매칭 데이터 있음");
+                        JSONObject resData = (JSONObject)re.get("RESDATA");
+                        String sigungu = (String)resData.get("SIGUNGU");
+                        String haengjoungdong = (String)resData.get("HAENGJOUNGDONG");
+                        String tupyogu = (String)resData.get("TUPYOGU");
+
+                        ignoreUpdate = true;
+                        sp1.setSelection(getPosition(sp1, sigungu));
+                        JSONObject jo1 = (JSONObject)ElectionManagerApp.getInstance().getSelectItemsObject().get("HAENGJOUNGDONG");
+                        setUpSpinner(sp2, jo1.get(sigungu).toString());
+                        sp2.setSelection(getPosition(sp2, haengjoungdong));
+                        JSONObject jo2 = (JSONObject)ElectionManagerApp.getInstance().getSelectItemsObject().get("TUPYOGU");
+                        setUpSpinner(sp3, jo2.get(haengjoungdong).toString());
+                        sp3.setSelection(getPosition(sp3, tupyogu));
+
+                    } else if(result.equals("FAILED")) {
+                        Log.d(TAG,"매칭 데이터 없음");
+                        Toast.makeText(getActivity().getApplicationContext(),"현재 위치에 맞는 정보가 없습니다.",Toast.LENGTH_SHORT).show();
                     }
                 }
             } catch (Exception e) {
@@ -418,6 +433,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         Bundle bundle = new Bundle();
         bundle.putString("URL",url);
         bundle.putString("PARAMS", params);
+        mTask = new SearchTask();
         mTask.execute(bundle);
     }
 
