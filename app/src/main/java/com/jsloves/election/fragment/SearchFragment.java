@@ -41,6 +41,8 @@ import org.json.simple.parser.JSONParser;
 import java.lang.reflect.Type;
 import java.util.List;
 
+
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -131,6 +133,10 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
             CookieSyncManager.getInstance().sync();
 
         }
+
+    }
+
+    private void searchTupyoguByRightMenu() {
 
     }
 
