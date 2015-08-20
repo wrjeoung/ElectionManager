@@ -1,6 +1,7 @@
 package com.jsloves.election.activity;
 
 import android.app.Activity;
+import android.support.v4.app.FragmentManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import com.google.gson.reflect.TypeToken;
 import com.jsloves.election.adapter.AdapterRootRightMenu;
 import com.jsloves.election.application.ElectionManagerApp;
 import com.jsloves.election.common.CommonValuesManager;
+import com.jsloves.election.fragment.SearchFragment;
 import com.jsloves.election.layout.SlidingTabLayout;
 import com.jsloves.election.layout.ViewPagerAdapter;
 
@@ -49,7 +51,9 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
     private SlidingTabLayout slidingTabLayout;
     private boolean mToggle=false;
     private int mLastExpandedPosition=-1;
-    public int AAA;
+    private FragmentManager mFragmentManager;
+    private ViewPagerAdapter mVpageAdapter;
+    private SearchFragment mSearchFragment;
 
     class ElectionDrawerListner extends ActionBarDrawerToggle {
 
@@ -93,7 +97,10 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
         }
         pager = (ViewPager) findViewById(R.id.viewpager);
         slidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
-        pager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), titles));
+        mFragmentManager=getSupportFragmentManager();
+        mVpageAdapter = new ViewPagerAdapter(mFragmentManager, titles);
+        mSearchFragment=mVpageAdapter.getmSchFrt();
+        pager.setAdapter(mVpageAdapter);
 
         slidingTabLayout.setViewPager(pager);
         slidingTabLayout.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
@@ -173,7 +180,9 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
         List<String> sigunguList = convertFromJson(sigungus);
         Log.d(TAG, "expandLog list : " + sigunguList);
 
-        final AdapterRootRightMenu adapter2 = new AdapterRootRightMenu(this,sigunguList);
+        final AdapterRootRightMenu adapter2 = new AdapterRootRightMenu(this,sigunguList,pager);
+        adapter2.setmFragmentManager(mFragmentManager);
+        adapter2.setmSearchFragment(mSearchFragment);
         mDrawerMenuRight.setAdapter( adapter2);
         mDrawerMenuRight.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
@@ -181,12 +190,14 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
 
                 parent.getChildAt(groupPosition).findViewById(R.id.indicator).setSelected(mToggle = !mToggle);
                 String sigungu = ((TextView) v.findViewById(R.id.tv_name)).getText().toString();
+                adapter2.setSelectedSg(sigungu);
                 Log.d(TAG, "expandLog onGroupClick groupPostion : " + groupPosition + " item : " + sigungu);
 
                 JSONObject jo1 = (JSONObject) ElectionManagerApp.getInstance().getSelectItemsObject().get("HAENGJOUNGDONG");
                 String hangjungdongs = jo1.get(sigungu).toString();
                 List<String> hangjungdongList = convertFromJson(hangjungdongs);
                 adapter2.setmHangjungdong(hangjungdongList);
+
                 return false;
             }
         });

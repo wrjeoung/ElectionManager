@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.net.http.SslError;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -57,6 +58,17 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     public static final String TAG = SearchFragment.class.getSimpleName();
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    // [수정] 스태틱 변수가 아닌 데이터 전달하는 방법은??
+    private static String SIGUNGU = null;
+    private static String HANGUNGDONG = null;
+    private static String TUPYOGU = null;
+
+    private String mSigungu;
+    private String mHangjungdong;
+    private String mTupyogu;
+
+
     private JSONArray array1 = new JSONArray();
     private JSONArray array2 = new JSONArray();
     private JSONArray array3 = new JSONArray();
@@ -79,6 +91,10 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     private GpsInfo gps;
     private TextView resultGpsText;
 
+    private Handler mHandler = new Handler();
+    private Runnable mR;
+
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -97,6 +113,18 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         return fragment;
     }
 
+
+    public static void newInstance(String sigungu, String hangjungdong, String tupyogu) {
+        SearchFragment fragment = new SearchFragment();
+        //[수정] 왜 번들로 담아서 oncreateView에서 아래와 같으 얻어오려 하면 null값이지??
+        // Bundle args = new Bundle();
+        // args.putString(SIGUNGU, sigungu);
+        // getArguments().getString(SIGUNGU);
+        SIGUNGU = sigungu;
+        HANGUNGDONG = hangjungdong;
+        TUPYOGU = tupyogu;
+    }
+
     public SearchFragment() {
         // Required empty public constructor
     }
@@ -111,8 +139,6 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-
         Log.d(TAG, " mParam1 : " + mParam1 + " mParam2 : " + mParam2);
     }
 
@@ -136,15 +162,66 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
     }
 
-    private void searchTupyoguByRightMenu() {
+    private boolean isAllLevelClick(String sigungu, String hangjungdong, String tupyogu) {
 
+        if(sigungu != null
+                && hangjungdong != null
+                && tupyogu != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void showMap(String sigungu, String hangjungdong, String tupyogu) {
+        tupyogu = tupyogu.replace("제","");
+        tupyogu = tupyogu.replace("투표구","");
+
+        JSONObject jo = new JSONObject();
+        jo.put("TYPE","GEODATA");
+        jo.put("SIGUNGUTEXT", sigungu);
+        jo.put("HAENGTEXT", hangjungdong);
+        jo.put("TUPYOGU_NUM", Integer.parseInt(tupyogu));
+        myWebview.loadUrl("javascript:drawMap('" + jo.toString() + "')");
+                Log.d(TAG, "onCreateView jo.toString() showMap : " + jo.toString());
+        if(myWebview.getVisibility()!= View.VISIBLE)
+            myWebview.setVisibility(View.VISIBLE);
+    }
+    private void clearVariable() {
+        mSigungu=null;
+        mHangjungdong=null;
+        mTupyogu=null;
+    }
+
+    public void tupyoguClickByRightMenu(String sigungu, String hanjungdong, String tupyogu) {
+
+        if(isAllLevelClick(mSigungu, mHangjungdong, mTupyogu)) {
+            // [수정] 지도를 보여 주는 화면으로 3초간 딜레이를 주어야 디스플레이 된다.
+            // 추후 수정이 필요함 서버 요청이 핸들러 처리가 아닌 서버 요청이 완료된 후에 처리 방안 필요. ex) Server response 까지 progressbar 출력....
+
+            mHandler.postDelayed(mR, 3000);
+        }
+        mR = new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "onCreateView postDelayed 1000ms");
+                showMap(mSigungu,mHangjungdong,mTupyogu);
+                clearVariable();
+            }
+        };
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         Log.d(TAG,"onCreateView");
+        Log.d(TAG,"onCreateView sigungu : "+SIGUNGU+"  hangjungdong : "+HANGUNGDONG+"  tupyogu : "+TUPYOGU);
+        Log.d(TAG,"onCreateView getArguments ARG1 : "+getArguments().getString(ARG_PARAM1)+"  getArguments ARG2 : ");
+        Bundle bundle = getArguments();
+
+
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         myWebview = (WebView) view.findViewById(
                 R.id.webView);
@@ -182,6 +259,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         myWebview.loadUrl(getString(R.string.mapView_url));
         myWebview.setVisibility(View.GONE);
 
+
         final Button btn_search = (Button)view.findViewById(R.id.button_search);
         btn_search.setOnClickListener(new View.OnClickListener()
         {
@@ -191,6 +269,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 String sigungu = (String)sp1.getSelectedItem();
                 String haengjoungdong = (String)sp2.getSelectedItem();
                 String tupyoguStr = (String)sp3.getSelectedItem();
+                Log.d(TAG,"onCreateView getSelectedItem sigungu : "+sigungu+"  getSelectedItem hangjungdong : "+haengjoungdong+"  getSelectedItem tupyogu : "+tupyoguStr);
                 tupyoguStr = tupyoguStr.replace("제","");
                 tupyoguStr = tupyoguStr.replace("투표구","");
 
@@ -199,6 +278,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 jo.put("SIGUNGUTEXT",sigungu);
                 jo.put("HAENGTEXT",haengjoungdong);
                 jo.put("TUPYOGU_NUM", Integer.parseInt(tupyoguStr));
+                Log.d(TAG, "onCreateView jo.toString() btn : " + jo.toString());
                 myWebview.loadUrl("javascript:drawMap('"+jo.toString()+"')");
                 if(myWebview.getVisibility()!= View.VISIBLE)
                     myWebview.setVisibility(View.VISIBLE);
