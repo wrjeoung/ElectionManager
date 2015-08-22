@@ -5,6 +5,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.jsloves.election.common.CommonValuesManager;
+import com.jsloves.election.fragment.FragmentTab;
+import com.jsloves.election.fragment.OrganIntroFragment;
 import com.jsloves.election.fragment.SampleFragment;
 import com.jsloves.election.fragment.SearchFragment;
 
@@ -31,7 +33,10 @@ public class ViewPagerAdapter extends FragmentPagerAdapter implements CommonValu
             case 2:
                 return SampleFragment.newInstance(position);
             case 3:
-                return SampleFragment.newInstance(position);
+                //return SampleFragment.newInstance(position);
+                //return OrganIntroFragment.newInstance("aaa", "bbb");
+                return FragmentTab.newInstance("aa","bb");
+
             case 4:
                 return SampleFragment.newInstance(position);
             case 5:
