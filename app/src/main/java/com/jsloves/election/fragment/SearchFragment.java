@@ -59,20 +59,6 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // [수정] 스태틱 변수가 아닌 데이터 전달하는 방법은??
-    private static String SIGUNGU = null;
-    private static String HANGUNGDONG = null;
-    private static String TUPYOGU = null;
-
-    private String mSigungu;
-    private String mHangjungdong;
-    private String mTupyogu;
-
-
-    private JSONArray array1 = new JSONArray();
-    private JSONArray array2 = new JSONArray();
-    private JSONArray array3 = new JSONArray();
-
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -85,15 +71,10 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     private Spinner sp2;
     private Spinner sp3;
     private boolean ignoreUpdate;
-	
+
 	// GPS
     private Button gpsSearchBtn;
     private GpsInfo gps;
-    private TextView resultGpsText;
-
-    private Handler mHandler = new Handler();
-    private Runnable mR;
-
 
     /**
      * Use this factory method to create a new instance of
@@ -114,16 +95,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     }
 
 
-    public static void newInstance(String sigungu, String hangjungdong, String tupyogu) {
-        SearchFragment fragment = new SearchFragment();
-        //[수정] 왜 번들로 담아서 oncreateView에서 아래와 같으 얻어오려 하면 null값이지??
-        // Bundle args = new Bundle();
-        // args.putString(SIGUNGU, sigungu);
-        // getArguments().getString(SIGUNGU);
-        SIGUNGU = sigungu;
-        HANGUNGDONG = hangjungdong;
-        TUPYOGU = tupyogu;
-    }
+
 
     public SearchFragment() {
         // Required empty public constructor
@@ -183,32 +155,15 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         jo.put("HAENGTEXT", hangjungdong);
         jo.put("TUPYOGU_NUM", Integer.parseInt(tupyogu));
         myWebview.loadUrl("javascript:drawMap('" + jo.toString() + "')");
-                Log.d(TAG, "onCreateView jo.toString() showMap : " + jo.toString());
         if(myWebview.getVisibility()!= View.VISIBLE)
             myWebview.setVisibility(View.VISIBLE);
     }
-    private void clearVariable() {
-        mSigungu=null;
-        mHangjungdong=null;
-        mTupyogu=null;
-    }
 
     public void tupyoguClickByRightMenu(String sigungu, String hanjungdong, String tupyogu) {
-
-        if(isAllLevelClick(mSigungu, mHangjungdong, mTupyogu)) {
-            // [수정] 지도를 보여 주는 화면으로 3초간 딜레이를 주어야 디스플레이 된다.
-            // 추후 수정이 필요함 서버 요청이 핸들러 처리가 아닌 서버 요청이 완료된 후에 처리 방안 필요. ex) Server response 까지 progressbar 출력....
-
-            mHandler.postDelayed(mR, 3000);
+        Log.d(TAG, "tupyoguClickByRightMenu sigungu : " + sigungu + "  hanjungdong : " + hanjungdong + "   tupyogu : " + tupyogu);
+        if(isAllLevelClick(sigungu, hanjungdong, tupyogu)) {
+            showMap(sigungu,hanjungdong,tupyogu);
         }
-        mR = new Runnable() {
-            @Override
-            public void run() {
-                Log.d(TAG, "onCreateView postDelayed 1000ms");
-                showMap(mSigungu,mHangjungdong,mTupyogu);
-                clearVariable();
-            }
-        };
     }
 
     @Override
@@ -216,12 +171,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        Log.d(TAG,"onCreateView");
-        Log.d(TAG,"onCreateView sigungu : "+SIGUNGU+"  hangjungdong : "+HANGUNGDONG+"  tupyogu : "+TUPYOGU);
-        Log.d(TAG,"onCreateView getArguments ARG1 : "+getArguments().getString(ARG_PARAM1)+"  getArguments ARG2 : ");
-        Bundle bundle = getArguments();
-
-
+        Log.d(TAG, "onCreateView");
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         myWebview = (WebView) view.findViewById(
                 R.id.webView);
@@ -269,7 +219,6 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 String sigungu = (String)sp1.getSelectedItem();
                 String haengjoungdong = (String)sp2.getSelectedItem();
                 String tupyoguStr = (String)sp3.getSelectedItem();
-                Log.d(TAG,"onCreateView getSelectedItem sigungu : "+sigungu+"  getSelectedItem hangjungdong : "+haengjoungdong+"  getSelectedItem tupyogu : "+tupyoguStr);
                 tupyoguStr = tupyoguStr.replace("제","");
                 tupyoguStr = tupyoguStr.replace("투표구","");
 
@@ -278,7 +227,6 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 jo.put("SIGUNGUTEXT",sigungu);
                 jo.put("HAENGTEXT",haengjoungdong);
                 jo.put("TUPYOGU_NUM", Integer.parseInt(tupyoguStr));
-                Log.d(TAG, "onCreateView jo.toString() btn : " + jo.toString());
                 myWebview.loadUrl("javascript:drawMap('"+jo.toString()+"')");
                 if(myWebview.getVisibility()!= View.VISIBLE)
                     myWebview.setVisibility(View.VISIBLE);

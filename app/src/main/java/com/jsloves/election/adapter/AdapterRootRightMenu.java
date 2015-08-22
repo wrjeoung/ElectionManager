@@ -2,6 +2,7 @@ package com.jsloves.election.adapter;
 
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,11 +16,13 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.jsloves.election.activity.ElectionMainActivity;
 import com.jsloves.election.activity.ElectionManagerActivity;
 import com.jsloves.election.activity.R;
 import com.jsloves.election.application.ElectionManagerApp;
 import com.jsloves.election.fragment.AsyncFragment;
 import com.jsloves.election.fragment.SearchFragment;
+import com.jsloves.election.layout.ViewPagerAdapter;
 
 import org.json.simple.JSONObject;
 
@@ -41,8 +44,6 @@ public class AdapterRootRightMenu extends BaseExpandableListAdapter {
     private boolean mToggle = false;
     private int mLastExpandedPosition = -1;
     private ViewPager mPager;
-    private FragmentManager mFragmentManager;
-    private SearchFragment mSearchFragment;
 
     public AdapterRootRightMenu(Context context, List<String> list, ViewPager pager) {
         //super(context, resource, objects);
@@ -50,14 +51,6 @@ public class AdapterRootRightMenu extends BaseExpandableListAdapter {
         this.mContext = context;
         this.mSigungu = list;
         this.mPager = pager;
-    }
-
-    public void setmSearchFragment(SearchFragment searchFragment) {
-        this.mSearchFragment = searchFragment;
-    }
-
-    public void setmFragmentManager(FragmentManager mFragmentManager) {
-        this.mFragmentManager = mFragmentManager;
     }
 
     public void setSelectedSg(String selectedSg) {
@@ -126,7 +119,6 @@ public class AdapterRootRightMenu extends BaseExpandableListAdapter {
         }
 
         String sigungu = mSigungu.get(groupPosition);
-        Log.d("", "expandLog getGroupView signugu : " + sigungu);
         holder.tv1.setText(sigungu);
         return v;
     }
@@ -154,7 +146,6 @@ public class AdapterRootRightMenu extends BaseExpandableListAdapter {
                 holder.iv2.setSelected(mToggle = !mToggle);
                 String hangjungdong = holder.tv2.getText().toString();
                 setSelectedHd(hangjungdong);
-                Toast.makeText(mContext.getApplicationContext(),"selected hangjungdong : "+hangjungdong,Toast.LENGTH_SHORT).show();
 
                 JSONObject jo = (JSONObject) ElectionManagerApp.getInstance().getSelectItemsObject().get("TUPYOGU");
                 String tupyogus = jo.get(hangjungdong).toString();
@@ -186,14 +177,14 @@ public class AdapterRootRightMenu extends BaseExpandableListAdapter {
                 TextView tv = (TextView)v.findViewById(R.id.tv_name3);
                 String tupyogu = tv.getText().toString();
                 setSelectedTg(tupyogu);
-                //Log.d("AdapterRootRightMenu", "onCreateView sigungu : " + selectedSg + "  selectedSg : " + selectedHd + "  tupyogu : " + selectedTg);
-                //SearchFragment.newInstance(selectedSg, selectedHd, selectedTg);
-               // mFragmentManager.beginTransaction().replace(,(AsyncFragment)mFragmentManager.findFragmentByTag(ElectionManagerActivity.ASYNC));
 
-                mSearchFragment.tupyoguClickByRightMenu(selectedSg,selectedHd,selectedTg);
+                //[수정] 왜 getItem(0)으로 얻어오는 SearchFragment는 myWebview멤버가 null 일까?? 생성한 SearchFragment 객체가 아닌듯한데!?...
+                //((SearchFragment)mViewPagerAdapter.getItem(0)).tupyoguClickByRightMenu(selectedSg, selectedHd, selectedTg);
+
+                ((ElectionMainActivity)mContext).getmVpageAdapter().getmSearchFragment().tupyoguClickByRightMenu(selectedSg, selectedHd, selectedTg);
+                ((ElectionMainActivity)mContext).getmDrawerLayout().closeDrawer(GravityCompat.END);
 
                 mPager.setCurrentItem(0);
-                Toast.makeText(mContext.getApplicationContext(),"selected tupyogu : "+tupyogu,Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
@@ -291,12 +282,8 @@ public class AdapterRootRightMenu extends BaseExpandableListAdapter {
             } else {
                 holder = (ViewHolder) v.getTag();
             }
-
-            Log.d("", "expandLog getGroupView tupyogu" + mTuPyogu.size() + "groupPosition : " + groupPosition);
             String tupyogu = mTuPyogu.get(childPosition);
             holder.tv3.setText(tupyogu);
-            Log.d("", "expandLog getGroupView tupyogu : " + tupyogu);
-
             return v;
         }
 
@@ -340,7 +327,6 @@ public class AdapterRootRightMenu extends BaseExpandableListAdapter {
             }
 
             String hangjungdong = mHangjungdong.get(groupPosition);
-            Log.d("", "expandLog getGroupView hangjungdong : " + hangjungdong);
             holder.tv2.setText(hangjungdong);
             return v;
         }

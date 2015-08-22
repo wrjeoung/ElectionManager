@@ -53,7 +53,6 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
     private int mLastExpandedPosition=-1;
     private FragmentManager mFragmentManager;
     private ViewPagerAdapter mVpageAdapter;
-    private SearchFragment mSearchFragment;
 
     class ElectionDrawerListner extends ActionBarDrawerToggle {
 
@@ -99,8 +98,8 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
         slidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
         mFragmentManager=getSupportFragmentManager();
         mVpageAdapter = new ViewPagerAdapter(mFragmentManager, titles);
-        mSearchFragment=mVpageAdapter.getmSchFrt();
         pager.setAdapter(mVpageAdapter);
+
 
         slidingTabLayout.setViewPager(pager);
         slidingTabLayout.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
@@ -181,8 +180,6 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
         Log.d(TAG, "expandLog list : " + sigunguList);
 
         final AdapterRootRightMenu adapter2 = new AdapterRootRightMenu(this,sigunguList,pager);
-        adapter2.setmFragmentManager(mFragmentManager);
-        adapter2.setmSearchFragment(mSearchFragment);
         mDrawerMenuRight.setAdapter( adapter2);
         mDrawerMenuRight.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
@@ -191,8 +188,6 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
                 parent.getChildAt(groupPosition).findViewById(R.id.indicator).setSelected(mToggle = !mToggle);
                 String sigungu = ((TextView) v.findViewById(R.id.tv_name)).getText().toString();
                 adapter2.setSelectedSg(sigungu);
-                Log.d(TAG, "expandLog onGroupClick groupPostion : " + groupPosition + " item : " + sigungu);
-
                 JSONObject jo1 = (JSONObject) ElectionManagerApp.getInstance().getSelectItemsObject().get("HAENGJOUNGDONG");
                 String hangjungdongs = jo1.get(sigungu).toString();
                 List<String> hangjungdongList = convertFromJson(hangjungdongs);
@@ -213,6 +208,14 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
             }
         });
 
+    }
+
+    public ViewPagerAdapter getmVpageAdapter() {
+        return mVpageAdapter;
+    }
+
+    public DrawerLayout getmDrawerLayout() {
+        return mDrawerLayout;
     }
 
     private List<String> convertFromJson(String item) {

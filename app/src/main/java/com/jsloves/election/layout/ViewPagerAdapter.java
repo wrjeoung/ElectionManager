@@ -12,19 +12,16 @@ import com.jsloves.election.fragment.SampleFragment;
 import com.jsloves.election.fragment.SearchFragment;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter implements CommonValuesManager {
-
-
     private String titles[] ;
-    private static SearchFragment mSchFrt;
-
-
-    public SearchFragment getmSchFrt() {
-        return mSchFrt;
-    }
+    private SearchFragment mSearchFragment;
 
     public ViewPagerAdapter(FragmentManager fm, String[] titles2) {
         super(fm);
         titles=titles2;
+    }
+
+    public SearchFragment getmSearchFragment() {
+        return mSearchFragment;
     }
 
     @Override
@@ -35,8 +32,9 @@ public class ViewPagerAdapter extends FragmentPagerAdapter implements CommonValu
             // Open FragmentTab1.java
             case 0:
                 //return SampleFragment.newInstance(position);
-                mSchFrt = SearchFragment.newInstance("aa","bb");
-                return mSchFrt;
+                Log.d("ViewPagerAdapter","onCreateView mSearchFramgent : "+SearchFragment.newInstance("aa","bb"));
+                mSearchFragment=SearchFragment.newInstance("aa", "bb");
+                return mSearchFragment;
             case 1:
                 return SampleFragment.newInstance(position);
             case 2:
@@ -55,8 +53,8 @@ public class ViewPagerAdapter extends FragmentPagerAdapter implements CommonValu
         return null;
     }
 
-    @Override
-    public int getItemPosition(Object object) {
+//    @Override
+//    public int getItemPosition(Object object) {
 //        SearchFragment fragment = (SearchFragment) object;
 //        String title = fragment.getTitle();
 //        int position = titles.indexOf(title);
@@ -66,10 +64,10 @@ public class ViewPagerAdapter extends FragmentPagerAdapter implements CommonValu
 //        } else {
 //            return POSITION_NONE;
 //        }
-
-
-        return POSITION_NONE;
-    }
+//
+//
+//        return POSITION_NONE;
+//    }
 
     public CharSequence getPageTitle(int position) {
         return titles[position];
