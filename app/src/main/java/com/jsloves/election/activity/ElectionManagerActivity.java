@@ -219,7 +219,8 @@ public class ElectionManagerActivity extends AppCompatActivity
     private void prepareProgressDialog() {
         mDialog = new ProgressDialog(this);
         mDialog.setMessage("Please wait...");
-        mDialog.setCancelable(true);
+        mDialog.setCancelable(false);
+        mDialog.setCanceledOnTouchOutside(false);
         mDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {

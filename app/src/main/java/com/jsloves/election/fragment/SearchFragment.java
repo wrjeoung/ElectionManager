@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.net.http.SslError;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,6 +42,8 @@ import org.json.simple.parser.JSONParser;
 import java.lang.reflect.Type;
 import java.util.List;
 
+
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -55,6 +58,17 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     public static final String TAG = SearchFragment.class.getSimpleName();
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    // [수정] 스태틱 변수가 아닌 데이터 전달하는 방법은??
+    private static String SIGUNGU = null;
+    private static String HANGUNGDONG = null;
+    private static String TUPYOGU = null;
+
+    private String mSigungu;
+    private String mHangjungdong;
+    private String mTupyogu;
+
+
     private JSONArray array1 = new JSONArray();
     private JSONArray array2 = new JSONArray();
     private JSONArray array3 = new JSONArray();
@@ -70,11 +84,16 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     private Spinner sp1;
     private Spinner sp2;
     private Spinner sp3;
+    private boolean ignoreUpdate;
 	
 	// GPS
     private Button gpsSearchBtn;
     private GpsInfo gps;
     private TextView resultGpsText;
+
+    private Handler mHandler = new Handler();
+    private Runnable mR;
+
 
     /**
      * Use this factory method to create a new instance of
@@ -94,6 +113,18 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         return fragment;
     }
 
+
+    public static void newInstance(String sigungu, String hangjungdong, String tupyogu) {
+        SearchFragment fragment = new SearchFragment();
+        //[수정] 왜 번들로 담아서 oncreateView에서 아래와 같으 얻어오려 하면 null값이지??
+        // Bundle args = new Bundle();
+        // args.putString(SIGUNGU, sigungu);
+        // getArguments().getString(SIGUNGU);
+        SIGUNGU = sigungu;
+        HANGUNGDONG = hangjungdong;
+        TUPYOGU = tupyogu;
+    }
+
     public SearchFragment() {
         // Required empty public constructor
     }
@@ -101,19 +132,14 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG,"onCreate");
+        Log.d(TAG, "onCreate");
         setRetainInstance(true);
+        ignoreUpdate = false;
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        Log.d(TAG," mParam1 : " + mParam1 + " mParam2 : " + mParam2);
-        mTask = new SearchTask();
-        JSONObject json1 = new JSONObject();
-        json1.put("TYPE", "SELECTITEMS");
-        json1.put("TARGET", "SIGUNGU");
-        //excuteTask(getString(R.string.server_url), json1.toString());
-
+        Log.d(TAG, " mParam1 : " + mParam1 + " mParam2 : " + mParam2);
     }
 
     private class MainWebViewClient extends WebViewClient {
@@ -136,11 +162,66 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
     }
 
+    private boolean isAllLevelClick(String sigungu, String hangjungdong, String tupyogu) {
+
+        if(sigungu != null
+                && hangjungdong != null
+                && tupyogu != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void showMap(String sigungu, String hangjungdong, String tupyogu) {
+        tupyogu = tupyogu.replace("제","");
+        tupyogu = tupyogu.replace("투표구","");
+
+        JSONObject jo = new JSONObject();
+        jo.put("TYPE","GEODATA");
+        jo.put("SIGUNGUTEXT", sigungu);
+        jo.put("HAENGTEXT", hangjungdong);
+        jo.put("TUPYOGU_NUM", Integer.parseInt(tupyogu));
+        myWebview.loadUrl("javascript:drawMap('" + jo.toString() + "')");
+                Log.d(TAG, "onCreateView jo.toString() showMap : " + jo.toString());
+        if(myWebview.getVisibility()!= View.VISIBLE)
+            myWebview.setVisibility(View.VISIBLE);
+    }
+    private void clearVariable() {
+        mSigungu=null;
+        mHangjungdong=null;
+        mTupyogu=null;
+    }
+
+    public void tupyoguClickByRightMenu(String sigungu, String hanjungdong, String tupyogu) {
+
+        if(isAllLevelClick(mSigungu, mHangjungdong, mTupyogu)) {
+            // [수정] 지도를 보여 주는 화면으로 3초간 딜레이를 주어야 디스플레이 된다.
+            // 추후 수정이 필요함 서버 요청이 핸들러 처리가 아닌 서버 요청이 완료된 후에 처리 방안 필요. ex) Server response 까지 progressbar 출력....
+
+            mHandler.postDelayed(mR, 3000);
+        }
+        mR = new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "onCreateView postDelayed 1000ms");
+                showMap(mSigungu,mHangjungdong,mTupyogu);
+                clearVariable();
+            }
+        };
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         Log.d(TAG,"onCreateView");
+        Log.d(TAG,"onCreateView sigungu : "+SIGUNGU+"  hangjungdong : "+HANGUNGDONG+"  tupyogu : "+TUPYOGU);
+        Log.d(TAG,"onCreateView getArguments ARG1 : "+getArguments().getString(ARG_PARAM1)+"  getArguments ARG2 : ");
+        Bundle bundle = getArguments();
+
+
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         myWebview = (WebView) view.findViewById(
                 R.id.webView);
@@ -178,6 +259,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         myWebview.loadUrl(getString(R.string.mapView_url));
         myWebview.setVisibility(View.GONE);
 
+
         final Button btn_search = (Button)view.findViewById(R.id.button_search);
         btn_search.setOnClickListener(new View.OnClickListener()
         {
@@ -187,6 +269,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 String sigungu = (String)sp1.getSelectedItem();
                 String haengjoungdong = (String)sp2.getSelectedItem();
                 String tupyoguStr = (String)sp3.getSelectedItem();
+                Log.d(TAG,"onCreateView getSelectedItem sigungu : "+sigungu+"  getSelectedItem hangjungdong : "+haengjoungdong+"  getSelectedItem tupyogu : "+tupyoguStr);
                 tupyoguStr = tupyoguStr.replace("제","");
                 tupyoguStr = tupyoguStr.replace("투표구","");
 
@@ -195,6 +278,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 jo.put("SIGUNGUTEXT",sigungu);
                 jo.put("HAENGTEXT",haengjoungdong);
                 jo.put("TUPYOGU_NUM", Integer.parseInt(tupyoguStr));
+                Log.d(TAG, "onCreateView jo.toString() btn : " + jo.toString());
                 myWebview.loadUrl("javascript:drawMap('"+jo.toString()+"')");
                 if(myWebview.getVisibility()!= View.VISIBLE)
                     myWebview.setVisibility(View.VISIBLE);
@@ -209,16 +293,21 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 gps = new GpsInfo(getActivity());
                 // GPS 사용유무 가져오기
                 if(gps.isGetLocation()){
-                    // 위도
-                    double latitude  = gps.getLatitude();
-                    // 경도
-                    double longitude = gps.getLongitude();
+                    if(gps.getLocation() != null){
+                        // 위도
+                        double latitude = gps.getLatitude();
+                        // 경도
+                        double longitude = gps.getLongitude();
 
-                    String setText = "위도 : " + String.valueOf(latitude) + " 경도 : " + String.valueOf(longitude);
-                    Log.d(TAG," result : " + setText);
-                    String addr = gps.getAddress(latitude,longitude);
-                    Log.d(TAG, "addr : " + addr);
-                    Toast.makeText(getActivity().getApplicationContext(),"당신의 위치 - \n위도: " + latitude + "\n경도: " + longitude,Toast.LENGTH_SHORT).show();
+                        String setText = "위도 : " + String.valueOf(latitude) + " 경도 : " + String.valueOf(longitude);
+                        Log.d(TAG, " result : " + setText);
+                        String addr = gps.getAddress(latitude, longitude);
+                        Log.d(TAG, "addr : " + addr);
+                        Toast.makeText(getActivity().getApplicationContext(), "당신의 위치 - \n위도: " + latitude + "\n경도: " + longitude, Toast.LENGTH_SHORT).show();
+
+                        // 구역이동 Spiner Value Setting
+                        setAreaFieldValue(addr);
+                    }
                 }else{
                     // GPS 를 사용할수 없으므로
                     gps.showSettingsAlert();
@@ -230,10 +319,39 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         return view;
     }
 
+    public void setAreaFieldValue(String addr){
+        Log.d(TAG, "setAreaFieldValue addr : " + addr);
+        String address[] = addr.split(" ");
+        String sigungu      = "";
+        String doroBubjoung = "";
+        String gunmulBunji        = "";
+        String gunmul       = "";
+        String sigungutext  = "";
+
+        sigungu      += address[1] + address[4];
+        sigungutext  += address[1] + " " + address[4];
+        doroBubjoung += address[2];
+        gunmulBunji  += address[3];
+        Log.d(TAG, "sigungu : " + sigungu + " doroBubjoung : " + doroBubjoung + " gunmulBunji : " + gunmulBunji);
+        //String url = "http://192.168.0.3:8080/Woori/MobileReq.jsp";
+        JSONObject json = new JSONObject();
+        json.put("TYPE", "GPS");
+        json.put("SIGUNGU", sigungu);
+        json.put("SIGUNGUTEXT", sigungutext);
+        json.put("DOROBUBJOUNG", doroBubjoung);
+        json.put("GUNMULBUNJI", gunmulBunji);
+        //excuteTask(url, json.toString());
+        excuteTask(getString(R.string.server_url), json.toString());
+    }
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position,
                                long id) {
         // TODO Auto-generated method stub
+        if(ignoreUpdate) {
+            ignoreUpdate = false;
+            return;
+        }
 
         switch (parent.getId()) {
             case R.id.spinner_1:
@@ -242,8 +360,8 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 setUpSpinner(sp2, jo1.get(sigungu).toString());
                 break;
             case R.id.spinner_2:
-                String haengjoungdong = (String)parent.getSelectedItem();
-                JSONObject jo2 = (JSONObject)ElectionManagerApp.getInstance().getSelectItemsObject().get("TUPYOGU");
+                String haengjoungdong = (String) parent.getSelectedItem();
+                JSONObject jo2 = (JSONObject) ElectionManagerApp.getInstance().getSelectItemsObject().get("TUPYOGU");
                 setUpSpinner(sp3, jo2.get(haengjoungdong).toString());
                 break;
         }
@@ -303,7 +421,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         ArrayAdapter sp_Adapter = new ArrayAdapter(getActivity().getApplicationContext(),android.R.layout.simple_spinner_item,list);
         sp_Adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(sp_Adapter);
-        sp_Adapter.notifyDataSetChanged();
+        //sp_Adapter.notifyDataSetChanged();
         spinner.setOnItemSelectedListener(SearchFragment.this);
     }
 
@@ -326,6 +444,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
             Bundle bundle = (Bundle)args[0];
             String url = bundle.getString("URL");
             String params = bundle.getString("PARAMS");
+            Log.d(TAG, "url : " + url + " params : " + params);
             return HttpConnection.PostData(url, params);
         }
 
@@ -341,13 +460,49 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 JSONParser par = new JSONParser();
                 System.out.println("resultData = "+resultData);
                 re = (JSONObject) par.parse(resultData);
+                String sType = (String) re.get("TYPE");
                 String result = (String) re.get("RESULT");
+                if(sType.equals("GPS")) {
+                    /*if (result.equals("SUCCESS")) {
+                        Log.d(TAG, "GPS SUCCESS");
 
-                if (result.equals("SUCCESS")) {
-                    JSONArray sigungu = (JSONArray) re.get("SIGUNGU");
-                    sigungu.add("부천시 소사구");
-                    sigungu.add("부천시 범박구");
-                    setUpSpinner((Spinner) getView().findViewById(R.id.spinner_1), sigungu.toString());
+
+                        ElectionManagerApp.getInstance().setSelectItems(((JSONObject) re.get("SELECTITEMS2")).toString());
+
+                        Log.d(TAG, ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU").toString());
+                        Log.d(TAG, ElectionManagerApp.getInstance().getSelectItemsObject().get("HAENGJOUNGDONG").toString());
+                        Log.d(TAG, ElectionManagerApp.getInstance().getSelectItemsObject().get("TUPYOGU").toString());
+
+                        if(ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU").toString().length() == 2
+                                || ElectionManagerApp.getInstance().getSelectItemsObject().get("HAENGJOUNGDONG").toString().length() == 2
+                                || ElectionManagerApp.getInstance().getSelectItemsObject().get("TUPYOGU").toString().length() == 2){
+                            Log.d(TAG,"매칭 데이터 없음");
+                            Toast.makeText(getActivity().getApplicationContext(),"현재 위치에 맞는 정보가 없습니다.",Toast.LENGTH_SHORT).show();
+                        }else{
+                            Log.d(TAG,"매칭 데이터 있음");
+                            setUpSpinner(sp1, ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU").toString());
+                        }
+                    }*/
+                    if (result.equals("SUCCESS")) {
+                        Log.d(TAG, "매칭 데이터 있음");
+                        JSONObject resData = (JSONObject)re.get("RESDATA");
+                        String sigungu = (String)resData.get("SIGUNGU");
+                        String haengjoungdong = (String)resData.get("HAENGJOUNGDONG");
+                        String tupyogu = (String)resData.get("TUPYOGU");
+
+                        ignoreUpdate = true;
+                        sp1.setSelection(getPosition(sp1, sigungu));
+                        JSONObject jo1 = (JSONObject)ElectionManagerApp.getInstance().getSelectItemsObject().get("HAENGJOUNGDONG");
+                        setUpSpinner(sp2, jo1.get(sigungu).toString());
+                        sp2.setSelection(getPosition(sp2, haengjoungdong));
+                        JSONObject jo2 = (JSONObject)ElectionManagerApp.getInstance().getSelectItemsObject().get("TUPYOGU");
+                        setUpSpinner(sp3, jo2.get(haengjoungdong).toString());
+                        sp3.setSelection(getPosition(sp3, tupyogu));
+
+                    } else if(result.equals("FAILED")) {
+                        Log.d(TAG,"매칭 데이터 없음");
+                        Toast.makeText(getActivity().getApplicationContext(),"현재 위치에 맞는 정보가 없습니다.",Toast.LENGTH_SHORT).show();
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -366,6 +521,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         Bundle bundle = new Bundle();
         bundle.putString("URL",url);
         bundle.putString("PARAMS", params);
+        mTask = new SearchTask();
         mTask.execute(bundle);
     }
 
@@ -384,5 +540,13 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     private void cleanUp() {
         dialog.dismiss();
         dialog = null;
+    }
+
+    private int getPosition(Spinner sp, String value) {
+        int position = -1;
+        if (value != null) {
+            position = ((ArrayAdapter)sp.getAdapter()).getPosition(value);
+        }
+        return position;
     }
 }

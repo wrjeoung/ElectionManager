@@ -3,6 +3,7 @@ package com.jsloves.election.layout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
 
 import com.jsloves.election.common.CommonValuesManager;
 import com.jsloves.election.fragment.FragmentTab;
@@ -14,6 +15,12 @@ public class ViewPagerAdapter extends FragmentPagerAdapter implements CommonValu
 
 
     private String titles[] ;
+    private static SearchFragment mSchFrt;
+
+
+    public SearchFragment getmSchFrt() {
+        return mSchFrt;
+    }
 
     public ViewPagerAdapter(FragmentManager fm, String[] titles2) {
         super(fm);
@@ -22,12 +29,14 @@ public class ViewPagerAdapter extends FragmentPagerAdapter implements CommonValu
 
     @Override
     public Fragment getItem(int position) {
+        Log.d("ViewPagerAdapater", " position : " + position);
         switch (position) {
             // 상단 메뉴
             // Open FragmentTab1.java
             case 0:
                 //return SampleFragment.newInstance(position);
-                return SearchFragment.newInstance("aa","bb");
+                mSchFrt = SearchFragment.newInstance("aa","bb");
+                return mSchFrt;
             case 1:
                 return SampleFragment.newInstance(position);
             case 2:
@@ -44,6 +53,22 @@ public class ViewPagerAdapter extends FragmentPagerAdapter implements CommonValu
 
         }
         return null;
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+//        SearchFragment fragment = (SearchFragment) object;
+//        String title = fragment.getTitle();
+//        int position = titles.indexOf(title);
+//
+//        if (position >= 0) {
+//            return position;
+//        } else {
+//            return POSITION_NONE;
+//        }
+
+
+        return POSITION_NONE;
     }
 
     public CharSequence getPageTitle(int position) {

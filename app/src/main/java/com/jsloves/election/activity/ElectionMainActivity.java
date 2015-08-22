@@ -1,6 +1,7 @@
 package com.jsloves.election.activity;
 
 import android.app.Activity;
+import android.support.v4.app.FragmentManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -17,14 +18,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
+import android.widget.TextView;
 
-import com.jsloves.election.adapter.AdapterSigunGu;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.jsloves.election.adapter.AdapterRootRightMenu;
+import com.jsloves.election.application.ElectionManagerApp;
 import com.jsloves.election.common.CommonValuesManager;
+import com.jsloves.election.fragment.SearchFragment;
 import com.jsloves.election.layout.SlidingTabLayout;
 import com.jsloves.election.layout.ViewPagerAdapter;
 
-import java.util.ArrayList;
+import org.json.simple.JSONObject;
+
+import java.lang.reflect.Type;
 import java.util.List;
 
 
@@ -33,13 +42,18 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
     private static final String TAG = ElectionMainActivity.class.getSimpleName();
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
-    private ListView mDrawerListRight;
+    private ExpandableListView mDrawerMenuRight;
     private ViewPager pager;
     private String titles[] = new String[CommonValuesManager.PAGE_COUNT];
     private Toolbar toolbar;
     private MenuItem mRmIcon;
     private ElectionDrawerListner mDrawLisner;
     private SlidingTabLayout slidingTabLayout;
+    private boolean mToggle=false;
+    private int mLastExpandedPosition=-1;
+    private FragmentManager mFragmentManager;
+    private ViewPagerAdapter mVpageAdapter;
+    private SearchFragment mSearchFragment;
 
     class ElectionDrawerListner extends ActionBarDrawerToggle {
 
@@ -75,7 +89,7 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.navdrawer);
-        mDrawerListRight = (ListView) findViewById(R.id.navdrawer_right);
+        mDrawerMenuRight = (ExpandableListView) findViewById(R.id.navdrawer_right);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
@@ -83,7 +97,10 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
         }
         pager = (ViewPager) findViewById(R.id.viewpager);
         slidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
-        pager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), titles));
+        mFragmentManager=getSupportFragmentManager();
+        mVpageAdapter = new ViewPagerAdapter(mFragmentManager, titles);
+        mSearchFragment=mVpageAdapter.getmSchFrt();
+        pager.setAdapter(mVpageAdapter);
 
         slidingTabLayout.setViewPager(pager);
         slidingTabLayout.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
@@ -159,65 +176,51 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
             }
         });
 
-        List<String> ls = new ArrayList<String>();
-        ls.add("abcdefg");
+        String sigungus = ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU").toString();
+        List<String> sigunguList = convertFromJson(sigungus);
+        Log.d(TAG, "expandLog list : " + sigunguList);
 
-        AdapterSigunGu adapter2 = new AdapterSigunGu(this, R.layout.navigation_drawer_item, ls);
-        mDrawerListRight.setAdapter(adapter2);
-        mDrawerListRight.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        final AdapterRootRightMenu adapter2 = new AdapterRootRightMenu(this,sigunguList,pager);
+        adapter2.setmFragmentManager(mFragmentManager);
+        adapter2.setmSearchFragment(mSearchFragment);
+        mDrawerMenuRight.setAdapter( adapter2);
+        mDrawerMenuRight.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                Log.d(TAG,"@@@@@@@@@@@@@@@@@"+position);
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
 
+                parent.getChildAt(groupPosition).findViewById(R.id.indicator).setSelected(mToggle = !mToggle);
+                String sigungu = ((TextView) v.findViewById(R.id.tv_name)).getText().toString();
+                adapter2.setSelectedSg(sigungu);
+                Log.d(TAG, "expandLog onGroupClick groupPostion : " + groupPosition + " item : " + sigungu);
 
-                // 좌측 메뉴
-                switch (position) {
-                    case 0:
-                        mDrawerListRight.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
-                        toolbar.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
-                        slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
-                        pager.setCurrentItem(position);
-                        mDrawerLayout.closeDrawer(GravityCompat.START);
-                        break;
-                    case 1:
-                        //mDrawerList.setBackgroundColor(getResources().getColor(R.color.red));
-                        //toolbar.setBackgroundColor(getResources().getColor(R.color.red));
-                        //slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.red));
-                        pager.setCurrentItem(position);
-                        mDrawerLayout.closeDrawer(GravityCompat.START);
+                JSONObject jo1 = (JSONObject) ElectionManagerApp.getInstance().getSelectItemsObject().get("HAENGJOUNGDONG");
+                String hangjungdongs = jo1.get(sigungu).toString();
+                List<String> hangjungdongList = convertFromJson(hangjungdongs);
+                adapter2.setmHangjungdong(hangjungdongList);
 
-                        break;
-                    case 2:
-                        //mDrawerList.setBackgroundColor(getResources().getColor(R.color.blue));
-                        //toolbar.setBackgroundColor(getResources().getColor(R.color.blue));
-                        //slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.blue));
-                        pager.setCurrentItem(position);
-                        mDrawerLayout.closeDrawer(GravityCompat.START);
-
-                        break;
-                    case 3:
-                        //mDrawerList.setBackgroundColor(getResources().getColor(R.color.material_blue_grey_800));
-                        //toolbar.setBackgroundColor(getResources().getColor(R.color.material_blue_grey_800));
-                        //slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.material_blue_grey_800));
-                        pager.setCurrentItem(position);
-                        mDrawerLayout.closeDrawer(GravityCompat.START);
-
-                        break;
-                    case 4:
-                        pager.setCurrentItem(position);
-                        mDrawerLayout.closeDrawer(GravityCompat.START);
-
-                        break;
-
-                    case 5:
-                        pager.setCurrentItem(position);
-                        mDrawerLayout.closeDrawer(GravityCompat.START);
-
-                        break;
-                }
+                return false;
             }
         });
+
+        mDrawerMenuRight.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if (mLastExpandedPosition != -1
+                        && groupPosition != mLastExpandedPosition) {
+                    mDrawerMenuRight.collapseGroup(mLastExpandedPosition);
+                }
+                mLastExpandedPosition = groupPosition;
+            }
+        });
+
+    }
+
+    private List<String> convertFromJson(String item) {
+        List<String> itemList;
+        Type type = new TypeToken<List<String>>(){}.getType();
+        Gson converter = new Gson();
+        itemList =  converter.fromJson(item, type);
+        return itemList;
     }
 
     @Override
