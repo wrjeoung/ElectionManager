@@ -25,7 +25,6 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -35,7 +34,6 @@ import com.jsloves.election.application.ElectionManagerApp;
 import com.jsloves.election.util.GpsInfo;
 import com.jsloves.election.util.HttpConnection;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -71,6 +69,14 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     private Spinner sp2;
     private Spinner sp3;
     private boolean ignoreUpdate;
+
+    private StringBuffer mTest = new StringBuffer();
+
+    private String mSigungu;
+    private String mHangjungdong;
+    private String mTupyogu;
+    private Handler mHandler = new Handler();
+
 
 	// GPS
     private Button gpsSearchBtn;
@@ -148,7 +154,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     private void showMap(String sigungu, String hangjungdong, String tupyogu) {
         tupyogu = tupyogu.replace("제","");
         tupyogu = tupyogu.replace("투표구","");
-
+        Log.d(TAG,"showMap mTest : "+mTest);
         JSONObject jo = new JSONObject();
         jo.put("TYPE","GEODATA");
         jo.put("SIGUNGUTEXT", sigungu);
@@ -162,7 +168,15 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     public void tupyoguClickByRightMenu(String sigungu, String hanjungdong, String tupyogu) {
         Log.d(TAG, "tupyoguClickByRightMenu sigungu : " + sigungu + "  hanjungdong : " + hanjungdong + "   tupyogu : " + tupyogu);
         if(isAllLevelClick(sigungu, hanjungdong, tupyogu)) {
-            showMap(sigungu,hanjungdong,tupyogu);
+            mSigungu = sigungu;
+            mHangjungdong = hanjungdong;
+            mTupyogu = tupyogu;
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    showMap(mSigungu, mHangjungdong, mTupyogu);
+                }
+            },1000);
         }
     }
 
@@ -172,6 +186,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         // Inflate the layout for this fragment
 
         Log.d(TAG, "onCreateView");
+        mTest.append("Hahahahahahaha");
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         myWebview = (WebView) view.findViewById(
                 R.id.webView);
