@@ -79,12 +79,13 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        titles[0] = getString(R.string.area_info);
-        titles[1] = getString(R.string.jungchi_hwangyong);
-        titles[2] = getString(R.string.social_hwangyong);
-        titles[3] = getString(R.string.gigwan_info);
-        titles[4] = getString(R.string.jooyo_saup);
-        titles[5] = getString(R.string.board);
+        titles[0] = getString(R.string.home);
+        titles[1] = getString(R.string.area_info);
+        titles[2] = getString(R.string.jungchi_hwangyong);
+        titles[3] = getString(R.string.social_hwangyong);
+        titles[4] = getString(R.string.gigwan_info);
+        titles[5] = getString(R.string.jooyo_saup);
+        titles[6] = getString(R.string.board);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.navdrawer);
@@ -112,6 +113,7 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
         mDrawLisner = new ElectionDrawerListner(this, mDrawerLayout, toolbar, R.string.app_name, R.string.app_name);
         mDrawerLayout.setDrawerListener(mDrawLisner);
         String[] values = new String[]{
+                getString(R.string.home),
                 getString(R.string.area_info),
                 getString(R.string.jungchi_hwangyong),
                 getString(R.string.social_hwangyong),
@@ -130,13 +132,17 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
                 // 좌측 메뉴
                 switch (position) {
                     case 0:
+                        pager.setCurrentItem(position);
+                        mDrawerLayout.closeDrawer(GravityCompat.START);
+                        break;
+                    case 1:
                         mDrawerList.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
                         toolbar.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
                         slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
                         pager.setCurrentItem(position);
                         mDrawerLayout.closeDrawer(GravityCompat.START);
                         break;
-                    case 1:
+                    case 2:
                         //mDrawerList.setBackgroundColor(getResources().getColor(R.color.red));
                         //toolbar.setBackgroundColor(getResources().getColor(R.color.red));
                         //slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.red));
@@ -144,7 +150,7 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
                         mDrawerLayout.closeDrawer(GravityCompat.START);
 
                         break;
-                    case 2:
+                    case 3:
                         //mDrawerList.setBackgroundColor(getResources().getColor(R.color.blue));
                         //toolbar.setBackgroundColor(getResources().getColor(R.color.blue));
                         //slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.blue));
@@ -152,7 +158,7 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
                         mDrawerLayout.closeDrawer(GravityCompat.START);
 
                         break;
-                    case 3:
+                    case 4:
                         //mDrawerList.setBackgroundColor(getResources().getColor(R.color.material_blue_grey_800));
                         //toolbar.setBackgroundColor(getResources().getColor(R.color.material_blue_grey_800));
                         //slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.material_blue_grey_800));
@@ -160,13 +166,13 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
                         mDrawerLayout.closeDrawer(GravityCompat.START);
 
                         break;
-                    case 4:
+                    case 5:
                         pager.setCurrentItem(position);
                         mDrawerLayout.closeDrawer(GravityCompat.START);
 
                         break;
 
-                    case 5:
+                    case 6:
                         pager.setCurrentItem(position);
                         mDrawerLayout.closeDrawer(GravityCompat.START);
 

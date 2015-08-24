@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/material_blue_grey_900"
+        android:paddingBottom="5dp">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TableRow android:gravity="center">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="7dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/material_blue_grey_800"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:id="@+id/image1"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp" />
+
+                    <TextView
+                        android:id="@+id/text1"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:text="@string/area_info"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/material_blue_grey_800"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:id="@+id/image2"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp" />
+
+                    <TextView
+                        android:id="@+id/text2"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:text="@string/jungchi_hwangyong"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </TableRow>
+
+            <TableRow android:gravity="center">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="7dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/material_blue_grey_800"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:id="@+id/image3"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp" />
+
+                    <TextView
+                        android:id="@+id/text3"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:text="@string/social_hwangyong"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/material_blue_grey_800"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:id="@+id/image4"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp" />
+
+                    <TextView
+                        android:id="@+id/text4"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:text="@string/gigwan_info"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </TableRow>
+
+            <TableRow android:gravity="center">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="7dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/material_blue_grey_800"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:id="@+id/image5"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp" />
+
+                    <TextView
+                        android:id="@+id/text5"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:text="@string/jooyo_saup"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/material_blue_grey_800"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:id="@+id/image6"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp" />
+
+                    <TextView
+                        android:id="@+id/text6"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:text="@string/board"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </TableRow>
+
+        </TableLayout>
+    </ScrollView>
+
+</LinearLayout>

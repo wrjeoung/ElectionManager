@@ -184,7 +184,7 @@ public class AdapterRootRightMenu extends BaseExpandableListAdapter {
                 ((ElectionMainActivity)mContext).getmVpageAdapter().getmSearchFragment().tupyoguClickByRightMenu(selectedSg, selectedHd, selectedTg);
                 ((ElectionMainActivity)mContext).getmDrawerLayout().closeDrawer(GravityCompat.END);
 
-                mPager.setCurrentItem(0);
+                mPager.setCurrentItem(1);
                 return false;
             }
         });
