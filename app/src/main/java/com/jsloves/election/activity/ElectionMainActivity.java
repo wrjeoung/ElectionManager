@@ -98,7 +98,7 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
         pager = (ViewPager) findViewById(R.id.viewpager);
         slidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
         mFragmentManager=getSupportFragmentManager();
-        mVpageAdapter = new ViewPagerAdapter(mFragmentManager, titles);
+        mVpageAdapter = new ViewPagerAdapter(mFragmentManager, titles, pager);
         pager.setAdapter(mVpageAdapter);
 
 
