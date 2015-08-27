@@ -24,10 +24,14 @@
     <string name="popup_cancel">취 소</string>
     <string name="home">홈</string>
 
-
-
-
-
+    <string-array name="img_ids">
+        <item>@drawable/guyok</item>
+        <item>@drawable/jungchi</item>
+        <item>@drawable/social</item>
+        <item>@drawable/gighan</item>
+        <item>@drawable/saup</item>
+        <item>@drawable/board</item>
+    </string-array>
 
     <string name="server_url">http://222.122.149.161:7070/Woori/MobileReq.jsp</string>
     <string name="server_url_test">http://222.122.149.174:8080/Woori/AddressServlet</string>

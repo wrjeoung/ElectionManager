@@ -27,6 +27,7 @@ import com.google.gson.reflect.TypeToken;
 import com.jsloves.election.adapter.AdapterRootRightMenu;
 import com.jsloves.election.application.ElectionManagerApp;
 import com.jsloves.election.common.CommonValuesManager;
+import com.jsloves.election.fragment.HomeMenuOnCLickListner;
 import com.jsloves.election.fragment.SearchFragment;
 import com.jsloves.election.layout.SlidingTabLayout;
 import com.jsloves.election.layout.ViewPagerAdapter;
@@ -37,7 +38,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 
-public class ElectionMainActivity extends AppCompatActivity implements CommonValuesManager{
+public class ElectionMainActivity extends AppCompatActivity implements CommonValuesManager, HomeMenuOnCLickListner {
 
     private static final String TAG = ElectionMainActivity.class.getSimpleName();
     private DrawerLayout mDrawerLayout;
@@ -53,6 +54,33 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
     private int mLastExpandedPosition=-1;
     private FragmentManager mFragmentManager;
     private ViewPagerAdapter mVpageAdapter;
+
+    @Override
+    public void onCLickLinstnerByHome(int id) {
+        if(pager == null)
+            return;
+
+        switch(id) {
+            case R.id.guyeok:
+                pager.setCurrentItem(1);
+                break;
+            case R.id.jungchi:
+                pager.setCurrentItem(2);
+                break;
+            case R.id.social:
+                pager.setCurrentItem(3);
+                break;
+            case R.id.gighan:
+                pager.setCurrentItem(4);
+                break;
+            case R.id.juyo:
+                pager.setCurrentItem(5);
+                break;
+            case R.id.board:
+                pager.setCurrentItem(6);
+                break;
+        }
+    }
 
     class ElectionDrawerListner extends ActionBarDrawerToggle {
 
