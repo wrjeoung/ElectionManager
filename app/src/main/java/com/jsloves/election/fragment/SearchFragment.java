@@ -31,6 +31,8 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jsloves.election.activity.R;
 import com.jsloves.election.application.ElectionManagerApp;
+import com.jsloves.election.util.GeoPoint;
+import com.jsloves.election.util.GeoTrans;
 import com.jsloves.election.util.GpsInfo;
 import com.jsloves.election.util.HttpConnection;
 
@@ -152,14 +154,15 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     }
 
     private void showMap(String sigungu, String hangjungdong, String tupyogu) {
-        tupyogu = tupyogu.replace("제","");
-        tupyogu = tupyogu.replace("투표구","");
+        //tupyogu = tupyogu.replace("제","");
+        //tupyogu = tupyogu.replace("투표구","");
         Log.d(TAG,"showMap mTest : "+mTest);
         JSONObject jo = new JSONObject();
-        jo.put("TYPE","GEODATA");
+        //jo.put("TYPE","GEODATA_TEST");
+        jo.put("TYPE","TEST");
         jo.put("SIGUNGUTEXT", sigungu);
         jo.put("HAENGTEXT", hangjungdong);
-        jo.put("TUPYOGU_NUM", Integer.parseInt(tupyogu));
+        jo.put("TUPYOGU_NUM", tupyogu);
         myWebview.loadUrl("javascript:drawMap('" + jo.toString() + "')");
         if(myWebview.getVisibility()!= View.VISIBLE)
             myWebview.setVisibility(View.VISIBLE);
@@ -222,9 +225,9 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
             }
         });
         myWebview.loadUrl(getString(R.string.mapView_url));
+        //myWebview.loadUrl("http://192.168.0.6:8080/Woori/areaMap.jsp");
         myWebview.setVisibility(View.GONE);
-
-
+        
         final Button btn_search = (Button)view.findViewById(R.id.button_search);
         btn_search.setOnClickListener(new View.OnClickListener()
         {
@@ -234,17 +237,8 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 String sigungu = (String)sp1.getSelectedItem();
                 String haengjoungdong = (String)sp2.getSelectedItem();
                 String tupyoguStr = (String)sp3.getSelectedItem();
-                tupyoguStr = tupyoguStr.replace("제","");
-                tupyoguStr = tupyoguStr.replace("투표구","");
 
-                JSONObject jo = new JSONObject();
-                jo.put("TYPE","GEODATA");
-                jo.put("SIGUNGUTEXT",sigungu);
-                jo.put("HAENGTEXT",haengjoungdong);
-                jo.put("TUPYOGU_NUM", Integer.parseInt(tupyoguStr));
-                myWebview.loadUrl("javascript:drawMap('"+jo.toString()+"')");
-                if(myWebview.getVisibility()!= View.VISIBLE)
-                    myWebview.setVisibility(View.VISIBLE);
+                showMap(sigungu,haengjoungdong,tupyoguStr);
             }
         });
 		
@@ -262,11 +256,19 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                         // 경도
                         double longitude = gps.getLongitude();
 
+
+                        //latitude = 37.5204504; longitude = 126.9149769;
+                        //latitude = 37.4691758; longitude = 126.8978739;
+                        GeoPoint in_pt = new GeoPoint(longitude, latitude);
+                        GeoPoint out_pt = GeoTrans.convert(GeoTrans.GEO, GeoTrans.UTMK, in_pt);
+
                         String setText = "위도 : " + String.valueOf(latitude) + " 경도 : " + String.valueOf(longitude);
                         Log.d(TAG, " result : " + setText);
                         String addr = gps.getAddress(latitude, longitude);
                         Log.d(TAG, "addr : " + addr);
-                        Toast.makeText(getActivity().getApplicationContext(), "당신의 위치 - \n위도: " + latitude + "\n경도: " + longitude, Toast.LENGTH_SHORT).show();
+                        String convert = "변환X: " + out_pt.getX()+ " ,변환Y: " + out_pt.getY();
+                        Log.d(TAG, "convert : " + convert);
+                        Toast.makeText(getActivity().getApplicationContext(), "당신의 위치 - \n위도: " + latitude + "\n경도: " + longitude+ "\n변환X: " + out_pt.getX()+ "\n변환Y: " + out_pt.getY(), Toast.LENGTH_SHORT).show();
 
                         // 구역이동 Spiner Value Setting
                         setAreaFieldValue(addr);

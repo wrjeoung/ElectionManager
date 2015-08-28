@@ -198,7 +198,7 @@ public class GpsInfo extends Service implements LocationListener {
 
         if(list.size() > 0){
             Address addr = list.get(0);
-            address = addr.getAdminArea() + " " + addr.getLocality() + " " + addr.getThoroughfare() + " " + addr.getFeatureName() + " " + addr.getSubLocality();
+            address = addr.getAdminArea() + " " + addr.getLocality() + " " + addr.getSubLocality() + " " + addr.getThoroughfare() + " " + addr.getFeatureName();
             address1 = addr.getUrl() + " " + addr.getExtras() + " " + addr.getSubLocality() + " " + addr.getSubThoroughfare() + " "
                       + addr.getSubAdminArea() + " " + addr.getCountryCode() + " " + addr.getCountryName() + " " + addr.getPhone() + " "
                       + addr.getPostalCode() + " " + addr.getPremises();

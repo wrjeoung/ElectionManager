@@ -267,6 +267,9 @@ public class ElectionManagerActivity extends AppCompatActivity
             } else if(type.equals("SELECTITEMS2")) {
                 ElectionManagerApp.getInstance().setSelectItems(((JSONObject) re.get("SELECTITEMS2")).toString());
                 mHandler.post(mMainCallrunnable);
+            } else if(type.equals("SELECTITEMS")) {
+                ElectionManagerApp.getInstance().setSelectItems(((JSONObject) re.get("SELECTITEMS")).toString());
+                mHandler.post(mMainCallrunnable);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -293,8 +296,10 @@ public class ElectionManagerActivity extends AppCompatActivity
                     startActivity(intent);
                     finish();*/
                     JSONObject json = new JSONObject();
-                    json.put("TYPE", "SELECTITEMS2");
+                    //json.put("TYPE", "SELECTITEMS2");
+                    json.put("TYPE", "SELECTITEMS");
                     setUp(getString(R.string.server_url), json.toString());
+                    //setUp("http://192.168.0.6:8080/Woori/MobileReq.jsp", json.toString());
                 }
                 else {
                     Vibrator vr = (Vibrator)getSystemService(VIBRATOR_SERVICE);
