@@ -3,6 +3,7 @@ package com.jsloves.election.layout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 
 import com.jsloves.election.common.CommonValuesManager;
@@ -15,10 +16,12 @@ import com.jsloves.election.fragment.SearchFragment;
 public class ViewPagerAdapter extends FragmentPagerAdapter implements CommonValuesManager {
     private String titles[] ;
     private SearchFragment mSearchFragment;
+    private ViewPager mPager;
 
-    public ViewPagerAdapter(FragmentManager fm, String[] titles2) {
+    public ViewPagerAdapter(FragmentManager fm, String[] titles2, ViewPager pager) {
         super(fm);
         titles=titles2;
+        mPager=pager;
     }
 
     public SearchFragment getmSearchFragment() {
@@ -32,7 +35,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter implements CommonValu
             // 상단 메뉴
             // Open FragmentTab1.java
             case 0:
-                return HomeFragment.newInstance(position);
+                return HomeFragment.newInstance(position,mPager);
             case 1:
                 //return SampleFragment.newInstance(position);
                 Log.d("ViewPagerAdapter","onCreateView mSearchFramgent : "+SearchFragment.newInstance("aa","bb"));

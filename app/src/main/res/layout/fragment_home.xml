@@ -20,18 +20,20 @@
             <TableRow android:gravity="center">
 
                 <LinearLayout
+                    android:id="@+id/guyeok"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="7dp"
                     android:layout_marginTop="5dp"
-                    android:background="@color/material_blue_grey_800"
+                    android:background="@drawable/grid_color_selector"
                     android:orientation="vertical"
                     android:padding="5dp">
 
                     <ImageView
-                        android:id="@+id/image1"
+                        android:id="@+id/img1"
                         android:layout_width="150dp"
-                        android:layout_height="150dp" />
+                        android:layout_height="150dp"
+                        android:src="@drawable/guyok"/>
 
                     <TextView
                         android:id="@+id/text1"
@@ -44,17 +46,19 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/jungchi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:background="@color/material_blue_grey_800"
+                    android:background="@drawable/grid_color_selector"
                     android:orientation="vertical"
                     android:padding="5dp">
 
                     <ImageView
-                        android:id="@+id/image2"
+                        android:id="@+id/img2"
                         android:layout_width="150dp"
-                        android:layout_height="150dp" />
+                        android:layout_height="150dp"
+                        android:src="@drawable/jungchi"/>
 
                     <TextView
                         android:id="@+id/text2"
@@ -70,18 +74,20 @@
             <TableRow android:gravity="center">
 
                 <LinearLayout
+                    android:id="@+id/social"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="7dp"
                     android:layout_marginTop="5dp"
-                    android:background="@color/material_blue_grey_800"
+                    android:background="@drawable/grid_color_selector"
                     android:orientation="vertical"
                     android:padding="5dp">
 
                     <ImageView
-                        android:id="@+id/image3"
+                        android:id="@+id/img3"
                         android:layout_width="150dp"
-                        android:layout_height="150dp" />
+                        android:layout_height="150dp"
+                        android:src="@drawable/social"/>
 
                     <TextView
                         android:id="@+id/text3"
@@ -94,17 +100,19 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/gighan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:background="@color/material_blue_grey_800"
+                    android:background="@drawable/grid_color_selector"
                     android:orientation="vertical"
                     android:padding="5dp">
 
                     <ImageView
-                        android:id="@+id/image4"
+                        android:id="@+id/img4"
                         android:layout_width="150dp"
-                        android:layout_height="150dp" />
+                        android:layout_height="150dp"
+                        android:src="@drawable/gighan"/>
 
                     <TextView
                         android:id="@+id/text4"
@@ -120,18 +128,20 @@
             <TableRow android:gravity="center">
 
                 <LinearLayout
+                    android:id="@+id/juyo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="7dp"
                     android:layout_marginTop="5dp"
-                    android:background="@color/material_blue_grey_800"
+                    android:background="@drawable/grid_color_selector"
                     android:orientation="vertical"
                     android:padding="5dp">
 
                     <ImageView
-                        android:id="@+id/image5"
+                        android:id="@+id/img5"
                         android:layout_width="150dp"
-                        android:layout_height="150dp" />
+                        android:layout_height="150dp"
+                        android:src="@drawable/saup"/>
 
                     <TextView
                         android:id="@+id/text5"
@@ -144,17 +154,19 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/board"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:background="@color/material_blue_grey_800"
+                    android:background="@drawable/grid_color_selector"
                     android:orientation="vertical"
                     android:padding="5dp">
 
                     <ImageView
-                        android:id="@+id/image6"
+                        android:id="@+id/img6"
                         android:layout_width="150dp"
-                        android:layout_height="150dp" />
+                        android:layout_height="150dp"
+                        android:src="@drawable/board"/>
 
                     <TextView
                         android:id="@+id/text6"
