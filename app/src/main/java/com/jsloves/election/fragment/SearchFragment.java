@@ -225,7 +225,6 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
             }
         });
         myWebview.loadUrl(getString(R.string.mapView_url));
-        //myWebview.loadUrl("http://192.168.0.6:8080/Woori/areaMap.jsp");
         myWebview.setVisibility(View.GONE);
         
         final Button btn_search = (Button)view.findViewById(R.id.button_search);
@@ -271,7 +270,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                         Toast.makeText(getActivity().getApplicationContext(), "당신의 위치 - \n위도: " + latitude + "\n경도: " + longitude+ "\n변환X: " + out_pt.getX()+ "\n변환Y: " + out_pt.getY(), Toast.LENGTH_SHORT).show();
 
                         // 구역이동 Spiner Value Setting
-                        setAreaFieldValue(addr);
+                        setAreaFieldValue(addr,out_pt);
                     }
                 }else{
                     // GPS 를 사용할수 없으므로
@@ -284,7 +283,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         return view;
     }
 
-    public void setAreaFieldValue(String addr){
+    public void setAreaFieldValue(String addr,GeoPoint point){
         Log.d(TAG, "setAreaFieldValue addr : " + addr);
         String address[] = addr.split(" ");
         String sigungu      = "";
@@ -293,22 +292,25 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         String gunmul       = "";
         String sigungutext  = "";
 
-        sigungu      += address[1] + address[4];
-        sigungutext  += address[1] + " " + address[4];
-        doroBubjoung += address[2];
-        gunmulBunji  += address[3];
+        if(address[2] == null || address[2].equals("null")) address[2] = "";
+
+        sigungu      += address[1] + address[2];
+        sigungutext  += address[1] + " " + address[2];
+        doroBubjoung += address[3];
+        gunmulBunji  += address[4];
         Log.d(TAG, "sigungu : " + sigungu + " doroBubjoung : " + doroBubjoung + " gunmulBunji : " + gunmulBunji);
         //String url = "http://192.168.0.3:8080/Woori/MobileReq.jsp";
         JSONObject json = new JSONObject();
-        json.put("TYPE", "GPS");
+        //json.put("TYPE", "GPS");
+        json.put("TYPE", "GPSTEST");
         json.put("SIGUNGU", sigungu);
         json.put("SIGUNGUTEXT", sigungutext);
         json.put("DOROBUBJOUNG", doroBubjoung);
         json.put("GUNMULBUNJI", gunmulBunji);
-        //excuteTask(url, json.toString());
+        json.put("COX", point.getX());
+        json.put("COY", point.getY());
         excuteTask(getString(R.string.server_url), json.toString());
     }
-
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position,
                                long id) {
@@ -427,7 +429,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 re = (JSONObject) par.parse(resultData);
                 String sType = (String) re.get("TYPE");
                 String result = (String) re.get("RESULT");
-                if(sType.equals("GPS")) {
+                if(sType.equals("GPS") || sType.equals("GPSTEST")) {
                     /*if (result.equals("SUCCESS")) {
                         Log.d(TAG, "GPS SUCCESS");
 
@@ -463,6 +465,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                         JSONObject jo2 = (JSONObject)ElectionManagerApp.getInstance().getSelectItemsObject().get("TUPYOGU");
                         setUpSpinner(sp3, jo2.get(haengjoungdong).toString());
                         sp3.setSelection(getPosition(sp3, tupyogu));
+                        showMap(sigungu,haengjoungdong,tupyogu);
 
                     } else if(result.equals("FAILED")) {
                         Log.d(TAG,"매칭 데이터 없음");
