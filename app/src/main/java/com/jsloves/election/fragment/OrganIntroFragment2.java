@@ -59,7 +59,7 @@ public class OrganIntroFragment2 extends Fragment {
 
     private int iCnt = 0;
 
-    private static boolean iFlag = false;
+    private static boolean iFlag2 = false;
 
     private WeakReference<MyAsyncTask> asyncTaskWeakRef;
     public static final String ASYNC = "async";
@@ -103,14 +103,13 @@ public class OrganIntroFragment2 extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("lcy", "onCreate");
+        Log.d("lcy", "onCreate2");
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         JSONObject json1 = new JSONObject();
         json1.put("TYPE", "SELECTORGAN2");
-
         //excuteTask("http://192.168.0.31:8080/Woori/MobileReq.jsp", json1.toString());
         excuteTask(getString(R.string.server_url), json1.toString());
     }
@@ -118,28 +117,29 @@ public class OrganIntroFragment2 extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("lcy", "onResume");
+        Log.d("lcy", "onResume2");
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d("lcy", "onCreateView");
+        Log.d("lcy", "onCreateView2");
 
         view = inflater.inflate(R.layout.fragment_organ_intro2, container, false);
         setLayout();
-
-        if(iFlag==false){
-            this.iFlag = true;
+        Log.d("lcy","iFlag2:"+iFlag2);
+        if(iFlag2==false){
+            this.iFlag2 = true;
         }else {
 
             Gson converter = new Gson();
 
             try {
                 //검색 스피너
-                setUpSpinner((Spinner) view.findViewById(R.id.spinner_4), array1.toString());
-                setUpSpinner((Spinner) view.findViewById(R.id.spinner_5), array2.toString());
+                Log.d("lcy","AAAA");
+                setUpSpinner((Spinner) view.findViewById(R.id.spinner_6), array1.toString());
+                setUpSpinner((Spinner) view.findViewById(R.id.spinner_7), array2.toString());
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -161,6 +161,18 @@ public class OrganIntroFragment2 extends Fragment {
                         "ITEM CLICK = " + position,
                         Toast.LENGTH_SHORT
                 ).show();
+
+                FragmentManager fragmentManager = getFragmentManager();
+
+                OrganIntroDetailFragment frament = new OrganIntroDetailFragment();
+                frament.onDestroyView();
+                Bundle bundle = new Bundle();
+                bundle.putString("organ_tap","organ2");
+                frament.setArguments(bundle);
+
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.organ_intro2, frament);// Activity 레이아웃의 View ID
+                fragmentTransaction.commit();
             }
         });
 
@@ -196,7 +208,7 @@ public class OrganIntroFragment2 extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.d("lcy", "onAttach");
+        Log.d("lcy", "onAttach2");
         /**try {
          mListener = (OnFragmentInteractionListener) activity;
          } catch (ClassCastException e) {
@@ -208,7 +220,7 @@ public class OrganIntroFragment2 extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        Log.d("lcy", "onDetach");
+        Log.d("lcy", "onDetach2");
         mListener = null;
     }
 
@@ -228,7 +240,7 @@ public class OrganIntroFragment2 extends Fragment {
     }
 
     private void setUpSpinner(Spinner spinner,String items) {
-        Log.d("lcy", "setUpSpinner");
+        Log.d("lcy", "setUpSpinner2");
         Type type = new TypeToken<List<String>>(){}.getType();
         Gson converter = new Gson();
         List<String> list =  converter.fromJson(items.toString(), type);
@@ -242,7 +254,7 @@ public class OrganIntroFragment2 extends Fragment {
     }
 
     public void cancel() {
-        Log.d("lcy", "cancel");
+        Log.d("lcy", "cancel2");
         maTask.cancel(false);
     }
 
@@ -250,7 +262,7 @@ public class OrganIntroFragment2 extends Fragment {
 
         @Override
         protected void onPreExecute() {
-            Log.d("lcy", "onPreExecute");
+            Log.d("lcy", "onPreExecute2");
             if (dialog == null) {
                 prepareProgressDialog();
             }
@@ -259,7 +271,7 @@ public class OrganIntroFragment2 extends Fragment {
 
         @Override
         protected String doInBackground(Object... args) {
-            Log.d("lcy", "doInBackground");
+            Log.d("lcy", "doInBackground2");
             Bundle bundle = (Bundle)args[0];
             String url = bundle.getString("URL");
             String params = bundle.getString("PARAMS");
@@ -268,12 +280,12 @@ public class OrganIntroFragment2 extends Fragment {
 
         @Override
         protected void onProgressUpdate(Integer... values) {
-            Log.d("lcy", "onProgressUpdate");
+            Log.d("lcy", "onProgressUpdate2");
         }
 
         @Override
         protected void onPostExecute(String resultData) {
-            Log.d("lcy", "onPostExecute:" + resultData);
+            Log.d("lcy", "onPostExecute2:" + resultData);
 
             String result = "";
             JSONObject re = null;
@@ -294,13 +306,13 @@ public class OrganIntroFragment2 extends Fragment {
                     array1 = (JSONArray) re.get("array1");
                     array2 = (JSONArray) re.get("array2");
 
-                    setUpSpinner((Spinner) view.findViewById(R.id.spinner_4), array1.toString());
-                    setUpSpinner((Spinner) view.findViewById(R.id.spinner_5), array2.toString());
+                    setUpSpinner((Spinner) view.findViewById(R.id.spinner_6), array1.toString());
+                    setUpSpinner((Spinner) view.findViewById(R.id.spinner_7), array2.toString());
 
                     result = (String) re.get("RESULT");
 
                 }else if(sType.equals("SEARCHORGAN")){
-                    Log.d("lcy", "SEARCHORGAN");
+                    Log.d("lcy", "SEARCHORGAN2");
                     mCareList = new ArrayList<DataClass>();
                     mCareList.add(new DataClass("대구", "대구교도소"));
                     mCareList.add(new DataClass("부산", "부산교도소"));
@@ -320,14 +332,14 @@ public class OrganIntroFragment2 extends Fragment {
 
         @Override
         protected void onCancelled(String result) {
-            Log.d("lcy", "onCancelled");
+            Log.d("lcy", "onCancelled2");
             cleanUp();
         }
 
     }
 
     private void excuteTask(String url,String params) {
-        Log.d("lcy", "excuteTask");
+        Log.d("lcy", "excuteTask2");
         Bundle bundle = new Bundle();
         bundle.putString("URL",url);
         bundle.putString("PARAMS", params);
@@ -336,7 +348,7 @@ public class OrganIntroFragment2 extends Fragment {
     }
 
     private void prepareProgressDialog() {
-        Log.d("lcy", "prepareProgressDialog");
+        Log.d("lcy", "prepareProgressDialog2");
         dialog = new ProgressDialog(getActivity());
         dialog.setMessage("Please wait...");
         dialog.setCancelable(true);

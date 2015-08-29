@@ -175,11 +175,13 @@ public class OrganIntroFragment extends Fragment {
                 FragmentManager fragmentManager = getFragmentManager();
 
                 OrganIntroDetailFragment frament = new OrganIntroDetailFragment();
+                frament.onDestroyView();
                 Bundle bundle = new Bundle();
+                bundle.putString("organ_tap","organ1");
                 frament.setArguments(bundle);
 
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.add(R.id.organ_intro1, frament);// Activity 레이아웃의 View ID
+                fragmentTransaction.replace(R.id.organ_intro1, frament);// Activity 레이아웃의 View ID
                 fragmentTransaction.commit();
 
             }

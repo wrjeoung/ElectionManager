@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +18,12 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.jsloves.election.activity.R;
+
+import org.json.simple.JSONObject;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -82,6 +88,10 @@ public class OrganIntroDetailFragment extends Fragment {
         // Inflate the layout for this fragment
         Log.d("lcy", "onCreateView OrganIntroDetailFragment");
 
+        final String organ_tap = getArguments().getString("organ_tap");
+
+        Log.d("lcy","organ_tap:"+organ_tap);
+
         view = inflater.inflate(R.layout.fragment_organ_intro_detail, container, false);
 
         myWebview = (WebView) view.findViewById(
@@ -93,6 +103,8 @@ public class OrganIntroDetailFragment extends Fragment {
         webSettings.setDefaultTextEncodingName("UTF-8");
         webSettings.setJavaScriptEnabled(true);
         webSettings.setDomStorageEnabled(true);
+        webSettings.setLoadWithOverviewMode(true);
+        webSettings.setUseWideViewPort(true);
         webSettings.setSupportZoom(false);
         webSettings.setBuiltInZoomControls(false);
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
@@ -114,6 +126,37 @@ public class OrganIntroDetailFragment extends Fragment {
         });
 
         myWebview.loadUrl("http://222.122.149.161:7070/Woori/OrganIntroDetail.jsp");
+
+        final Button btn_back = (Button)view.findViewById(R.id.button_back);
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("lcy","Button btn_back onClick");
+
+                if(organ_tap.equals("organ1")) {
+
+                    OrganIntroFragment frament = new OrganIntroFragment();
+                    frament.onDestroyView();
+                    Bundle bundle = new Bundle();
+                    frament.setArguments(bundle);
+
+                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.organ_detail, frament);// Activity 레이아웃의 View ID
+                    fragmentTransaction.commit();
+                }else if(organ_tap.equals("organ2")){
+                    OrganIntroFragment2 frament = new OrganIntroFragment2();
+                    frament.onDestroyView();
+                    Bundle bundle = new Bundle();
+                    frament.setArguments(bundle);
+
+                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.organ_detail, frament);// Activity 레이아웃의 View ID
+                    fragmentTransaction.commit();
+                }
+            }
+        });
 
         return view;
     }
