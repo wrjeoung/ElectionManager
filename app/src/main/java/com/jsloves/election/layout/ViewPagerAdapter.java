@@ -35,24 +35,22 @@ public class ViewPagerAdapter extends FragmentPagerAdapter implements CommonValu
             // 상단 메뉴
             // Open FragmentTab1.java
             case 0:
-                return HomeFragment.newInstance(position,mPager);
-            case 1:
                 //return SampleFragment.newInstance(position);
                 Log.d("ViewPagerAdapter","onCreateView mSearchFramgent : "+SearchFragment.newInstance("aa","bb"));
                 mSearchFragment=SearchFragment.newInstance("aa", "bb");
                 return mSearchFragment;
+            case 1:
+                return SampleFragment.newInstance(position);
             case 2:
                 return SampleFragment.newInstance(position);
             case 3:
-                return SampleFragment.newInstance(position);
-            case 4:
                 //return SampleFragment.newInstance(position);
                 //return OrganIntroFragment.newInstance("aaa", "bbb");
                 return FragmentTab.newInstance("aa","bb");
 
-            case 5:
+            case 4:
                 return SampleFragment.newInstance(position);
-            case 6:
+            case 5:
                 return SampleFragment.newInstance(position);
 
         }

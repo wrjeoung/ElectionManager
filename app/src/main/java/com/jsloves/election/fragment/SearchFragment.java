@@ -163,6 +163,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         jo.put("SIGUNGUTEXT", sigungu);
         jo.put("HAENGTEXT", hangjungdong);
         jo.put("TUPYOGU_NUM", tupyogu);
+        Log.d(TAG,"showMap jo : "+jo);
         myWebview.loadUrl("javascript:drawMap('" + jo.toString() + "')");
         if(myWebview.getVisibility()!= View.VISIBLE)
             myWebview.setVisibility(View.VISIBLE);

@@ -34,9 +34,13 @@
     </string-array>
 
     <string name="server_url">http://222.122.149.161:7070/Woori/MobileReq.jsp</string>
+    <!--<string name="server_url">http://192.168.25.4:8080/ElectionManager_server/MobileReq.jsp</string>-->
+
     <string name="server_url_test">http://222.122.149.174:8080/Woori/AddressServlet</string>
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="mapView_url">http://222.122.149.161:7070/Woori/areaMap.jsp</string>
+    <!--<string name="mapView_url">http://192.168.25.4:8080/ElectionManager_server/areaMap.jsp</string>-->
 </resources>

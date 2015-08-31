@@ -1,6 +1,7 @@
 package com.jsloves.election.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -107,13 +108,12 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        titles[0] = getString(R.string.home);
-        titles[1] = getString(R.string.area_info);
-        titles[2] = getString(R.string.jungchi_hwangyong);
-        titles[3] = getString(R.string.social_hwangyong);
-        titles[4] = getString(R.string.gigwan_info);
-        titles[5] = getString(R.string.jooyo_saup);
-        titles[6] = getString(R.string.board);
+        titles[0] = getString(R.string.area_info);
+        titles[1] = getString(R.string.jungchi_hwangyong);
+        titles[2] = getString(R.string.social_hwangyong);
+        titles[3] = getString(R.string.gigwan_info);
+        titles[4] = getString(R.string.jooyo_saup);
+        titles[5] = getString(R.string.board);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.navdrawer);
@@ -129,6 +129,8 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
         mVpageAdapter = new ViewPagerAdapter(mFragmentManager, titles, pager);
         pager.setAdapter(mVpageAdapter);
 
+        int startPosition = (int)getIntent().getExtras().get("startPosition");
+        pager.setCurrentItem(startPosition);
 
         slidingTabLayout.setViewPager(pager);
         slidingTabLayout.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
@@ -160,8 +162,9 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
                 // 좌측 메뉴
                 switch (position) {
                     case 0:
-                        pager.setCurrentItem(position);
-                        mDrawerLayout.closeDrawer(GravityCompat.START);
+                        Intent intent = new Intent(ElectionMainActivity.this,ElectionHomeActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
                         break;
                     case 1:
                         mDrawerList.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));

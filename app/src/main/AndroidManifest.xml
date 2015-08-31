@@ -25,6 +25,9 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.jsloves.election.activity.ElectionHomeActivity"
+            android:label="@string/app_name" />
+        <activity
             android:name="com.jsloves.election.activity.Password"
             android:label="@string/app_name" />
         <activity

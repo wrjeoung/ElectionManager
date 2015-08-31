@@ -122,7 +122,7 @@ public class ElectionManagerActivity extends AppCompatActivity
         mMainCallrunnable = new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(ElectionManagerActivity.this, ElectionMainActivity.class);
+                Intent intent = new Intent(ElectionManagerActivity.this, ElectionHomeActivity.class);
                 //intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
                 finish();
