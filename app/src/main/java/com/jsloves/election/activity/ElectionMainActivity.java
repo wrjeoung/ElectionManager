@@ -2,11 +2,11 @@ package com.jsloves.election.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v4.app.FragmentManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -29,7 +29,6 @@ import com.jsloves.election.adapter.AdapterRootRightMenu;
 import com.jsloves.election.application.ElectionManagerApp;
 import com.jsloves.election.common.CommonValuesManager;
 import com.jsloves.election.fragment.HomeMenuOnCLickListner;
-import com.jsloves.election.fragment.SearchFragment;
 import com.jsloves.election.layout.SlidingTabLayout;
 import com.jsloves.election.layout.ViewPagerAdapter;
 
@@ -170,14 +169,14 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
                         mDrawerList.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
                         toolbar.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
                         slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
-                        pager.setCurrentItem(position);
+                        pager.setCurrentItem(position-1);
                         mDrawerLayout.closeDrawer(GravityCompat.START);
                         break;
                     case 2:
                         //mDrawerList.setBackgroundColor(getResources().getColor(R.color.red));
                         //toolbar.setBackgroundColor(getResources().getColor(R.color.red));
                         //slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.red));
-                        pager.setCurrentItem(position);
+                        pager.setCurrentItem(position-1);
                         mDrawerLayout.closeDrawer(GravityCompat.START);
 
                         break;
@@ -185,7 +184,7 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
                         //mDrawerList.setBackgroundColor(getResources().getColor(R.color.blue));
                         //toolbar.setBackgroundColor(getResources().getColor(R.color.blue));
                         //slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.blue));
-                        pager.setCurrentItem(position);
+                        pager.setCurrentItem(position-1);
                         mDrawerLayout.closeDrawer(GravityCompat.START);
 
                         break;
@@ -193,18 +192,18 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
                         //mDrawerList.setBackgroundColor(getResources().getColor(R.color.material_blue_grey_800));
                         //toolbar.setBackgroundColor(getResources().getColor(R.color.material_blue_grey_800));
                         //slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.material_blue_grey_800));
-                        pager.setCurrentItem(position);
+                        pager.setCurrentItem(position-1);
                         mDrawerLayout.closeDrawer(GravityCompat.START);
 
                         break;
                     case 5:
-                        pager.setCurrentItem(position);
+                        pager.setCurrentItem(position-1);
                         mDrawerLayout.closeDrawer(GravityCompat.START);
 
                         break;
 
                     case 6:
-                        pager.setCurrentItem(position);
+                        pager.setCurrentItem(position-1);
                         mDrawerLayout.closeDrawer(GravityCompat.START);
 
                         break;
