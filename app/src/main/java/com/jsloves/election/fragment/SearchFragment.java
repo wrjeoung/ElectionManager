@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.ConsoleMessage;
@@ -163,7 +164,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         jo.put("SIGUNGUTEXT", sigungu);
         jo.put("HAENGTEXT", hangjungdong);
         jo.put("TUPYOGU_NUM", tupyogu);
-        Log.d(TAG,"showMap jo : "+jo);
+        Log.d(TAG, "showMap jo : " + jo);
         myWebview.loadUrl("javascript:drawMap('" + jo.toString() + "')");
         if(myWebview.getVisibility()!= View.VISIBLE)
             myWebview.setVisibility(View.VISIBLE);
@@ -227,6 +228,25 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         });
         myWebview.loadUrl(getString(R.string.mapView_url));
         myWebview.setVisibility(View.GONE);
+        myWebview.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getAction();
+
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        // Disallow ScrollView to intercept touch events.
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        // Allow ScrollView to intercept touch events.
+                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                        break;
+                }
+                return false;
+            }
+        });
         
         final Button btn_search = (Button)view.findViewById(R.id.button_search);
         btn_search.setOnClickListener(new View.OnClickListener()
