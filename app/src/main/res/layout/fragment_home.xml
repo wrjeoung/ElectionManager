@@ -9,7 +9,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/material_blue_grey_900"
         android:paddingBottom="5dp">
 
@@ -17,94 +17,117 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
 
-            <LinearLayout
-                android:id="@+id/guyeok"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/grid_color_selector"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:padding="5dp">
-
-                <ImageView
-                    android:id="@+id/img1"
-                    android:layout_width="345dp"
-                    android:layout_height="345dp"
-                    android:layout_marginTop="15dp"
-                    android:src="@drawable/guyok" />
-
-                <TextView
-                    android:id="@+id/text1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:gravity="center"
-                    android:text="@string/area_info"
-                    android:textSize="20sp" />
-            </LinearLayout>
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="35sp"
+                android:textColor="@color/accent_material_light"
+                android:text="@string/app_name"
+                android:layout_marginBottom="20dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:id="@+id/jungchi"
+                    android:id="@+id/guyeok"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
                     android:background="@drawable/grid_color_selector"
                     android:orientation="vertical"
-                    android:padding="5dp">
+                    android:padding="5dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginBottom="3dp"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    >
 
                     <ImageView
-                        android:id="@+id/img2"
-                        android:layout_width="160dp"
-                        android:layout_height="160dp"
-                        android:layout_gravity="center_horizontal"
-                        android:src="@drawable/jungchi" />
+                        android:id="@+id/img1"
+                        android:layout_width="200dp"
+                        android:layout_height="200dp"
+                        android:src="@drawable/guyok" />
 
                     <TextView
-                        android:id="@+id/text2"
+                        android:id="@+id/text1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:gravity="center"
-                        android:text="@string/jungchi_hwangyong"
-                        android:textSize="12sp" />
+                        android:text="@string/area_info"
+                        android:textSize="17sp" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/social"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/grid_color_selector"
                     android:orientation="vertical"
-                    android:padding="5dp">
+                    android:layout_weight="1">
 
-                    <ImageView
-                        android:id="@+id/img3"
-                        android:layout_width="160dp"
-                        android:layout_height="160dp"
-                        android:layout_gravity="center_horizontal"
-                        android:src="@drawable/social" />
-
-                    <TextView
-                        android:id="@+id/text3"
+                    <LinearLayout
+                        android:id="@+id/jungchi"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/grid_color_selector"
+                        android:orientation="vertical"
+                        android:padding="5dp"
                         android:gravity="center"
-                        android:text="@string/social_hwangyong"
-                        android:textSize="12sp" />
+                        android:layout_margin="3dp">
+
+                        <ImageView
+                            android:id="@+id/img2"
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/jungchi" />
+
+                        <TextView
+                            android:id="@+id/text2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:text="@string/jungchi_hwangyong"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/social"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/grid_color_selector"
+                        android:orientation="vertical"
+                        android:padding="5dp"
+                        android:gravity="center"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginBottom="3dp"
+                        android:layout_marginRight="3dp">
+
+                        <ImageView
+                            android:id="@+id/img3"
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/social" />
+
+                        <TextView
+                            android:id="@+id/text3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:text="@string/social_hwangyong"
+                            android:textSize="12sp" />
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
+
+
 
 
             <LinearLayout
@@ -117,15 +140,18 @@
                     android:id="@+id/gighan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
                     android:background="@drawable/grid_color_selector"
                     android:orientation="vertical"
-                    android:padding="5dp">
+                    android:padding="5dp"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
+                    android:gravity="center">
 
                     <ImageView
                         android:id="@+id/img4"
-                        android:layout_width="160dp"
-                        android:layout_height="160dp"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
                         android:src="@drawable/gighan" />
 
                     <TextView
@@ -142,16 +168,17 @@
                     android:id="@+id/juyo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="5dp"
                     android:background="@drawable/grid_color_selector"
                     android:orientation="vertical"
-                    android:padding="5dp">
+                    android:padding="5dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="3dp"
+                    android:gravity="center">
 
                     <ImageView
                         android:id="@+id/img5"
-                        android:layout_width="160dp"
-                        android:layout_height="160dp"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
                         android:src="@drawable/saup" />
 
                     <TextView
@@ -163,32 +190,36 @@
                         android:text="@string/jooyo_saup"
                         android:textSize="12sp" />
                 </LinearLayout>
-            </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/board"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/grid_color_selector"
-                android:orientation="vertical"
-                android:padding="5dp">
-
-                <ImageView
-                    android:id="@+id/img6"
-                    android:layout_width="265dp"
-                    android:layout_height="245dp"
-                    android:src="@drawable/board" />
-
-                <TextView
-                    android:id="@+id/text6"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="5dp"
+                <LinearLayout
+                    android:id="@+id/board"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/grid_color_selector"
+                    android:orientation="vertical"
+                    android:padding="5dp"
+                    android:layout_weight="1"
                     android:gravity="center"
-                    android:text="@string/board"
-                    android:textSize="12sp" />
+                    android:layout_marginRight="3dp">
+
+                    <ImageView
+                        android:id="@+id/img6"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/board" />
+
+                    <TextView
+                        android:id="@+id/text6"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:text="@string/board"
+                        android:textSize="12sp" />
+                </LinearLayout>
             </LinearLayout>
+
+
         </LinearLayout>
 
     </ScrollView>
