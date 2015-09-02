@@ -15,7 +15,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.ConsoleMessage;
-import android.webkit.CookieSyncManager;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -137,7 +136,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
         @Override
         public void onPageFinished(WebView view, String url) {
-            CookieSyncManager.getInstance().sync();
+            //CookieSyncManager.getInstance().sync();
 
         }
 
@@ -164,11 +163,32 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         jo.put("SIGUNGUTEXT", sigungu);
         jo.put("HAENGTEXT", hangjungdong);
         jo.put("TUPYOGU_NUM", tupyogu);
+        jo.put("COX", 0.0);
+        jo.put("COY", 0.0);
         Log.d(TAG, "showMap jo : " + jo);
         myWebview.loadUrl("javascript:drawMap('" + jo.toString() + "')");
         if(myWebview.getVisibility()!= View.VISIBLE)
             myWebview.setVisibility(View.VISIBLE);
     }
+
+    private void showMap(String sigungu, String hangjungdong, String tupyogu, double cox, double coy) {
+        //tupyogu = tupyogu.replace("제","");
+        //tupyogu = tupyogu.replace("투표구","");
+        Log.d(TAG,"showMap mTest : "+mTest);
+        JSONObject jo = new JSONObject();
+        //jo.put("TYPE","GEODATA_TEST");
+        jo.put("TYPE","TEST");
+        jo.put("SIGUNGUTEXT", sigungu);
+        jo.put("HAENGTEXT", hangjungdong);
+        jo.put("TUPYOGU_NUM", tupyogu);
+        jo.put("COX", cox);
+        jo.put("COY", coy);
+        Log.d(TAG, "showMap jo : " + jo);
+        myWebview.loadUrl("javascript:drawMap('" + jo.toString() + "')");
+        if(myWebview.getVisibility()!= View.VISIBLE)
+            myWebview.setVisibility(View.VISIBLE);
+    }
+
 
     public void tupyoguClickByRightMenu(String sigungu, String hanjungdong, String tupyogu) {
         Log.d(TAG, "tupyoguClickByRightMenu sigungu : " + sigungu + "  hanjungdong : " + hanjungdong + "   tupyogu : " + tupyogu);
@@ -226,7 +246,9 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 return super.onConsoleMessage(consoleMessage);
             }
         });
+        String url = "http://192.168.0.7:8080/Woori/areaMap.jsp";
         myWebview.loadUrl(getString(R.string.mapView_url));
+        //myWebview.loadUrl(url);
         myWebview.setVisibility(View.GONE);
         myWebview.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -320,7 +342,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         doroBubjoung += address[3];
         gunmulBunji  += address[4];
         Log.d(TAG, "sigungu : " + sigungu + " doroBubjoung : " + doroBubjoung + " gunmulBunji : " + gunmulBunji);
-        //String url = "http://192.168.0.3:8080/Woori/MobileReq.jsp";
+        String url = "http://192.168.0.7:8080/Woori/MobileReq.jsp";
         JSONObject json = new JSONObject();
         //json.put("TYPE", "GPS");
         json.put("TYPE", "GPSTEST");
@@ -331,6 +353,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         json.put("COX", point.getX());
         json.put("COY", point.getY());
         excuteTask(getString(R.string.server_url), json.toString());
+        //excuteTask(url, json.toString());
     }
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position,
@@ -477,6 +500,8 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                         String sigungu = (String)resData.get("SIGUNGU");
                         String haengjoungdong = (String)resData.get("HAENGJOUNGDONG");
                         String tupyogu = (String)resData.get("TUPYOGU");
+                        double cox = (Double)resData.get("COX");
+                        double coy = (Double)resData.get("COY");
 
                         ignoreUpdate = true;
                         sp1.setSelection(getPosition(sp1, sigungu));
@@ -486,7 +511,8 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                         JSONObject jo2 = (JSONObject)ElectionManagerApp.getInstance().getSelectItemsObject().get("TUPYOGU");
                         setUpSpinner(sp3, jo2.get(haengjoungdong).toString());
                         sp3.setSelection(getPosition(sp3, tupyogu));
-                        showMap(sigungu,haengjoungdong,tupyogu);
+                        //showMap(sigungu,haengjoungdong,tupyogu);
+                        showMap(sigungu,haengjoungdong,tupyogu,cox,coy);
 
                     } else if(result.equals("FAILED")) {
                         Log.d(TAG,"매칭 데이터 없음");
