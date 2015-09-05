@@ -246,7 +246,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 return super.onConsoleMessage(consoleMessage);
             }
         });
-        String url = "http://192.168.0.7:8080/Woori/areaMap.jsp";
+        String url = "http://192.168.0.6:8080/Woori/areaMap.jsp";
         myWebview.loadUrl(getString(R.string.mapView_url));
         //myWebview.loadUrl(url);
         myWebview.setVisibility(View.GONE);
@@ -297,7 +297,6 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                         double latitude = gps.getLatitude();
                         // 경도
                         double longitude = gps.getLongitude();
-
 
                         //latitude = 37.5204504; longitude = 126.9149769;
                         //latitude = 37.4691758; longitude = 126.8978739;
