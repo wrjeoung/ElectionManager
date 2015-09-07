@@ -2,6 +2,8 @@ package com.jsloves.election.activity;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -44,10 +46,11 @@ public class JoinActivity extends AppCompatActivity implements AsyncListener<Int
     private EditText d_id = null;
     private Button login_but;
     private Button idcheck_but;
-    private String id_check = null;
+    private String id_check = "FAILED";
     private String imei = null;
     private String imsi = null;
     private String phoneNumber = null;
+    private String mac = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,6 +61,10 @@ public class JoinActivity extends AppCompatActivity implements AsyncListener<Int
         imsi = telephonyManager.getSubscriberId();
         phoneNumber = telephonyManager.getLine1Number();
 
+        WifiManager mWifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
+        WifiInfo mWifiInfo = mWifiManager.getConnectionInfo();
+        mac = mWifiInfo.getMacAddress();
+
         setContentView(R.layout.join);
 
         user_id = (EditText) findViewById(R.id.login);
@@ -65,7 +72,7 @@ public class JoinActivity extends AppCompatActivity implements AsyncListener<Int
         passwords = (EditText) findViewById(R.id.password);
         password_conf = (EditText) findViewById(R.id.password_conf);
         d_id = (EditText) findViewById(R.id.d_id);
-        d_id.setText(imei);
+        d_id.setText(mac);
         d_id.setFocusableInTouchMode(false);
         login_but = (Button) findViewById(R.id.loginbutton);
         idcheck_but = (Button) findViewById(R.id.idcheck);
@@ -120,6 +127,7 @@ public class JoinActivity extends AppCompatActivity implements AsyncListener<Int
                 System.out.println("password:"+passwords.getText());
                 System.out.println("password_conf:"+password_conf.getText());
                 System.out.println("d_id:"+imei);
+                System.out.println("mac:"+mac);
 
                 if(user_id.getText().toString().equals(null)||user_id.getText().toString().equals("")){
                     Toast.makeText(JoinActivity.this, "아이디를 입력하여 주세요.", Toast.LENGTH_SHORT).show();
@@ -147,6 +155,7 @@ public class JoinActivity extends AppCompatActivity implements AsyncListener<Int
                         jo2.put("USERNM",name.getText().toString());
                         jo2.put("PWD",passwords.getText().toString());
                         jo2.put("DEVICEID",imei);
+                        jo2.put("MAC",mac);
                         jo2.put("PHONENUMBER", phoneNumber);
                         //jo2.put("CLASSCD",classcodes.getText().toString());
                         contents.add(jo2);

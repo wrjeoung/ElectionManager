@@ -59,7 +59,7 @@ public class ElectionManagerActivity extends AppCompatActivity
         Log.d("JS", "폰번호 : " + phoneInfo.getPhoneNumber() + " IMEI : " + phoneInfo.getImei() + " MacAddress : " + phoneInfo.getMacAddress());
         JSONObject json = new JSONObject();
         json.put("TYPE", "IMEICHECK");
-        json.put("IMEI", phoneInfo.getImei());
+        json.put("IMEI", phoneInfo.getMacAddress());
         setUp(getString(R.string.server_url), json.toString());
         r = new Runnable() {
             @Override
