@@ -58,7 +58,7 @@ public class ElectionManagerActivity extends AppCompatActivity
 
         Log.d("JS", "폰번호 : " + phoneInfo.getPhoneNumber() + " IMEI : " + phoneInfo.getImei() + " MacAddress : " + phoneInfo.getMacAddress());
         JSONObject json = new JSONObject();
-        json.put("TYPE", "IMEICHECK");
+        json.put("TYPE", "CHECK_MACADDRESS");
         json.put("IMEI", phoneInfo.getMacAddress());
         setUp(getString(R.string.server_url), json.toString());
         r = new Runnable() {
@@ -260,7 +260,7 @@ public class ElectionManagerActivity extends AppCompatActivity
             System.out.println("resultData = "+resultData);
             re = (JSONObject) par.parse(resultData);
             String type = (String)re.get("TYPE");
-            if(type.equals("IMEICHECK")) {
+            if(type.equals("CHECK_MACADDRESS")) {
                 mIsImeiExist = (Boolean) re.get("RESULT");
                 mPwd = (String) re.get("PWD");
                 mHandler.post(r);
