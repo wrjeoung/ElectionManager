@@ -15,6 +15,12 @@
             android:background="@color/colorPrimaryDark"
             android:orientation="horizontal">
 
+            <Button
+                android:id="@+id/gpsSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="현재위치" />
+
             <Spinner
                 android:id="@+id/spinner_1"
                 android:layout_width="wrap_content"
@@ -57,36 +63,10 @@
                     android:background="@color/material_blue_grey_900"
                     android:orientation="vertical">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="53dp"
-                        android:layout_gravity="center_horizontal"
-                        android:orientation="horizontal"
-                        android:weightSum="1">
-
-                        <TextView
-                            android:id="@+id/textView2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingBottom="@dimen/activity_vertical_margin"
-                            android:paddingLeft="@dimen/activity_horizontal_margin"
-                            android:paddingRight="@dimen/activity_horizontal_margin"
-                            android:paddingTop="@dimen/activity_vertical_margin"
-                            android:text="구역지도"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                        <Button
-                            android:id="@+id/gpsSearch"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="현재위치" />
-
-                    </LinearLayout>
-
                     <WebView
                         android:id="@+id/webView"
                         android:layout_width="match_parent"
-                        android:layout_height="400dip" />
+                        android:layout_height="300dip" />
                 </LinearLayout>
 
                 <LinearLayout
