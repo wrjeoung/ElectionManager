@@ -3,6 +3,7 @@ package com.jsloves.election.fragment;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.AsyncTask;
@@ -24,11 +25,13 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.jsloves.election.activity.PDFViewActivity;
 import com.jsloves.election.activity.R;
 import com.jsloves.election.application.ElectionManagerApp;
 import com.jsloves.election.util.GeoPoint;
@@ -71,6 +74,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     private Spinner sp2;
     private Spinner sp3;
     private boolean ignoreUpdate;
+    private ImageButton person;
 
     private StringBuffer mTest = new StringBuffer();
 
@@ -269,21 +273,26 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 return false;
             }
         });
-        
-        final Button btn_search = (Button)view.findViewById(R.id.button_search);
-        btn_search.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                String sigungu = (String)sp1.getSelectedItem();
-                String haengjoungdong = (String)sp2.getSelectedItem();
-                String tupyoguStr = (String)sp3.getSelectedItem();
 
-                showMap(sigungu,haengjoungdong,tupyoguStr);
+        final Button btn_search = (Button)view.findViewById(R.id.button_search);
+        btn_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String sigungu = (String) sp1.getSelectedItem();
+                String haengjoungdong = (String) sp2.getSelectedItem();
+                String tupyoguStr = (String) sp3.getSelectedItem();
+
+                showMap(sigungu, haengjoungdong, tupyoguStr);
             }
         });
-		
+        person = (ImageButton)view.findViewById(R.id.person);
+        person.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),PDFViewActivity.class);
+                startActivity(intent);
+            }
+        });
 		gpsSearchBtn = (Button) view.findViewById(R.id.gpsSearch);
         gpsSearchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
