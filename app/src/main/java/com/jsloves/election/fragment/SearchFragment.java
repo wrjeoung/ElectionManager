@@ -250,7 +250,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 return super.onConsoleMessage(consoleMessage);
             }
         });
-        String url = "http://192.168.0.6:8080/Woori/areaMap.jsp";
+        //String url = "http://192.168.0.52:8080/Woori/areaMap.jsp";
         myWebview.loadUrl(getString(R.string.mapView_url));
         //myWebview.loadUrl(url);
         myWebview.setVisibility(View.GONE);
@@ -281,7 +281,9 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 String sigungu = (String) sp1.getSelectedItem();
                 String haengjoungdong = (String) sp2.getSelectedItem();
                 String tupyoguStr = (String) sp3.getSelectedItem();
+                String[] array = {sigungu,haengjoungdong,tupyoguStr};
 
+                Log.d(TAG, "tupyoguStr = "+tupyoguStr+ " ,tupyoguStrCode = "+ElectionManagerApp.getInstance().getTupyoguCode(array));
                 showMap(sigungu, haengjoungdong, tupyoguStr);
             }
         });
@@ -311,7 +313,6 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                         //latitude = 37.4691758; longitude = 126.8978739;
                         GeoPoint in_pt = new GeoPoint(longitude, latitude);
                         GeoPoint out_pt = GeoTrans.convert(GeoTrans.GEO, GeoTrans.UTMK, in_pt);
-
                         String setText = "위도 : " + String.valueOf(latitude) + " 경도 : " + String.valueOf(longitude);
                         Log.d(TAG, " result : " + setText);
                         String addr = gps.getAddress(latitude, longitude);
@@ -350,7 +351,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         doroBubjoung += address[3];
         gunmulBunji  += address[4];
         Log.d(TAG, "sigungu : " + sigungu + " doroBubjoung : " + doroBubjoung + " gunmulBunji : " + gunmulBunji);
-        String url = "http://192.168.0.7:8080/Woori/MobileReq.jsp";
+        //String url = "http://192.168.0.52:8080/Woori/MobileReq.jsp";
         JSONObject json = new JSONObject();
         //json.put("TYPE", "GPS");
         json.put("TYPE", "GPSTEST");
