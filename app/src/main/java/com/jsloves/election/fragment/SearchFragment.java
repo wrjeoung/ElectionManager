@@ -157,13 +157,16 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         }
     }
 
-    private void showMap(String adm_cd) {
+    private void showMap(String sigungu, String hangjungdong, String tupyogu, String adm_cd) {
         //tupyogu = tupyogu.replace("제","");
         //tupyogu = tupyogu.replace("투표구","");
         Log.d(TAG,"showMap mTest : "+mTest);
         JSONObject jo = new JSONObject();
         //jo.put("TYPE","GEODATA_TEST");
         jo.put("TYPE","TEST");
+        jo.put("SIGUNGUTEXT", sigungu);
+        jo.put("HAENGTEXT", hangjungdong);
+        jo.put("TUPYOGU_NUM", tupyogu);
         jo.put("ADM_CD", adm_cd);
         jo.put("COX", 0.0);
         jo.put("COY", 0.0);
@@ -175,13 +178,16 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         */
     }
 
-    private void showMap(String adm_cd, double cox, double coy) {
+    private void showMap(String sigungu, String hangjungdong, String tupyogu,String adm_cd, double cox, double coy) {
         //tupyogu = tupyogu.replace("제","");
         //tupyogu = tupyogu.replace("투표구","");
         Log.d(TAG,"showMap mTest : "+mTest);
         JSONObject jo = new JSONObject();
         //jo.put("TYPE","GEODATA_TEST");
         jo.put("TYPE","TEST");
+        jo.put("SIGUNGUTEXT", sigungu);
+        jo.put("HAENGTEXT", hangjungdong);
+        jo.put("TUPYOGU_NUM", tupyogu);
         jo.put("ADM_CD", adm_cd);
         jo.put("COX", cox);
         jo.put("COY", coy);
@@ -207,7 +213,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    showMap(adm_cd);
+                    showMap(mSigungu,mHangjungdong,mTupyogu,adm_cd);
                 }
             },1000);
         }
@@ -290,7 +296,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
 
                 Log.d(TAG, "tupyoguStr = "+tupyoguStr+ " ,adm_cd = "+adm_cd);
-                showMap(adm_cd);
+                showMap(sigungu,haengjoungdong,tupyoguStr,adm_cd);
             }
         });
         person = (ImageButton)view.findViewById(R.id.person);
@@ -530,7 +536,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                         String[] array = {sigungu,haengjoungdong,tupyogu};
                         String adm_cd = ElectionManagerApp.getInstance().getTupyoguCode(array);
 
-                        showMap(adm_cd,cox,coy);
+                        showMap(sigungu,haengjoungdong,tupyogu,adm_cd,cox,coy);
 
                     } else if(result.equals("FAILED")) {
                         Log.d(TAG,"매칭 데이터 없음");
