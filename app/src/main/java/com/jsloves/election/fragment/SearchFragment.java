@@ -157,38 +157,36 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         }
     }
 
-    private void showMap(String sigungu, String hangjungdong, String tupyogu) {
+    private void showMap(String adm_cd) {
         //tupyogu = tupyogu.replace("제","");
         //tupyogu = tupyogu.replace("투표구","");
         Log.d(TAG,"showMap mTest : "+mTest);
         JSONObject jo = new JSONObject();
         //jo.put("TYPE","GEODATA_TEST");
         jo.put("TYPE","TEST");
-        jo.put("SIGUNGUTEXT", sigungu);
-        jo.put("HAENGTEXT", hangjungdong);
-        jo.put("TUPYOGU_NUM", tupyogu);
+        jo.put("ADM_CD", adm_cd);
         jo.put("COX", 0.0);
         jo.put("COY", 0.0);
         Log.d(TAG, "showMap jo : " + jo);
+        excuteTask(getString(R.string.server_url), jo.toString());
         /*myWebview.loadUrl("javascript:drawMap('" + jo.toString() + "')");
         if(myWebview.getVisibility()!= View.VISIBLE)
             myWebview.setVisibility(View.VISIBLE);
         */
     }
 
-    private void showMap(String sigungu, String hangjungdong, String tupyogu, double cox, double coy) {
+    private void showMap(String adm_cd, double cox, double coy) {
         //tupyogu = tupyogu.replace("제","");
         //tupyogu = tupyogu.replace("투표구","");
         Log.d(TAG,"showMap mTest : "+mTest);
         JSONObject jo = new JSONObject();
         //jo.put("TYPE","GEODATA_TEST");
         jo.put("TYPE","TEST");
-        jo.put("SIGUNGUTEXT", sigungu);
-        jo.put("HAENGTEXT", hangjungdong);
-        jo.put("TUPYOGU_NUM", tupyogu);
+        jo.put("ADM_CD", adm_cd);
         jo.put("COX", cox);
         jo.put("COY", coy);
         Log.d(TAG, "showMap jo : " + jo);
+        excuteTask(getString(R.string.server_url), jo.toString());
         /*
         myWebview.loadUrl("javascript:drawMap('" + jo.toString() + "')");
         if(myWebview.getVisibility()!= View.VISIBLE)
@@ -203,10 +201,13 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
             mSigungu = sigungu;
             mHangjungdong = hanjungdong;
             mTupyogu = tupyogu;
+            String[] array = {mSigungu,mHangjungdong,mTupyogu};
+            final String adm_cd = ElectionManagerApp.getInstance().getTupyoguCode(array);
+
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    showMap(mSigungu, mHangjungdong, mTupyogu);
+                    showMap(adm_cd);
                 }
             },1000);
         }
@@ -285,9 +286,11 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 String haengjoungdong = (String) sp2.getSelectedItem();
                 String tupyoguStr = (String) sp3.getSelectedItem();
                 String[] array = {sigungu,haengjoungdong,tupyoguStr};
+                String adm_cd = ElectionManagerApp.getInstance().getTupyoguCode(array);
 
-                Log.d(TAG, "tupyoguStr = "+tupyoguStr+ " ,tupyoguStrCode = "+ElectionManagerApp.getInstance().getTupyoguCode(array));
-                showMap(sigungu, haengjoungdong, tupyoguStr);
+
+                Log.d(TAG, "tupyoguStr = "+tupyoguStr+ " ,adm_cd = "+adm_cd);
+                showMap(adm_cd);
             }
         });
         person = (ImageButton)view.findViewById(R.id.person);
@@ -524,12 +527,17 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                         setUpSpinner(sp3, jo2.get(haengjoungdong).toString());
                         sp3.setSelection(getPosition(sp3, tupyogu));
                         //showMap(sigungu,haengjoungdong,tupyogu);
-                        showMap(sigungu,haengjoungdong,tupyogu,cox,coy);
+                        String[] array = {sigungu,haengjoungdong,tupyogu};
+                        String adm_cd = ElectionManagerApp.getInstance().getTupyoguCode(array);
+
+                        showMap(adm_cd,cox,coy);
 
                     } else if(result.equals("FAILED")) {
                         Log.d(TAG,"매칭 데이터 없음");
                         Toast.makeText(getActivity().getApplicationContext(),"현재 위치에 맞는 정보가 없습니다.",Toast.LENGTH_SHORT).show();
                     }
+                } else if(sType.equals("TEST")) {
+
                 }
             } catch (Exception e) {
                 e.printStackTrace();
