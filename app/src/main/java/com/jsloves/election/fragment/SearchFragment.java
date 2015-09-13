@@ -170,9 +170,10 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         jo.put("COX", 0.0);
         jo.put("COY", 0.0);
         Log.d(TAG, "showMap jo : " + jo);
-        myWebview.loadUrl("javascript:drawMap('" + jo.toString() + "')");
+        /*myWebview.loadUrl("javascript:drawMap('" + jo.toString() + "')");
         if(myWebview.getVisibility()!= View.VISIBLE)
             myWebview.setVisibility(View.VISIBLE);
+        */
     }
 
     private void showMap(String sigungu, String hangjungdong, String tupyogu, double cox, double coy) {
@@ -188,9 +189,11 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         jo.put("COX", cox);
         jo.put("COY", coy);
         Log.d(TAG, "showMap jo : " + jo);
+        /*
         myWebview.loadUrl("javascript:drawMap('" + jo.toString() + "')");
         if(myWebview.getVisibility()!= View.VISIBLE)
             myWebview.setVisibility(View.VISIBLE);
+            */
     }
 
 
@@ -250,9 +253,9 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 return super.onConsoleMessage(consoleMessage);
             }
         });
-        //String url = "http://192.168.0.52:8080/Woori/areaMap.jsp";
-        myWebview.loadUrl(getString(R.string.mapView_url));
-        //myWebview.loadUrl(url);
+        String url = "http://172.30.90.228:8080/Woori/areaMap.jsp";
+        //myWebview.loadUrl(getString(R.string.mapView_url));
+        myWebview.loadUrl(url);
         myWebview.setVisibility(View.GONE);
         myWebview.setOnTouchListener(new View.OnTouchListener() {
             @Override
