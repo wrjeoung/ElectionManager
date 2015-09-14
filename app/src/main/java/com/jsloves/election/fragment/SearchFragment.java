@@ -27,10 +27,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.jsloves.election.DTO.FamilyDAO;
+import com.jsloves.election.DTO.StatsDAO;
+import com.jsloves.election.DTO.VoteDAO;
 import com.jsloves.election.activity.PDFViewActivity;
 import com.jsloves.election.activity.R;
 import com.jsloves.election.application.ElectionManagerApp;
@@ -39,12 +43,15 @@ import com.jsloves.election.util.GeoTrans;
 import com.jsloves.election.util.GpsInfo;
 import com.jsloves.election.util.HttpConnection;
 
+
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Objects;
 
 
 /**
@@ -87,6 +94,15 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 	// GPS
     private Button gpsSearchBtn;
     private GpsInfo gps;
+
+    // socialEnv of AreaInfo
+    TextView m20th;
+    TextView m30th;
+    TextView m40th;
+    TextView m40th_under;
+    TextView m50th_over;
+    TextView m50th;
+    TextView m60th;
 
     /**
      * Use this factory method to create a new instance of
@@ -171,6 +187,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         jo.put("COX", 0.0);
         jo.put("COY", 0.0);
         Log.d(TAG, "showMap jo : " + jo);
+
         excuteTask(getString(R.string.server_url), jo.toString());
         /*myWebview.loadUrl("javascript:drawMap('" + jo.toString() + "')");
         if(myWebview.getVisibility()!= View.VISIBLE)
@@ -260,9 +277,9 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 return super.onConsoleMessage(consoleMessage);
             }
         });
-        String url = "http://172.30.90.228:8080/Woori/areaMap.jsp";
-        //myWebview.loadUrl(getString(R.string.mapView_url));
-        myWebview.loadUrl(url);
+        //String url = "http://172.30.90.228:8080/Woori/areaMap.jsp";
+        myWebview.loadUrl(getString(R.string.mapView_url));
+        //myWebview.loadUrl(url);
         myWebview.setVisibility(View.GONE);
         myWebview.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -374,6 +391,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         json.put("COX", point.getX());
         json.put("COY", point.getY());
         excuteTask(getString(R.string.server_url), json.toString());
+
         //excuteTask(url, json.toString());
     }
     @Override
@@ -543,6 +561,31 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                         Toast.makeText(getActivity().getApplicationContext(),"현재 위치에 맞는 정보가 없습니다.",Toast.LENGTH_SHORT).show();
                     }
                 } else if(sType.equals("TEST")) {
+
+                    JSONArray alVoteDao = new JSONArray();
+                    JSONArray alStatsDAO = new JSONArray();
+                    JSONArray alFamilyDAO = new JSONArray();
+                    alVoteDao = (JSONArray)re.get("RATE");
+                    alStatsDAO = (JSONArray)re.get("STATS");
+                    alFamilyDAO = (JSONArray)re.get("FAMILYDAO");
+
+                    Gson gs = new Gson();
+                    Log.d(TAG,"alVoteDato.toJSONString : "+alVoteDao.toJSONString());
+                    Log.d(TAG,"alVoteDato.size() : "+alVoteDao.size());
+                    Log.d(TAG,"alVoteDato.get(0) : " +alVoteDao.get(0));
+
+
+
+                    for(int i=0; i<alVoteDao.size(); i++) {
+                        VoteDAO vd = gs.fromJson((String) alVoteDao.get(i), VoteDAO.class);
+                        Log.d(TAG,"vd40 : "+vd.getV40th());
+                        Log.d(TAG,"vd30 : "+vd.getV30th());
+                        Log.d(TAG,"vd50 : "+vd.getV50th());
+                        Log.d(TAG,"vd60 : "+vd.getV60th_over());
+                        Log.d(TAG,"vd adm_cd : " + vd.getAdm_cd());
+
+
+                    }
 
                 }
             } catch (Exception e) {
