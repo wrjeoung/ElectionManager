@@ -20,13 +20,17 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TabHost;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jsloves.election.activity.R;
+import com.jsloves.election.application.ElectionManagerApp;
 import com.jsloves.election.layout.CustomBaseAdapter;
 import com.jsloves.election.layout.DataClass;
 import com.jsloves.election.util.HttpConnection;
+import android.widget.AdapterView.OnItemSelectedListener;
+import com.jsloves.election.DTO.OrganDAO;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -35,6 +39,7 @@ import org.json.simple.parser.ParseException;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Type;
+import java.nio.BufferUnderflowException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +51,7 @@ import java.util.List;
  * Use the {@link OrganIntroFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class OrganIntroFragment extends Fragment {
+public class OrganIntroFragment extends Fragment implements OnItemSelectedListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
@@ -55,6 +60,8 @@ public class OrganIntroFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    private static final String organ_gb = "A"; //기관
+
     private static JSONArray array1 = null;
     private static JSONArray array2 = null;
 
@@ -62,6 +69,8 @@ public class OrganIntroFragment extends Fragment {
     private MyAsyncTask maTask;
 
     private int iCnt = 0;
+
+    private boolean ignoreUpdate;
 
     private static boolean iFlag = false;
 
@@ -74,6 +83,10 @@ public class OrganIntroFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private Spinner sp4;
+    private Spinner sp5;
+    private Spinner sp6;
 
     private View view = null;
 
@@ -112,23 +125,19 @@ public class OrganIntroFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        JSONObject json1 = new JSONObject();
-        json1.put("TYPE", "SELECTORGAN1");
+
+        ignoreUpdate = false;
+        //JSONObject json1 = new JSONObject();
+        //json1.put("TYPE", "SELECTORGAN1");
 
         //excuteTask("http://192.168.0.2:8080/Woori/MobileReq.jsp", json1.toString());
-        excuteTask(getString(R.string.server_url), json1.toString());
+        //excuteTask(getString(R.string.server_url), json1.toString());
     }
 
     @Override
     public void onResume() {
         super.onResume();
         Log.d("lcy", "onResume");
-        /**
-        JSONObject json1 = new JSONObject();
-        json1.put("TYPE", "SELECTITEMS");
-        json1.put("TARGET", "SIGUNGU");
-
-        excuteTask(getString(R.string.server_url), json1.toString());**/
 
     }
 
@@ -140,23 +149,13 @@ public class OrganIntroFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_organ_intro, container, false);
         setLayout();
 
-        if(iFlag==false){
-            this.iFlag = true;
-        }else {
+        sp4 = (Spinner) view.findViewById(R.id.spinner_4);
+        sp5 = (Spinner) view.findViewById(R.id.spinner_5);
+        sp6 = (Spinner) view.findViewById(R.id.spinner_6);
 
-            Gson converter = new Gson();
+        Log.d("lcy", ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU").toString());
 
-            try {
-                //검색 스피너
-                setUpSpinner((Spinner) view.findViewById(R.id.spinner_4), array1.toString());
-                setUpSpinner((Spinner) view.findViewById(R.id.spinner_5), array2.toString());
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                //cleanUp();
-            }
-        }
+        setUpSpinner(sp4, ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU").toString());
 
         // ArrayAdapter 연결
 //        mListView.setAdapter(new CustomArrayAdapter(this, R.layout.intro_list, mCareList));
@@ -172,12 +171,21 @@ public class OrganIntroFragment extends Fragment {
                         Toast.LENGTH_SHORT
                 ).show();
 
+
+                TextView tv_seq = null;
+
+                tv_seq = (TextView) view.findViewById(R.id.tv_seq);
+                System.out.println("tv_seq:"+tv_seq.getText());
+                String  str_seq = tv_seq.getText().toString();
+
                 FragmentManager fragmentManager = getFragmentManager();
 
                 OrganIntroDetailFragment frament = new OrganIntroDetailFragment();
                 frament.onDestroyView();
                 Bundle bundle = new Bundle();
                 bundle.putString("organ_tap","organ1");
+                bundle.putString("organ_seq",str_seq);
+                bundle.putString("organ_gb",organ_gb);
                 frament.setArguments(bundle);
 
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -199,7 +207,17 @@ public class OrganIntroFragment extends Fragment {
 
                 JSONObject json1 = new JSONObject();
                 json1.put("TYPE", "SEARCHORGAN");
-                //excuteTask("http://222.122.149.161:7070/Woori/MobileReq.jsp", json1.toString());
+                json1.put("ORGAN_GB", organ_gb);
+
+                String sigungu = (String) sp4.getSelectedItem();
+                String haengjoungdong = (String) sp5.getSelectedItem();
+                String tupyoguStr = (String) sp6.getSelectedItem();
+                String[] array = {sigungu,haengjoungdong,tupyoguStr};
+                String adm_cd = ElectionManagerApp.getInstance().getTupyoguCode(array);
+                json1.put("ADM_CD", adm_cd);
+                Log.d("lcy",adm_cd);
+
+                //excuteTask("http://192.168.42.189:8080/Woori/MobileReq.jsp", json1.toString());
                 excuteTask(getString(R.string.server_url), json1.toString());
 
             }
@@ -251,13 +269,14 @@ public class OrganIntroFragment extends Fragment {
     }
 
     private void setUpSpinner(Spinner spinner,String items) {
-        Log.d("lcy", "setUpSpinner");
+        Log.d("lcy", "items = " + items);
         Type type = new TypeToken<List<String>>(){}.getType();
         Gson converter = new Gson();
         List<String> list =  converter.fromJson(items.toString(), type);
         ArrayAdapter sp_Adapter = new ArrayAdapter(getActivity().getApplicationContext(),android.R.layout.simple_spinner_item,list);
         sp_Adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(sp_Adapter);
+        spinner.setOnItemSelectedListener(OrganIntroFragment.this);
     }
 
     private void setLayout(){
@@ -311,24 +330,30 @@ public class OrganIntroFragment extends Fragment {
                 if(sType.equals("SELECTORGAN1")) {
                     Log.d("lcy", "SELECTORGAN1");
 
-                    array1 = new JSONArray();
-                    array2 = new JSONArray();
+                    ignoreUpdate = true;
 
-                    array1 = (JSONArray) re.get("array1");
-                    array2 = (JSONArray) re.get("array2");
+                }else {
+                    if (sType.equals("SEARCHORGAN")) {
+                        Log.d("lcy", "SEARCHORGAN");
 
-                    setUpSpinner((Spinner) view.findViewById(R.id.spinner_4), array1.toString());
-                    setUpSpinner((Spinner) view.findViewById(R.id.spinner_5), array2.toString());
+                        mCareList = new ArrayList<DataClass>();
+                        String adm_cd = (String) re.get("ADM_CD");
+                        JSONArray organlist = (JSONArray) re.get("ORGANLIST");
+                        System.out.println("organlist:" + organlist.size());
 
-                    result = (String) re.get("RESULT");
+                        Gson gson = new Gson();
 
-                }else if(sType.equals("SEARCHORGAN")){
-                    Log.d("lcy", "SEARCHORGAN");
-                    mCareList = new ArrayList<DataClass>();
-                    mCareList.add(new DataClass("인천", "인천광역시청"));
-                    mCareList.add(new DataClass("서울", "서울특별시청"));
-                    mListView.setAdapter(new CustomBaseAdapter(getActivity().getApplicationContext(), mCareList));
+                        OrganDAO obj = new OrganDAO();
 
+                        for (int i = 0; i < organlist.size(); i++) {
+                            obj = gson.fromJson((String) organlist.get(i), OrganDAO.class);
+                            Log.d("lcy","getOrgan_Seq():" + obj.getOrgan_Seq() + ", getHaengtext():"+obj.getHaengtext() + ", getOrgan_Name(),:"+obj.getOrgan_Name());
+                            mCareList.add(new DataClass(obj.getOrgan_Seq(), obj.getHaengtext(), obj.getOrgan_Name()));
+                        }
+
+                        //mCareList.add(new DataClass(adm_cd, organ_name));
+                        mListView.setAdapter(new CustomBaseAdapter(getActivity().getApplicationContext(), mCareList));
+                    }
                 }
 
             }catch (ParseException e) {
@@ -376,6 +401,36 @@ public class OrganIntroFragment extends Fragment {
         Log.d("lcy", "cleanUp1");
         dialog.dismiss();
         dialog = null;
+
+    }
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position,
+                               long id) {
+
+        Log.d("lcy", "onItemSelected:"+ignoreUpdate);
+        // TODO Auto-generated method stub
+        if(ignoreUpdate) {
+            ignoreUpdate = false;
+            return;
+        }
+
+        switch (parent.getId()) {
+            case R.id.spinner_4:
+                String sigungu = (String)parent.getSelectedItem();
+                JSONObject jo1 = (JSONObject)ElectionManagerApp.getInstance().getSelectItemsObject().get("HAENGJOUNGDONG");
+                setUpSpinner(sp5, jo1.get(sigungu).toString());
+                break;
+            case R.id.spinner_5:
+                String haengjoungdong = (String) parent.getSelectedItem();
+                JSONObject jo2 = (JSONObject) ElectionManagerApp.getInstance().getSelectItemsObject().get("TUPYOGU");
+                setUpSpinner(sp6, jo2.get(haengjoungdong).toString());
+                break;
+        }
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
 
     }
 }

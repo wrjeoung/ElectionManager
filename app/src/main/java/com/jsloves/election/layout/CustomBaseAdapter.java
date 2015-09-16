@@ -52,6 +52,7 @@ public class CustomBaseAdapter extends BaseAdapter{
 		if(v == null){
 			viewHolder = new ViewHolder();
 			v = inflater.inflate(R.layout.intro_list, null);
+			viewHolder.tv_seq = (TextView) v.findViewById(R.id.tv_seq);
 			viewHolder.tv_organ = (TextView)v.findViewById(R.id.tv_organ);
 			viewHolder.tv_region = (TextView)v.findViewById(R.id.tv_region);
 			v.setTag(viewHolder);
@@ -59,7 +60,8 @@ public class CustomBaseAdapter extends BaseAdapter{
 		}else {
 			viewHolder = (ViewHolder)v.getTag();
 		}
-		
+
+		viewHolder.tv_seq.setText(getItem(position).seq + "");
 		viewHolder.tv_organ.setText(getItem(position).organ);
 		viewHolder.tv_region.setText(getItem(position).region);
 
@@ -81,8 +83,19 @@ public class CustomBaseAdapter extends BaseAdapter{
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
-			
-			// 기관명 클릭
+
+			// 순번 클릭
+			case R.id.tv_seq:
+				Toast.makeText(
+						mContext,
+						"기관명 Tag = " + v.getTag(),
+						Toast.LENGTH_SHORT
+				).show();
+
+				break;
+
+
+				// 기관명 클릭
 			case R.id.tv_organ:
 				Toast.makeText(
 						mContext, 
@@ -114,6 +127,7 @@ public class CustomBaseAdapter extends BaseAdapter{
 	class ViewHolder{
 		public TextView tv_organ = null;
 		public TextView tv_region = null;
+		public TextView tv_seq =  null;
 	}
 	
 	@Override

@@ -18,12 +18,17 @@
             android:background="#94CCBD"
             android:orientation="horizontal" >
             <Spinner
-                android:id="@+id/spinner_6"
+                android:id="@+id/spinner_7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
             <Spinner
-                android:id="@+id/spinner_7"
+                android:id="@+id/spinner_8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+            <Spinner
+                android:id="@+id/spinner_9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />

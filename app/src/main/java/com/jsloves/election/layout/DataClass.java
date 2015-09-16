@@ -5,10 +5,12 @@ package com.jsloves.election.layout;
  */
 public class DataClass {
 
+    public int seq;
     public String organ;
     public String region;
 
-    public DataClass(String region, String organ) {
+    public DataClass(int seq, String region, String organ) {
+        this.seq = seq;
         this.region = region;
         this.organ = organ;
     }

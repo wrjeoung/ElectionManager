@@ -89,8 +89,9 @@ public class OrganIntroDetailFragment extends Fragment {
         Log.d("lcy", "onCreateView OrganIntroDetailFragment");
 
         final String organ_tap = getArguments().getString("organ_tap");
-
-        Log.d("lcy","organ_tap:"+organ_tap);
+        String organ_seq = getArguments().getString("organ_seq");
+        String organ_gb = getArguments().getString("organ_gb");
+        Log.d("lcy","organ_tap:"+organ_tap + ", organ_seq:" + organ_seq + ",organ_gb:"+ organ_gb);
 
         view = inflater.inflate(R.layout.fragment_organ_intro_detail, container, false);
 
@@ -125,7 +126,12 @@ public class OrganIntroDetailFragment extends Fragment {
             }
         });
 
-        myWebview.loadUrl("http://222.122.149.161:7070/Woori/OrganIntroDetail.jsp");
+        //myWebview.loadUrl("http://222.122.149.161:7070/Woori/OrganIntroDetail.jsp?organ_seq="+organ_seq);
+        //myWebview.loadUrl("http://192.168.42.189:8080/Woori/OrganIntroDetail.jsp?organ_seq="+organ_seq);
+        Log.d("lcy", "call WebView before");
+        myWebview.loadUrl("http://222.122.149.161:7070/Woori/OrganIntroDetail.jsp?organ_seq=" + organ_seq + "&organ_gb="+organ_gb);
+        //myWebview.loadUrl("http://192.168.42.189:8080/Woori/OrganIntroDetail.jsp?organ_seq=" + organ_seq + "&organ_gb="+organ_gb);
+        Log.d("lcy", "call WebView after");
 
         final Button btn_back = (Button)view.findViewById(R.id.button_back);
         btn_back.setOnClickListener(new View.OnClickListener() {
