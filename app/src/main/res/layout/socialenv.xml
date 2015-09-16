@@ -146,11 +146,14 @@
         </TableRow>
 
         <TableRow
+            android:id="@+id/wrraper_sungugu"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp">
 
             <TextView
+                android:id="@+id/sungugu"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/primary_dark_material_light"
@@ -222,16 +225,19 @@
         </TableRow>
 
         <TableRow
+            android:id="@+id/wrraper_hangjung"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp">
 
             <TextView
+                android:id="@+id/hangjung"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/primary_dark_material_light"
                 android:gravity="center"
-                android:text="행정" />
+                android:text="행정동" />
 
             <TextView
                 android:id="@+id/hangjung_20th"
@@ -298,11 +304,14 @@
         </TableRow>
 
         <TableRow
+            android:id="@+id/wrraper_tupyogu"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp">
 
             <TextView
+                android:id="@+id/tupyogu"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/primary_dark_material_light"
@@ -402,6 +411,8 @@
 
 
     <LinearLayout
+        android:id="@+id/wrraper_header_population"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"
@@ -445,6 +456,8 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/wrraper_age"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
@@ -453,6 +466,7 @@
         android:paddingRight="10dp">
 
         <ImageButton
+            android:id="@+id/button_age"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/detail_selector" />
@@ -467,6 +481,7 @@
             android:text="평균나이(세)" />
 
         <TextView
+            android:id="@+id/tupyogu_age"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="1dp"
@@ -476,6 +491,7 @@
             android:text="16.0" />
 
         <TextView
+            android:id="@+id/sungugu_age"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="1dp"
@@ -487,6 +503,8 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/wrraper_wife"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
@@ -495,6 +513,7 @@
         android:paddingRight="10dp">
 
         <ImageButton
+            android:id="@+id/button_wife"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/detail_selector" />
@@ -509,6 +528,7 @@
             android:text="배우자 있음(%)" />
 
         <TextView
+            android:id="@+id/tupyogu_wife"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="1dp"
@@ -518,6 +538,7 @@
             android:text="16.7" />
 
         <TextView
+            android:id="@+id/sungugu_wife"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="1dp"
@@ -529,6 +550,8 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/wrraper_univercity"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
@@ -537,6 +560,7 @@
         android:paddingRight="10dp">
 
         <ImageButton
+            android:id="@+id/button_univercity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/detail_selector" />
@@ -551,6 +575,7 @@
             android:text="대학교 이상(%)" />
 
         <TextView
+            android:id="@+id/tupyogu_univer"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="1dp"
@@ -560,6 +585,7 @@
             android:text="14.8" />
 
         <TextView
+            android:id="@+id/sungugu_univer"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="1dp"
@@ -571,6 +597,8 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/wrraper_population"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
@@ -579,6 +607,7 @@
         android:paddingRight="10dp">
 
         <ImageButton
+            android:id="@+id/button_population"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/detail_selector" />
@@ -593,6 +622,7 @@
             android:text="인구밀도" />
 
         <TextView
+            android:id="@+id/tupyogu_population"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="1dp"
@@ -602,6 +632,7 @@
             android:text="34.8" />
 
         <TextView
+            android:id="@+id/sungugu_population"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="1dp"
@@ -613,6 +644,8 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/wrraper_ageing"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
@@ -621,6 +654,7 @@
         android:paddingRight="10dp">
 
         <ImageButton
+            android:id="@+id/button_ageing"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/detail_selector" />
@@ -635,6 +669,7 @@
             android:text="노령화지수" />
 
         <TextView
+            android:id="@+id/tupyogu_ageing"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="1dp"
@@ -644,6 +679,7 @@
             android:text="40.0" />
 
         <TextView
+            android:id="@+id/sungugu_ageing"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="1dp"
@@ -655,6 +691,8 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/wrraper_memberOfHouseHold"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
@@ -663,6 +701,7 @@
         android:paddingRight="10dp">
 
         <ImageButton
+            android:id="@+id/button_memberOfHouseHold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/detail_selector" />
@@ -677,6 +716,7 @@
             android:text="평균가구원" />
 
         <TextView
+            android:id="@+id/tupyogu_memberOfHouseHold"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="1dp"
@@ -686,6 +726,7 @@
             android:text="45.2" />
 
         <TextView
+            android:id="@+id/sungugu_memberOfHouseHold"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="1dp"
@@ -697,6 +738,8 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/wrraper_dependency"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
@@ -705,6 +748,7 @@
         android:paddingRight="10dp">
 
         <ImageButton
+            android:id="@+id/button_dependency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/detail_selector" />
@@ -719,6 +763,7 @@
             android:text="유년부양비" />
 
         <TextView
+            android:id="@+id/tupyogu_dependency"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="1dp"
@@ -728,6 +773,7 @@
             android:text="35.2" />
 
         <TextView
+            android:id="@+id/sungugu_dependency"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="1dp"
@@ -778,6 +824,8 @@
 
 
     <LinearLayout
+        android:id="@+id/wrraper_header_familly"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"
@@ -821,6 +869,8 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/wrraper_one_man"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
@@ -829,6 +879,7 @@
         android:paddingRight="10dp">
 
         <ImageButton
+            android:id="@+id/button_one_man"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/detail_selector" />
@@ -840,9 +891,10 @@
             android:layout_weight="2"
             android:background="@color/primary_dark_material_light"
             android:gravity="center"
-            android:text="평균나이(세)" />
+            android:text="1인가구" />
 
         <TextView
+            android:id="@+id/tupyogu_one_man"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="1dp"
@@ -852,6 +904,7 @@
             android:text="16.0" />
 
         <TextView
+            android:id="@+id/sungugu_one_man"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="1dp"
@@ -863,6 +916,8 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/wrraper_two_more"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
@@ -871,6 +926,7 @@
         android:paddingRight="10dp">
 
         <ImageButton
+            android:id="@+id/button_two_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/detail_selector" />
@@ -882,9 +938,10 @@
             android:layout_weight="2"
             android:background="@color/primary_dark_material_light"
             android:gravity="center"
-            android:text="평균나이(세)" />
+            android:text="2세대이상" />
 
         <TextView
+            android:id="@+id/tupyogu_two_more"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="1dp"
@@ -894,6 +951,7 @@
             android:text="16.0" />
 
         <TextView
+            android:id="@+id/sungugu_two_more"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="1dp"
@@ -905,6 +963,8 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/wrraper_myhouse"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
@@ -913,6 +973,7 @@
         android:paddingRight="10dp">
 
         <ImageButton
+            android:id="@+id/button_myhouse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/detail_selector" />
@@ -924,9 +985,10 @@
             android:layout_weight="2"
             android:background="@color/primary_dark_material_light"
             android:gravity="center"
-            android:text="평균나이(세)" />
+            android:text="자가비율" />
 
         <TextView
+            android:id="@+id/tupyogu_myhouse"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="1dp"
@@ -936,6 +998,7 @@
             android:text="16.0" />
 
         <TextView
+            android:id="@+id/sungugu_myhouse"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="1dp"
@@ -947,6 +1010,8 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/wrraper_apt"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
@@ -955,6 +1020,7 @@
         android:paddingRight="10dp">
 
         <ImageButton
+            android:id="@+id/button_apt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/detail_selector" />
@@ -966,9 +1032,10 @@
             android:layout_weight="2"
             android:background="@color/primary_dark_material_light"
             android:gravity="center"
-            android:text="평균나이(세)" />
+            android:text="아파트비율" />
 
         <TextView
+            android:id="@+id/tupyogu_apt"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="1dp"
@@ -978,6 +1045,7 @@
             android:text="16.0" />
 
         <TextView
+            android:id="@+id/sungugu_apt"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="1dp"
@@ -989,6 +1057,8 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/wrraper_40m_over"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
@@ -997,6 +1067,7 @@
         android:paddingRight="10dp">
 
         <ImageButton
+            android:id="@+id/button_40m_over"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/detail_selector" />
@@ -1008,9 +1079,10 @@
             android:layout_weight="2"
             android:background="@color/primary_dark_material_light"
             android:gravity="center"
-            android:text="평균나이(세)" />
+            android:text="40m" />
 
         <TextView
+            android:id="@+id/tupyogu_40m_over"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="1dp"
@@ -1020,6 +1092,7 @@
             android:text="16.0" />
 
         <TextView
+            android:id="@+id/sungugu_40m_over"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="1dp"

@@ -26,7 +26,9 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -95,14 +97,105 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     private Button gpsSearchBtn;
     private GpsInfo gps;
 
-    // socialEnv of AreaInfo
-    TextView m20th;
-    TextView m30th;
-    TextView m40th;
-    TextView m40th_under;
-    TextView m50th_over;
-    TextView m50th;
-    TextView m60th;
+    // social enviroment of AreaInfo.
+    // ratio of voter age group.
+    // sungugu.
+    private TableRow mWrraper_sungugu;
+    private TextView mSungugu;
+    private TextView mSungugu_20th;
+    private TextView mSungugu_30th;
+    private TextView mSungugu_40th;
+    private TextView mSungugu_40th_under;
+    private TextView mSungugu_50th_over;
+    private TextView mSungugu_50th;
+    private TextView mSungugu_60th;
+    // hangjungdong.
+    private TableRow mWrraper_hangjung;
+    private TextView mHangjung;
+    private TextView mHangjung_20th;
+    private TextView mHangjung_30th;
+    private TextView mHangjung_40th;
+    private TextView mHangjung_40th_under;
+    private TextView mHangjung_50th_over;
+    private TextView mHangjung_50th;
+    private TextView mHangjung_60th;
+    // tupyogu
+    private TableRow mWrraper_typyogu;
+    private TextView mTtuyogu;
+    private TextView mtypyogu_20th;
+    private TextView mtypyogu_30th;
+    private TextView mtypyogu_40th;
+    private TextView mtypyogu_40th_under;
+    private TextView mtypyogu_50th_over;
+    private TextView mtypyogu_50th;
+    private TextView mtypyogu_60th;
+
+    // statistics of population.
+    // avarage age.
+    private LinearLayout mLwrraper_header_population;
+    private LinearLayout mLwrraper_age;
+    private ImageButton mButton_age;
+    private TextView mTtupyogu_age;
+    private TextView mTsungugu_age;
+    // wife ratio.
+    private LinearLayout mLwrraper_wife;
+    private ImageButton mButton_wife;
+    private TextView mTtupyogu_wife;
+    private TextView mTsungugu_wife;
+    // graduate of the University
+    private LinearLayout mLwrraper_univercity;
+    private ImageButton mButton_univercity;
+    private TextView mTtupyogu_univercity;
+    private TextView mTsungugu_univercity;
+    // Population density
+    private LinearLayout mLwrraper_population;
+    private ImageButton mButton_population;
+    private TextView mTtupyogu_population;
+    private TextView mTsungugu_population;
+    // Aging
+    private LinearLayout mLwrraper_ageing;
+    private ImageButton mButton_ageing;
+    private TextView mTtupyogu_ageing;
+    private TextView mTsungugu_ageing;
+    // 평균가구원.
+    private LinearLayout mLwrraper_memberOfHouseHold;
+    private ImageButton mButton_memberOfHouseHold;
+    private TextView mTtupyogu_memberOfHouseHold;
+    private TextView mTsungugu_memberOfHouseHold;
+    // 유년부양비
+    private LinearLayout mLwrraper_dependency;
+    private ImageButton mButton_dependency;
+    private TextView mTtupyogu_dependency;
+    private TextView mTsungugu_dependency;
+
+    // statistics of memberOfHouseHold
+    private LinearLayout mLwrraper_header_familly;
+    private LinearLayout mLwrraper_one_man;
+    private ImageButton mButton_one_man;
+    private TextView mTtupyogu_one_man;
+    private TextView mTsungugu_one_man;
+
+    private LinearLayout mLwrraper_two_more;
+    private ImageButton mButton_two_more;
+    private TextView mTtupyogu_two_more;
+    private TextView mTsungugu_two_more;
+
+    private LinearLayout mLwrraper_myhouse;
+    private ImageButton mButton_myhouse;
+    private TextView mTtupyogu_myhouse;
+    private TextView mTsungugu_myhouse;
+
+    private LinearLayout mLwrraper_apt;
+    private ImageButton mButton_apt;
+    private TextView mTtupyogu_apt;
+    private TextView mTsungugu_apt;
+
+    private LinearLayout mLwrraper_40m_over;
+    private ImageButton mButton_40m_over;
+    private TextView mTtupyogu_40m_over;
+    private TextView mTsungugu_40m_over;
+
+
 
     /**
      * Use this factory method to create a new instance of
@@ -122,6 +215,125 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         return fragment;
     }
 
+
+    private void initVoterRatioOfAge(View view) {
+        mWrraper_sungugu=(TableRow)view.findViewById(R.id.wrraper_sungugu);
+        mSungugu=(TextView)view.findViewById(R.id.sungugu);
+        mSungugu_20th=(TextView)view.findViewById(R.id.sungugu_20th);
+        mSungugu_30th=(TextView)view.findViewById(R.id.sungugu_30th);
+        mSungugu_40th=(TextView)view.findViewById(R.id.sungugu_40th);
+        mSungugu_40th_under=(TextView)view.findViewById(R.id.sungugu_40th_under);
+        mSungugu_50th_over=(TextView)view.findViewById(R.id.sungugu_50th_over);
+        mSungugu_50th=(TextView)view.findViewById(R.id.sungugu_50th);
+        mSungugu_60th=(TextView)view.findViewById(R.id.sungugu_60th);
+
+        mWrraper_hangjung=(TableRow)view.findViewById(R.id.wrraper_hangjung);;
+        mHangjung=(TextView)view.findViewById(R.id.hangjung);
+        mHangjung_20th=(TextView)view.findViewById(R.id.hangjung_20th);
+        mHangjung_30th=(TextView)view.findViewById(R.id.hangjung_30th);
+        mHangjung_40th=(TextView)view.findViewById(R.id.hangjung_40th);
+        mHangjung_40th_under=(TextView)view.findViewById(R.id.hangjung_40th_under);
+        mHangjung_50th_over=(TextView)view.findViewById(R.id.hangjung_50th_over);
+        mHangjung_50th=(TextView)view.findViewById(R.id.hangjung_50th);
+        mHangjung_60th=(TextView)view.findViewById(R.id.hangjung_60th);
+
+        mWrraper_typyogu=(TableRow)view.findViewById(R.id.wrraper_tupyogu);
+        mTtuyogu=(TextView)view.findViewById(R.id.tupyogu);
+        mtypyogu_20th=(TextView)view.findViewById(R.id.tupyogu_20th);
+        mtypyogu_30th=(TextView)view.findViewById(R.id.tupyogu_30th);
+        mtypyogu_40th=(TextView)view.findViewById(R.id.tupyogu_40th);
+        mtypyogu_40th_under=(TextView)view.findViewById(R.id.tupyogu_40th_under);
+        mtypyogu_50th_over=(TextView)view.findViewById(R.id.tupyogu_50th_over);
+        mtypyogu_50th=(TextView)view.findViewById(R.id.tupyogu_50th);
+        mtypyogu_60th=(TextView)view.findViewById(R.id.tupyogu_60th);
+    }
+
+    private void setVisivilityVoterRatioOfAge (int size) {
+
+        switch (size) {
+            case 1:
+                mWrraper_sungugu.setVisibility(View.VISIBLE);
+                break;
+            case 2:
+                mWrraper_sungugu.setVisibility(View.VISIBLE);
+                mWrraper_hangjung.setVisibility(View.VISIBLE);
+                break;
+            case 3:
+                mWrraper_sungugu.setVisibility(View.VISIBLE);
+                mWrraper_hangjung.setVisibility(View.VISIBLE);
+                mWrraper_typyogu.setVisibility(View.VISIBLE);
+                break;
+            default:
+                break;
+        }
+
+    }
+
+    private void initStatisticsOfpopulation(View view) {
+        mLwrraper_header_population=(LinearLayout)view.findViewById(R.id.wrraper_header_population);
+        mLwrraper_age=(LinearLayout)view.findViewById(R.id.wrraper_age);;
+        mButton_age=(ImageButton)view.findViewById(R.id.button_age);
+        mTtupyogu_age=(TextView)view.findViewById(R.id.tupyogu_age);
+        mTsungugu_age=(TextView)view.findViewById(R.id.sungugu_age);
+
+        mLwrraper_wife=(LinearLayout)view.findViewById(R.id.wrraper_wife);;
+        mButton_wife=(ImageButton)view.findViewById(R.id.button_wife);
+        mTtupyogu_wife=(TextView)view.findViewById(R.id.tupyogu_wife);
+        mTsungugu_wife=(TextView)view.findViewById(R.id.tupyogu_wife);
+
+        mLwrraper_univercity=(LinearLayout)view.findViewById(R.id.wrraper_univercity);;
+        mButton_univercity=(ImageButton)view.findViewById(R.id.button_univercity);
+        mTtupyogu_univercity=(TextView)view.findViewById(R.id.tupyogu_univer);
+        mTsungugu_univercity=(TextView)view.findViewById(R.id.tupyogu_univer);
+
+        mLwrraper_population=(LinearLayout)view.findViewById(R.id.wrraper_population);;
+        mButton_population=(ImageButton)view.findViewById(R.id.button_population);
+        mTtupyogu_population=(TextView)view.findViewById(R.id.tupyogu_population);
+        mTsungugu_population=(TextView)view.findViewById(R.id.tupyogu_population);
+
+        mLwrraper_ageing=(LinearLayout)view.findViewById(R.id.wrraper_ageing);;
+        mButton_ageing=(ImageButton)view.findViewById(R.id.button_ageing);
+        mTtupyogu_ageing=(TextView)view.findViewById(R.id.tupyogu_ageing);
+        mTsungugu_ageing=(TextView)view.findViewById(R.id.tupyogu_ageing);
+
+        mLwrraper_memberOfHouseHold=(LinearLayout)view.findViewById(R.id.wrraper_memberOfHouseHold);;
+        mButton_memberOfHouseHold=(ImageButton)view.findViewById(R.id.button_memberOfHouseHold);
+        mTtupyogu_memberOfHouseHold=(TextView)view.findViewById(R.id.tupyogu_memberOfHouseHold);
+        mTsungugu_memberOfHouseHold=(TextView)view.findViewById(R.id.tupyogu_memberOfHouseHold);
+
+        mLwrraper_dependency=(LinearLayout)view.findViewById(R.id.wrraper_dependency);;
+        mButton_dependency=(ImageButton)view.findViewById(R.id.button_dependency);
+        mTtupyogu_dependency=(TextView)view.findViewById(R.id.tupyogu_dependency);
+        mTsungugu_dependency=(TextView)view.findViewById(R.id.tupyogu_dependency);
+    }
+
+    private void initStatisticsOfFamily(View view) {
+        mLwrraper_header_familly=(LinearLayout)view.findViewById(R.id.wrraper_header_familly);
+        mLwrraper_one_man=(LinearLayout)view.findViewById(R.id.wrraper_one_man);
+        mButton_one_man=(ImageButton)view.findViewById(R.id.button_one_man);
+        mTtupyogu_one_man=(TextView)view.findViewById(R.id.tupyogu_one_man);
+        mTsungugu_one_man=(TextView)view.findViewById(R.id.sungugu_one_man);
+
+        mLwrraper_two_more=(LinearLayout)view.findViewById(R.id.wrraper_two_more);
+        mButton_two_more=(ImageButton)view.findViewById(R.id.button_two_more);
+        mTtupyogu_two_more=(TextView)view.findViewById(R.id.tupyogu_two_more);
+        mTsungugu_two_more=(TextView)view.findViewById(R.id.tupyogu_two_more);
+
+        mLwrraper_myhouse=(LinearLayout)view.findViewById(R.id.wrraper_myhouse);
+        mButton_myhouse=(ImageButton)view.findViewById(R.id.button_myhouse);
+        mTtupyogu_myhouse=(TextView)view.findViewById(R.id.tupyogu_myhouse);
+        mTsungugu_myhouse=(TextView)view.findViewById(R.id.tupyogu_myhouse);
+
+        mLwrraper_apt=(LinearLayout)view.findViewById(R.id.wrraper_apt);
+        mButton_apt=(ImageButton)view.findViewById(R.id.button_apt);
+        mTtupyogu_apt=(TextView)view.findViewById(R.id.tupyogu_apt);
+        mTsungugu_apt=(TextView)view.findViewById(R.id.tupyogu_apt);
+
+        mLwrraper_40m_over=(LinearLayout)view.findViewById(R.id.wrraper_40m_over);
+        mButton_40m_over=(ImageButton)view.findViewById(R.id.button_40m_over);
+        mTtupyogu_40m_over=(TextView)view.findViewById(R.id.tupyogu_40m_over);
+        mTsungugu_40m_over=(TextView)view.findViewById(R.id.tupyogu_40m_over);
+    }
 
 
 
@@ -244,6 +456,10 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         Log.d(TAG, "onCreateView");
         mTest.append("Hahahahahahaha");
         View view = inflater.inflate(R.layout.fragment_search, container, false);
+        initVoterRatioOfAge(view);
+        initStatisticsOfpopulation(view);
+        initStatisticsOfFamily(view);
+
         myWebview = (WebView) view.findViewById(
                 R.id.webView);
         myWebview.setWebViewClient(new MainWebViewClient());
@@ -568,6 +784,8 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                     alVoteDao = (JSONArray)re.get("RATE");
                     alStatsDAO = (JSONArray)re.get("STATS");
                     alFamilyDAO = (JSONArray)re.get("FAMILYDAO");
+
+                    setVisivilityVoterRatioOfAge(alVoteDao.size());
 
                     Gson gs = new Gson();
                     Log.d(TAG,"alVoteDato.toJSONString : "+alVoteDao.toJSONString());
