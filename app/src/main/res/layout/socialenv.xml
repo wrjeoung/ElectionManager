@@ -78,6 +78,8 @@
         android:stretchColumns="*">
 
         <TableRow
+            android:id="@+id/wrraper_voteratio_header"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
