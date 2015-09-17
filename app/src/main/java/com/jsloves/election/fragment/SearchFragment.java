@@ -99,6 +99,8 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
     // social enviroment of AreaInfo.
     // ratio of voter age group.
+    // header
+    private TableRow mWrraper_voteratio_header;
     // sungugu.
     private TableRow mWrraper_sungugu;
     private TextView mSungugu;
@@ -217,6 +219,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
 
     private void initVoterRatioOfAge(View view) {
+        mWrraper_voteratio_header=(TableRow)view.findViewById(R.id.wrraper_voteratio_header);
         mWrraper_sungugu=(TableRow)view.findViewById(R.id.wrraper_sungugu);
         mSungugu=(TextView)view.findViewById(R.id.sungugu);
         mSungugu_20th=(TextView)view.findViewById(R.id.sungugu_20th);
@@ -252,13 +255,19 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
         switch (size) {
             case 1:
+                mWrraper_voteratio_header.setVisibility(View.VISIBLE);
                 mWrraper_sungugu.setVisibility(View.VISIBLE);
+                mWrraper_hangjung.setVisibility(View.GONE);
+                mWrraper_typyogu.setVisibility(View.GONE);
                 break;
             case 2:
+                mWrraper_voteratio_header.setVisibility(View.VISIBLE);
                 mWrraper_sungugu.setVisibility(View.VISIBLE);
                 mWrraper_hangjung.setVisibility(View.VISIBLE);
+                mWrraper_typyogu.setVisibility(View.GONE);
                 break;
             case 3:
+                mWrraper_voteratio_header.setVisibility(View.VISIBLE);
                 mWrraper_sungugu.setVisibility(View.VISIBLE);
                 mWrraper_hangjung.setVisibility(View.VISIBLE);
                 mWrraper_typyogu.setVisibility(View.VISIBLE);
@@ -266,7 +275,50 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
             default:
                 break;
         }
+    }
 
+    private void setDataVoterRAtionOfAge(JSONArray data) {
+
+        Gson gs = new Gson();
+        Log.d(TAG,"setDataVoterRAtionOfAge data.toJSONString : "+data.toJSONString());
+        Log.d(TAG,"setDataVoterRAtionOfAge data.size() : "+data.size());
+        Log.d(TAG,"setDataVoterRAtionOfAge data.get(0) : " +data.get(0));
+
+        for(int i=0; i<data.size(); i++) {
+            VoteDAO vd = gs.fromJson((String) data.get(i), VoteDAO.class);
+
+            switch (i) {
+                case 0 :
+                    mSungugu_20th.setText(String.valueOf(vd.getV20th()));
+                    mSungugu_30th.setText(String.valueOf(vd.getV30th()));
+                    mSungugu_40th.setText(String.valueOf(vd.getV40th()));
+                    mSungugu_40th_under.setText(String.valueOf(vd.getV40th_under()));
+                    mSungugu_50th_over.setText(String.valueOf(vd.getV50th_over()));
+                    mSungugu_50th.setText(String.valueOf(vd.getV50th()));
+                    mSungugu_60th.setText(String.valueOf(vd.getV60th_over()));
+                    break;
+                case 1 :
+                    mHangjung_20th.setText(String.valueOf(vd.getV20th()));
+                    mHangjung_30th.setText(String.valueOf(vd.getV30th()));
+                    mHangjung_40th.setText(String.valueOf(vd.getV40th()));
+                    mHangjung_40th_under.setText(String.valueOf(vd.getV40th_under()));
+                    mHangjung_50th_over.setText(String.valueOf(vd.getV50th_over()));
+                    mHangjung_50th.setText(String.valueOf(vd.getV50th()));
+                    mHangjung_60th.setText(String.valueOf(vd.getV60th_over()));
+                    break;
+                case 2 :
+                    mtypyogu_20th.setText(String.valueOf(vd.getV20th()));
+                    mtypyogu_30th.setText(String.valueOf(vd.getV30th()));
+                    mtypyogu_40th.setText(String.valueOf(vd.getV40th()));
+                    mtypyogu_40th_under.setText(String.valueOf(vd.getV40th_under()));
+                    mtypyogu_50th_over.setText(String.valueOf(vd.getV50th_over()));
+                    mtypyogu_50th.setText(String.valueOf(vd.getV50th()));
+                    mtypyogu_60th.setText(String.valueOf(vd.getV60th_over()));
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     private void initStatisticsOfpopulation(View view) {
@@ -305,6 +357,71 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         mButton_dependency=(ImageButton)view.findViewById(R.id.button_dependency);
         mTtupyogu_dependency=(TextView)view.findViewById(R.id.tupyogu_dependency);
         mTsungugu_dependency=(TextView)view.findViewById(R.id.tupyogu_dependency);
+    }
+
+    private void setVisivilityStatisticsOfpopulation (int size) {
+
+       if(size > 0) {
+           mLwrraper_header_population.setVisibility(View.VISIBLE);
+           mLwrraper_age.setVisibility(View.VISIBLE);
+           mButton_age.setVisibility(View.VISIBLE);
+           mTtupyogu_age.setVisibility(View.VISIBLE);
+           mTsungugu_age.setVisibility(View.VISIBLE);
+
+           mLwrraper_wife.setVisibility(View.VISIBLE);
+           mButton_wife.setVisibility(View.VISIBLE);
+           mTtupyogu_wife.setVisibility(View.VISIBLE);
+           mTsungugu_wife.setVisibility(View.VISIBLE);
+
+           mLwrraper_univercity.setVisibility(View.VISIBLE);
+           mButton_univercity.setVisibility(View.VISIBLE);
+           mTtupyogu_univercity.setVisibility(View.VISIBLE);
+           mTsungugu_univercity.setVisibility(View.VISIBLE);
+
+           mLwrraper_population.setVisibility(View.VISIBLE);
+           mButton_population.setVisibility(View.VISIBLE);
+           mTtupyogu_population.setVisibility(View.VISIBLE);
+           mTsungugu_population.setVisibility(View.VISIBLE);
+
+           mLwrraper_ageing.setVisibility(View.VISIBLE);
+           mButton_ageing.setVisibility(View.VISIBLE);
+           mTtupyogu_ageing.setVisibility(View.VISIBLE);
+           mTsungugu_ageing.setVisibility(View.VISIBLE);
+
+           mLwrraper_memberOfHouseHold.setVisibility(View.VISIBLE);
+           mButton_memberOfHouseHold.setVisibility(View.VISIBLE);
+           mTtupyogu_memberOfHouseHold.setVisibility(View.VISIBLE);
+           mTsungugu_memberOfHouseHold.setVisibility(View.VISIBLE);
+
+           mLwrraper_dependency.setVisibility(View.VISIBLE);
+           mButton_dependency.setVisibility(View.VISIBLE);
+           mTtupyogu_dependency.setVisibility(View.VISIBLE);
+           mTsungugu_dependency.setVisibility(View.VISIBLE);
+       }
+    }
+
+    private void setDataStatisticsOfpopulation(JSONArray data) {
+        Gson gs = new Gson();
+        Log.d(TAG,"setDataStatisticsOfpopulation data.toJSONString : "+data.toJSONString());
+        Log.d(TAG,"setDataStatisticsOfpopulation data.size() : "+data.size());
+        Log.d(TAG,"setDataStatisticsOfpopulation data.get(0) : " +data.get(0));
+
+        for(int i=0; i<data.size(); i++) {
+            StatsDAO sd = gs.fromJson((String) data.get(i), StatsDAO.class);
+            switch (i) {
+                case 0:
+                    mTtupyogu_age.setText(String.valueOf(sd.getAge_avg())==null?"정보없음":String.valueOf(sd.getAge_avg()));
+
+
+                    break;
+                case 1:
+                    mTtupyogu_age.setText(String.valueOf(sd.getAge_avg()));
+                    break;
+                default:
+                    break;
+            }
+        }
+
     }
 
     private void initStatisticsOfFamily(View view) {
@@ -401,7 +518,6 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         Log.d(TAG, "showMap jo : " + jo);
 
         excuteTask(getString(R.string.server_url), jo.toString());
-        //excuteTask("http://10.112.58.94:8080/Woori/MobileReq.jsp", jo.toString());
         /*myWebview.loadUrl("javascript:drawMap('" + jo.toString() + "')");
         if(myWebview.getVisibility()!= View.VISIBLE)
             myWebview.setVisibility(View.VISIBLE);
@@ -494,7 +610,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 return super.onConsoleMessage(consoleMessage);
             }
         });
-        //String url = "http://10.112.58.94:8080/Woori/areaMap.jsp";
+        //String url = "http://172.30.90.228:8080/Woori/areaMap.jsp";
         myWebview.loadUrl(getString(R.string.mapView_url));
         //myWebview.loadUrl(url);
         myWebview.setVisibility(View.GONE);
@@ -793,7 +909,11 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                     Log.d(TAG,"alVoteDato.size() : "+alVoteDao.size());
                     Log.d(TAG,"alVoteDato.get(0) : " +alVoteDao.get(0));
 
+                    setVisivilityVoterRatioOfAge(alVoteDao.size());
+                    setDataVoterRAtionOfAge(alVoteDao);
 
+                    setVisivilityStatisticsOfpopulation(alStatsDAO.size());
+                    setDataStatisticsOfpopulation(alStatsDAO);
 
                     for(int i=0; i<alVoteDao.size(); i++) {
                         VoteDAO vd = gs.fromJson((String) alVoteDao.get(i), VoteDAO.class);
