@@ -15,8 +15,7 @@
         android:singleLine="true"
         android:text="순번"
         android:visibility="gone"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center"
+        android:gravity="center_horizontal"
         />
 
     <TextView
@@ -28,15 +27,14 @@
         android:textSize="30px"
         android:singleLine="true"
         android:text="지역"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center"
+        android:gravity="center_horizontal"
         />
     <TextView
         android:id="@+id/tv_organ"
         android:layout_width="0dp"
         android:textColor="#696969"
         android:layout_weight="3"
-        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
         android:layout_height="wrap_content"
         android:textSize="30px"
         android:text="기관명" />

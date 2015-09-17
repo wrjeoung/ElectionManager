@@ -1,11 +1,14 @@
 package com.jsloves.election.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTabHost;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TabHost;
+
 import com.jsloves.election.activity.R;
 
 public class FragmentTab extends Fragment {
@@ -25,6 +28,8 @@ public class FragmentTab extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
         mTabHost = new FragmentTabHost(getActivity());
         mTabHost.setup(getActivity(), getChildFragmentManager(), R.id.content);
 
@@ -34,11 +39,20 @@ public class FragmentTab extends Fragment {
         Bundle b2 = new Bundle();
         b2.putString("b2", "b2");
 
-        mTabHost.addTab(mTabHost.newTabSpec("simple").setIndicator("1"),
+        //TabHost.TabSpec tabSpec1 = mTabHost.newTabSpec("tab1").setIndicator("기관");
+        //TabHost.TabSpec tabSpec2 = mTabHost.newTabSpec("tab2").setIndicator("단체");
+        //mTabHost.addTab(tabSpec1, OrganIntroFragment.class, b1);
+        //mTabHost.addTab(tabSpec2, OrganIntroFragment2.class, b2);
+
+
+        mTabHost.addTab(mTabHost.newTabSpec("simple").setIndicator(getString(R.string.str_org1), null),
                 OrganIntroFragment.class, b1);
 
-        mTabHost.addTab(mTabHost.newTabSpec("contacts").setIndicator("2"),
+        mTabHost.addTab(mTabHost.newTabSpec("contacts").setIndicator(getString(R.string.str_org2), null),
                 OrganIntroFragment2.class, b2);
+
+        mTabHost.getTabWidget().getChildTabViewAt(0).setBackgroundColor(Color.parseColor("#BDBDBD"));
+        mTabHost.getTabWidget().getChildTabViewAt(1).setBackgroundColor(Color.parseColor("#BDBDBD"));
 
         return mTabHost;
     }

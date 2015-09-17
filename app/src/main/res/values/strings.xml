@@ -24,6 +24,8 @@
     <string name="popup_cancel">취 소</string>
     <string name="home">홈</string>
     <string name="population_household">인구 및 가구</string>
+    <string name="str_org1">기관정보</string>
+    <string name="str_org2">단체정보</string>
 
     <string-array name="img_ids">
         <item>@drawable/guyok</item>
