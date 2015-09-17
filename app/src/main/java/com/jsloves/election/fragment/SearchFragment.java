@@ -401,6 +401,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         Log.d(TAG, "showMap jo : " + jo);
 
         excuteTask(getString(R.string.server_url), jo.toString());
+        //excuteTask("http://10.112.58.94:8080/Woori/MobileReq.jsp", jo.toString());
         /*myWebview.loadUrl("javascript:drawMap('" + jo.toString() + "')");
         if(myWebview.getVisibility()!= View.VISIBLE)
             myWebview.setVisibility(View.VISIBLE);
@@ -489,11 +490,11 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         myWebview.setWebChromeClient(new WebChromeClient() {
             @Override
             public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
-                //Log.d("kjh", consoleMessage.message() + '\n' + consoleMessage.messageLevel() + '\n' + consoleMessage.sourceId());
+                Log.d(TAG, consoleMessage.message() + '\n' + consoleMessage.messageLevel() + '\n' + consoleMessage.sourceId());
                 return super.onConsoleMessage(consoleMessage);
             }
         });
-        //String url = "http://172.30.90.228:8080/Woori/areaMap.jsp";
+        //String url = "http://10.112.58.94:8080/Woori/areaMap.jsp";
         myWebview.loadUrl(getString(R.string.mapView_url));
         //myWebview.loadUrl(url);
         myWebview.setVisibility(View.GONE);
@@ -804,8 +805,11 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
 
                     }
-
-                }
+                    JSONObject mapData = (JSONObject)re.get("MAPDATA");
+                    myWebview.loadUrl("javascript:drawMap('" + mapData.toString() + "')");
+                    if(myWebview.getVisibility()!= View.VISIBLE)
+                        myWebview.setVisibility(View.VISIBLE);
+                   }
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
