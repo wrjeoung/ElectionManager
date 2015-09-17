@@ -517,38 +517,33 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         }
     }
 
-    private void showMap(String sigungu, String hangjungdong, String tupyogu, String adm_cd) {
+    private void showMap(String adm_cd) {
         //tupyogu = tupyogu.replace("제","");
         //tupyogu = tupyogu.replace("투표구","");
         Log.d(TAG, "showMap mTest : " + mTest);
         JSONObject jo = new JSONObject();
         //jo.put("TYPE","GEODATA_TEST");
-        jo.put("TYPE", "TEST");
-        jo.put("SIGUNGUTEXT", sigungu);
-        jo.put("HAENGTEXT", hangjungdong);
-        jo.put("TUPYOGU_NUM", tupyogu);
+        jo.put("TYPE","TEST");
         jo.put("ADM_CD", adm_cd);
         jo.put("COX", 0.0);
         jo.put("COY", 0.0);
         Log.d(TAG, "showMap jo : " + jo);
 
         excuteTask(getString(R.string.server_url), jo.toString());
+        //excuteTask("http://192.168.0.6:8080/Woori/MobileReq.jsp", jo.toString());
         /*myWebview.loadUrl("javascript:drawMap('" + jo.toString() + "')");
         if(myWebview.getVisibility()!= View.VISIBLE)
             myWebview.setVisibility(View.VISIBLE);
         */
     }
 
-    private void showMap(String sigungu, String hangjungdong, String tupyogu, String adm_cd, double cox, double coy) {
+    private void showMap(String adm_cd, double cox, double coy) {
         //tupyogu = tupyogu.replace("제","");
         //tupyogu = tupyogu.replace("투표구","");
         Log.d(TAG, "showMap mTest : " + mTest);
         JSONObject jo = new JSONObject();
         //jo.put("TYPE","GEODATA_TEST");
-        jo.put("TYPE", "TEST");
-        jo.put("SIGUNGUTEXT", sigungu);
-        jo.put("HAENGTEXT", hangjungdong);
-        jo.put("TUPYOGU_NUM", tupyogu);
+        jo.put("TYPE","TEST");
         jo.put("ADM_CD", adm_cd);
         jo.put("COX", cox);
         jo.put("COY", coy);
@@ -577,7 +572,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    showMap(mSigungu, mHangjungdong, mTupyogu, adm_cd);
+                    showMap(adm_cd);
                 }
             }, 1000);
         }
@@ -663,8 +658,8 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 String adm_cd = ElectionManagerApp.getInstance().getTupyoguCode(array);
 
 
-                Log.d(TAG, "tupyoguStr = " + tupyoguStr + " ,adm_cd = " + adm_cd);
-                showMap(sigungu, haengjoungdong, tupyoguStr, adm_cd);
+                Log.d(TAG, "tupyoguStr = "+tupyoguStr+ " ,adm_cd = "+adm_cd);
+                showMap(adm_cd);
             }
         });
         person = (ImageButton) view.findViewById(R.id.person);
@@ -699,7 +694,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                         Log.d(TAG, "addr : " + addr);
                         String convert = "변환X: " + out_pt.getX() + " ,변환Y: " + out_pt.getY();
                         Log.d(TAG, "convert : " + convert);
-                        Toast.makeText(getActivity().getApplicationContext(), "당신의 위치 - \n위도: " + latitude + "\n경도: " + longitude + "\n변환X: " + out_pt.getX() + "\n변환Y: " + out_pt.getY(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getActivity().getApplicationContext(), "당신의 위치 - \n위도: " + latitude + "\n경도: " + longitude+ "\n변환X: " + out_pt.getX()+ "\n변환Y: " + out_pt.getY(), Toast.LENGTH_SHORT).show();
 
                         // 구역이동 Spiner Value Setting
                         setAreaFieldValue(addr, out_pt);
@@ -866,49 +861,30 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 re = (JSONObject) par.parse(resultData);
                 String sType = (String) re.get("TYPE");
                 String result = (String) re.get("RESULT");
-                if (sType.equals("GPS") || sType.equals("GPSTEST")) {
-                    /*if (result.equals("SUCCESS")) {
-                        Log.d(TAG, "GPS SUCCESS");
-
-
-                        ElectionManagerApp.getInstance().setSelectItems(((JSONObject) re.get("SELECTITEMS2")).toString());
-
-                        Log.d(TAG, ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU").toString());
-                        Log.d(TAG, ElectionManagerApp.getInstance().getSelectItemsObject().get("HAENGJOUNGDONG").toString());
-                        Log.d(TAG, ElectionManagerApp.getInstance().getSelectItemsObject().get("TUPYOGU").toString());
-
-                        if(ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU").toString().length() == 2
-                                || ElectionManagerApp.getInstance().getSelectItemsObject().get("HAENGJOUNGDONG").toString().length() == 2
-                                || ElectionManagerApp.getInstance().getSelectItemsObject().get("TUPYOGU").toString().length() == 2){
-                            Log.d(TAG,"매칭 데이터 없음");
-                            Toast.makeText(getActivity().getApplicationContext(),"현재 위치에 맞는 정보가 없습니다.",Toast.LENGTH_SHORT).show();
-                        }else{
-                            Log.d(TAG,"매칭 데이터 있음");
-                            setUpSpinner(sp1, ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU").toString());
-                        }
-                    }*/
+                if(sType.equals("GPS") || sType.equals("GPSTEST")) {
                     if (result.equals("SUCCESS")) {
                         Log.d(TAG, "매칭 데이터 있음");
-                        JSONObject resData = (JSONObject) re.get("RESDATA");
-                        String sigungu = (String) resData.get("SIGUNGU");
-                        String haengjoungdong = (String) resData.get("HAENGJOUNGDONG");
-                        String tupyogu = (String) resData.get("TUPYOGU");
-                        double cox = (Double) resData.get("COX");
-                        double coy = (Double) resData.get("COY");
+                        JSONObject mapData = (JSONObject)re.get("MAPDATA");
+                        double cox = (Double)mapData.get("COX");
+                        double coy = (Double)mapData.get("COY");
+                        String adm_cd = (String)mapData.get("ADM_CD");
 
                         ignoreUpdate = true;
-                        sp1.setSelection(getPosition(sp1, sigungu));
-                        JSONObject jo1 = (JSONObject) ElectionManagerApp.getInstance().getSelectItemsObject().get("HAENGJOUNGDONG");
+                        /*sp1.setSelection(getPosition(sp1, sigungu));
+                        JSONObject jo1 = (JSONObject)ElectionManagerApp.getInstance().getSelectItemsObject().get("HAENGJOUNGDONG");
                         setUpSpinner(sp2, jo1.get(sigungu).toString());
                         sp2.setSelection(getPosition(sp2, haengjoungdong));
-                        JSONObject jo2 = (JSONObject) ElectionManagerApp.getInstance().getSelectItemsObject().get("TUPYOGU");
+                        JSONObject jo2 = (JSONObject)ElectionManagerApp.getInstance().getSelectItemsObject().get("TUPYOGU");
                         setUpSpinner(sp3, jo2.get(haengjoungdong).toString());
                         sp3.setSelection(getPosition(sp3, tupyogu));
                         //showMap(sigungu,haengjoungdong,tupyogu);
-                        String[] array = {sigungu, haengjoungdong, tupyogu};
+                        String[] array = {sigungu,haengjoungdong,tupyogu};
                         String adm_cd = ElectionManagerApp.getInstance().getTupyoguCode(array);
 
-                        showMap(sigungu, haengjoungdong, tupyogu, adm_cd, cox, coy);
+                        showMap(adm_cd,cox,coy);*/
+                        myWebview.loadUrl("javascript:drawMap('" + mapData.toString() + "')");
+                        if(myWebview.getVisibility()!= View.VISIBLE)
+                            myWebview.setVisibility(View.VISIBLE);
 
                     } else if (result.equals("FAILED")) {
                         Log.d(TAG, "매칭 데이터 없음");
