@@ -53,8 +53,8 @@ public class PDFViewActivity extends Activity implements View.OnClickListener {
         pdfView = (PDFView) findViewById(R.id.pdfview);
         pdfView.fromAsset("150_L.pdf")
 
-                .pages(79,80, 81, 82, 83)
-                .defaultPage(81)
+                .pages(0,2, 1, 3, 3,3)
+                .defaultPage(1)
                 .showMinimap(false)
                 .enableSwipe(true)
                         //.onDraw(onDrawListener)

@@ -34,7 +34,6 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.jsloves.election.DTO.FamilyDAO;
 import com.jsloves.election.DTO.StatsDAO;
 import com.jsloves.election.DTO.VoteDAO;
 import com.jsloves.election.activity.PDFViewActivity;
@@ -45,15 +44,12 @@ import com.jsloves.election.util.GeoTrans;
 import com.jsloves.election.util.GpsInfo;
 import com.jsloves.election.util.HttpConnection;
 
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
 /**
@@ -93,7 +89,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     private Handler mHandler = new Handler();
 
 
-	// GPS
+    // GPS
     private Button gpsSearchBtn;
     private GpsInfo gps;
 
@@ -103,7 +99,6 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     private TableRow mWrraper_voteratio_header;
     // sungugu.
     private TableRow mWrraper_sungugu;
-    private TextView mSungugu;
     private TextView mSungugu_20th;
     private TextView mSungugu_30th;
     private TextView mSungugu_40th;
@@ -113,7 +108,6 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     private TextView mSungugu_60th;
     // hangjungdong.
     private TableRow mWrraper_hangjung;
-    private TextView mHangjung;
     private TextView mHangjung_20th;
     private TextView mHangjung_30th;
     private TextView mHangjung_40th;
@@ -123,7 +117,6 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     private TextView mHangjung_60th;
     // tupyogu
     private TableRow mWrraper_typyogu;
-    private TextView mTtuyogu;
     private TextView mtypyogu_20th;
     private TextView mtypyogu_30th;
     private TextView mtypyogu_40th;
@@ -198,7 +191,6 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     private TextView mTsungugu_40m_over;
 
 
-
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -219,39 +211,36 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
 
     private void initVoterRatioOfAge(View view) {
-        mWrraper_voteratio_header=(TableRow)view.findViewById(R.id.wrraper_voteratio_header);
-        mWrraper_sungugu=(TableRow)view.findViewById(R.id.wrraper_sungugu);
-        mSungugu=(TextView)view.findViewById(R.id.sungugu);
-        mSungugu_20th=(TextView)view.findViewById(R.id.sungugu_20th);
-        mSungugu_30th=(TextView)view.findViewById(R.id.sungugu_30th);
-        mSungugu_40th=(TextView)view.findViewById(R.id.sungugu_40th);
-        mSungugu_40th_under=(TextView)view.findViewById(R.id.sungugu_40th_under);
-        mSungugu_50th_over=(TextView)view.findViewById(R.id.sungugu_50th_over);
-        mSungugu_50th=(TextView)view.findViewById(R.id.sungugu_50th);
-        mSungugu_60th=(TextView)view.findViewById(R.id.sungugu_60th);
+        mWrraper_voteratio_header = (TableRow) view.findViewById(R.id.wrraper_voteratio_header);
+        mWrraper_sungugu = (TableRow) view.findViewById(R.id.wrraper_sungugu);
+        mSungugu_20th = (TextView) view.findViewById(R.id.sungugu_20th);
+        mSungugu_30th = (TextView) view.findViewById(R.id.sungugu_30th);
+        mSungugu_40th = (TextView) view.findViewById(R.id.sungugu_40th);
+        mSungugu_40th_under = (TextView) view.findViewById(R.id.sungugu_40th_under);
+        mSungugu_50th_over = (TextView) view.findViewById(R.id.sungugu_50th_over);
+        mSungugu_50th = (TextView) view.findViewById(R.id.sungugu_50th);
+        mSungugu_60th = (TextView) view.findViewById(R.id.sungugu_60th);
 
-        mWrraper_hangjung=(TableRow)view.findViewById(R.id.wrraper_hangjung);;
-        mHangjung=(TextView)view.findViewById(R.id.hangjung);
-        mHangjung_20th=(TextView)view.findViewById(R.id.hangjung_20th);
-        mHangjung_30th=(TextView)view.findViewById(R.id.hangjung_30th);
-        mHangjung_40th=(TextView)view.findViewById(R.id.hangjung_40th);
-        mHangjung_40th_under=(TextView)view.findViewById(R.id.hangjung_40th_under);
-        mHangjung_50th_over=(TextView)view.findViewById(R.id.hangjung_50th_over);
-        mHangjung_50th=(TextView)view.findViewById(R.id.hangjung_50th);
-        mHangjung_60th=(TextView)view.findViewById(R.id.hangjung_60th);
+        mWrraper_hangjung = (TableRow) view.findViewById(R.id.wrraper_hangjung);
+        mHangjung_20th = (TextView) view.findViewById(R.id.hangjung_20th);
+        mHangjung_30th = (TextView) view.findViewById(R.id.hangjung_30th);
+        mHangjung_40th = (TextView) view.findViewById(R.id.hangjung_40th);
+        mHangjung_40th_under = (TextView) view.findViewById(R.id.hangjung_40th_under);
+        mHangjung_50th_over = (TextView) view.findViewById(R.id.hangjung_50th_over);
+        mHangjung_50th = (TextView) view.findViewById(R.id.hangjung_50th);
+        mHangjung_60th = (TextView) view.findViewById(R.id.hangjung_60th);
 
-        mWrraper_typyogu=(TableRow)view.findViewById(R.id.wrraper_tupyogu);
-        mTtuyogu=(TextView)view.findViewById(R.id.tupyogu);
-        mtypyogu_20th=(TextView)view.findViewById(R.id.tupyogu_20th);
-        mtypyogu_30th=(TextView)view.findViewById(R.id.tupyogu_30th);
-        mtypyogu_40th=(TextView)view.findViewById(R.id.tupyogu_40th);
-        mtypyogu_40th_under=(TextView)view.findViewById(R.id.tupyogu_40th_under);
-        mtypyogu_50th_over=(TextView)view.findViewById(R.id.tupyogu_50th_over);
-        mtypyogu_50th=(TextView)view.findViewById(R.id.tupyogu_50th);
-        mtypyogu_60th=(TextView)view.findViewById(R.id.tupyogu_60th);
+        mWrraper_typyogu = (TableRow) view.findViewById(R.id.wrraper_tupyogu);
+        mtypyogu_20th = (TextView) view.findViewById(R.id.tupyogu_20th);
+        mtypyogu_30th = (TextView) view.findViewById(R.id.tupyogu_30th);
+        mtypyogu_40th = (TextView) view.findViewById(R.id.tupyogu_40th);
+        mtypyogu_40th_under = (TextView) view.findViewById(R.id.tupyogu_40th_under);
+        mtypyogu_50th_over = (TextView) view.findViewById(R.id.tupyogu_50th_over);
+        mtypyogu_50th = (TextView) view.findViewById(R.id.tupyogu_50th);
+        mtypyogu_60th = (TextView) view.findViewById(R.id.tupyogu_60th);
     }
 
-    private void setVisivilityVoterRatioOfAge (int size) {
+    private void setVisivilityVoterRatioOfAge(int size) {
 
         switch (size) {
             case 1:
@@ -280,15 +269,15 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     private void setDataVoterRAtionOfAge(JSONArray data) {
 
         Gson gs = new Gson();
-        Log.d(TAG,"setDataVoterRAtionOfAge data.toJSONString : "+data.toJSONString());
-        Log.d(TAG,"setDataVoterRAtionOfAge data.size() : "+data.size());
-        Log.d(TAG,"setDataVoterRAtionOfAge data.get(0) : " +data.get(0));
+        Log.d(TAG, "setDataVoterRAtionOfAge data.toJSONString : " + data.toJSONString());
+        Log.d(TAG, "setDataVoterRAtionOfAge data.size() : " + data.size());
+        Log.d(TAG, "setDataVoterRAtionOfAge data.get(0) : " + data.get(0));
 
-        for(int i=0; i<data.size(); i++) {
+        for (int i = 0; i < data.size(); i++) {
             VoteDAO vd = gs.fromJson((String) data.get(i), VoteDAO.class);
 
             switch (i) {
-                case 0 :
+                case 0:
                     mSungugu_20th.setText(String.valueOf(vd.getV20th()));
                     mSungugu_30th.setText(String.valueOf(vd.getV30th()));
                     mSungugu_40th.setText(String.valueOf(vd.getV40th()));
@@ -297,7 +286,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                     mSungugu_50th.setText(String.valueOf(vd.getV50th()));
                     mSungugu_60th.setText(String.valueOf(vd.getV60th_over()));
                     break;
-                case 1 :
+                case 1:
                     mHangjung_20th.setText(String.valueOf(vd.getV20th()));
                     mHangjung_30th.setText(String.valueOf(vd.getV30th()));
                     mHangjung_40th.setText(String.valueOf(vd.getV40th()));
@@ -306,7 +295,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                     mHangjung_50th.setText(String.valueOf(vd.getV50th()));
                     mHangjung_60th.setText(String.valueOf(vd.getV60th_over()));
                     break;
-                case 2 :
+                case 2:
                     mtypyogu_20th.setText(String.valueOf(vd.getV20th()));
                     mtypyogu_30th.setText(String.valueOf(vd.getV30th()));
                     mtypyogu_40th.setText(String.valueOf(vd.getV40th()));
@@ -322,136 +311,161 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     }
 
     private void initStatisticsOfpopulation(View view) {
-        mLwrraper_header_population=(LinearLayout)view.findViewById(R.id.wrraper_header_population);
-        mLwrraper_age=(LinearLayout)view.findViewById(R.id.wrraper_age);;
-        mButton_age=(ImageButton)view.findViewById(R.id.button_age);
-        mTtupyogu_age=(TextView)view.findViewById(R.id.tupyogu_age);
-        mTsungugu_age=(TextView)view.findViewById(R.id.sungugu_age);
+        mLwrraper_header_population = (LinearLayout) view.findViewById(R.id.wrraper_header_population);
+        mLwrraper_age = (LinearLayout) view.findViewById(R.id.wrraper_age);
+        mButton_age = (ImageButton) view.findViewById(R.id.button_age);
+        mTtupyogu_age = (TextView) view.findViewById(R.id.tupyogu_age);
+        mTsungugu_age = (TextView) view.findViewById(R.id.sungugu_age);
 
-        mLwrraper_wife=(LinearLayout)view.findViewById(R.id.wrraper_wife);;
-        mButton_wife=(ImageButton)view.findViewById(R.id.button_wife);
-        mTtupyogu_wife=(TextView)view.findViewById(R.id.tupyogu_wife);
-        mTsungugu_wife=(TextView)view.findViewById(R.id.tupyogu_wife);
+        mLwrraper_wife = (LinearLayout) view.findViewById(R.id.wrraper_wife);
+        mButton_wife = (ImageButton) view.findViewById(R.id.button_wife);
+        mTtupyogu_wife = (TextView) view.findViewById(R.id.tupyogu_wife);
+        mTsungugu_wife = (TextView) view.findViewById(R.id.sungugu_wife);
 
-        mLwrraper_univercity=(LinearLayout)view.findViewById(R.id.wrraper_univercity);;
-        mButton_univercity=(ImageButton)view.findViewById(R.id.button_univercity);
-        mTtupyogu_univercity=(TextView)view.findViewById(R.id.tupyogu_univer);
-        mTsungugu_univercity=(TextView)view.findViewById(R.id.tupyogu_univer);
+        mLwrraper_univercity = (LinearLayout) view.findViewById(R.id.wrraper_univercity);
+        mButton_univercity = (ImageButton) view.findViewById(R.id.button_univercity);
+        mTtupyogu_univercity = (TextView) view.findViewById(R.id.tupyogu_univer);
+        mTsungugu_univercity = (TextView) view.findViewById(R.id.sungugu_univer);
 
-        mLwrraper_population=(LinearLayout)view.findViewById(R.id.wrraper_population);;
-        mButton_population=(ImageButton)view.findViewById(R.id.button_population);
-        mTtupyogu_population=(TextView)view.findViewById(R.id.tupyogu_population);
-        mTsungugu_population=(TextView)view.findViewById(R.id.tupyogu_population);
+        mLwrraper_population = (LinearLayout) view.findViewById(R.id.wrraper_population);
+        mButton_population = (ImageButton) view.findViewById(R.id.button_population);
+        mTtupyogu_population = (TextView) view.findViewById(R.id.tupyogu_population);
+        mTsungugu_population = (TextView) view.findViewById(R.id.sungugu_population);
 
-        mLwrraper_ageing=(LinearLayout)view.findViewById(R.id.wrraper_ageing);;
-        mButton_ageing=(ImageButton)view.findViewById(R.id.button_ageing);
-        mTtupyogu_ageing=(TextView)view.findViewById(R.id.tupyogu_ageing);
-        mTsungugu_ageing=(TextView)view.findViewById(R.id.tupyogu_ageing);
+        mLwrraper_ageing = (LinearLayout) view.findViewById(R.id.wrraper_ageing);
+        mButton_ageing = (ImageButton) view.findViewById(R.id.button_ageing);
+        mTtupyogu_ageing = (TextView) view.findViewById(R.id.tupyogu_ageing);
+        mTsungugu_ageing = (TextView) view.findViewById(R.id.sungugu_ageing);
 
-        mLwrraper_memberOfHouseHold=(LinearLayout)view.findViewById(R.id.wrraper_memberOfHouseHold);;
-        mButton_memberOfHouseHold=(ImageButton)view.findViewById(R.id.button_memberOfHouseHold);
-        mTtupyogu_memberOfHouseHold=(TextView)view.findViewById(R.id.tupyogu_memberOfHouseHold);
-        mTsungugu_memberOfHouseHold=(TextView)view.findViewById(R.id.tupyogu_memberOfHouseHold);
+        mLwrraper_memberOfHouseHold = (LinearLayout) view.findViewById(R.id.wrraper_memberOfHouseHold);
+        mButton_memberOfHouseHold = (ImageButton) view.findViewById(R.id.button_memberOfHouseHold);
+        mTtupyogu_memberOfHouseHold = (TextView) view.findViewById(R.id.tupyogu_memberOfHouseHold);
+        mTsungugu_memberOfHouseHold = (TextView) view.findViewById(R.id.sungugu_memberOfHouseHold);
 
-        mLwrraper_dependency=(LinearLayout)view.findViewById(R.id.wrraper_dependency);;
-        mButton_dependency=(ImageButton)view.findViewById(R.id.button_dependency);
-        mTtupyogu_dependency=(TextView)view.findViewById(R.id.tupyogu_dependency);
-        mTsungugu_dependency=(TextView)view.findViewById(R.id.tupyogu_dependency);
+        mLwrraper_dependency = (LinearLayout) view.findViewById(R.id.wrraper_dependency);
+        mButton_dependency = (ImageButton) view.findViewById(R.id.button_dependency);
+        mTtupyogu_dependency = (TextView) view.findViewById(R.id.tupyogu_dependency);
+        mTsungugu_dependency = (TextView) view.findViewById(R.id.sungugu_dependency);
     }
 
-    private void setVisivilityStatisticsOfpopulation (int size) {
+    private void setVisivilityStatisticsOfpopulation(int size) {
 
-       if(size > 0) {
-           mLwrraper_header_population.setVisibility(View.VISIBLE);
-           mLwrraper_age.setVisibility(View.VISIBLE);
-           mButton_age.setVisibility(View.VISIBLE);
-           mTtupyogu_age.setVisibility(View.VISIBLE);
-           mTsungugu_age.setVisibility(View.VISIBLE);
+        if (size > 0) {
+            mLwrraper_header_population.setVisibility(View.VISIBLE);
+            mLwrraper_age.setVisibility(View.VISIBLE);
+            mButton_age.setVisibility(View.VISIBLE);
+            mTtupyogu_age.setVisibility(View.VISIBLE);
+            mTsungugu_age.setVisibility(View.VISIBLE);
 
-           mLwrraper_wife.setVisibility(View.VISIBLE);
-           mButton_wife.setVisibility(View.VISIBLE);
-           mTtupyogu_wife.setVisibility(View.VISIBLE);
-           mTsungugu_wife.setVisibility(View.VISIBLE);
+            mLwrraper_wife.setVisibility(View.VISIBLE);
+            mButton_wife.setVisibility(View.VISIBLE);
+            mTtupyogu_wife.setVisibility(View.VISIBLE);
+            mTsungugu_wife.setVisibility(View.VISIBLE);
 
-           mLwrraper_univercity.setVisibility(View.VISIBLE);
-           mButton_univercity.setVisibility(View.VISIBLE);
-           mTtupyogu_univercity.setVisibility(View.VISIBLE);
-           mTsungugu_univercity.setVisibility(View.VISIBLE);
+            mLwrraper_univercity.setVisibility(View.VISIBLE);
+            mButton_univercity.setVisibility(View.VISIBLE);
+            mTtupyogu_univercity.setVisibility(View.VISIBLE);
+            mTsungugu_univercity.setVisibility(View.VISIBLE);
 
-           mLwrraper_population.setVisibility(View.VISIBLE);
-           mButton_population.setVisibility(View.VISIBLE);
-           mTtupyogu_population.setVisibility(View.VISIBLE);
-           mTsungugu_population.setVisibility(View.VISIBLE);
+            mLwrraper_population.setVisibility(View.VISIBLE);
+            mButton_population.setVisibility(View.VISIBLE);
+            mTtupyogu_population.setVisibility(View.VISIBLE);
+            mTsungugu_population.setVisibility(View.VISIBLE);
 
-           mLwrraper_ageing.setVisibility(View.VISIBLE);
-           mButton_ageing.setVisibility(View.VISIBLE);
-           mTtupyogu_ageing.setVisibility(View.VISIBLE);
-           mTsungugu_ageing.setVisibility(View.VISIBLE);
+            mLwrraper_ageing.setVisibility(View.VISIBLE);
+            mButton_ageing.setVisibility(View.VISIBLE);
+            mTtupyogu_ageing.setVisibility(View.VISIBLE);
+            mTsungugu_ageing.setVisibility(View.VISIBLE);
 
-           mLwrraper_memberOfHouseHold.setVisibility(View.VISIBLE);
-           mButton_memberOfHouseHold.setVisibility(View.VISIBLE);
-           mTtupyogu_memberOfHouseHold.setVisibility(View.VISIBLE);
-           mTsungugu_memberOfHouseHold.setVisibility(View.VISIBLE);
+            mLwrraper_memberOfHouseHold.setVisibility(View.VISIBLE);
+            mButton_memberOfHouseHold.setVisibility(View.VISIBLE);
+            mTtupyogu_memberOfHouseHold.setVisibility(View.VISIBLE);
+            mTsungugu_memberOfHouseHold.setVisibility(View.VISIBLE);
 
-           mLwrraper_dependency.setVisibility(View.VISIBLE);
-           mButton_dependency.setVisibility(View.VISIBLE);
-           mTtupyogu_dependency.setVisibility(View.VISIBLE);
-           mTsungugu_dependency.setVisibility(View.VISIBLE);
-       }
+            mLwrraper_dependency.setVisibility(View.VISIBLE);
+            mButton_dependency.setVisibility(View.VISIBLE);
+            mTtupyogu_dependency.setVisibility(View.VISIBLE);
+            mTsungugu_dependency.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setDataStatisticsOfpopulation(JSONArray data) {
         Gson gs = new Gson();
-        Log.d(TAG,"setDataStatisticsOfpopulation data.toJSONString : "+data.toJSONString());
-        Log.d(TAG,"setDataStatisticsOfpopulation data.size() : "+data.size());
-        Log.d(TAG,"setDataStatisticsOfpopulation data.get(0) : " +data.get(0));
+        Log.d(TAG, "setDataStatisticsOfpopulation data.toJSONString : " + data.toJSONString());
+        Log.d(TAG, "setDataStatisticsOfpopulation data.size() : " + data.size());
+        Log.d(TAG, "setDataStatisticsOfpopulation data.get(0) : " + data.get(0));
 
-        for(int i=0; i<data.size(); i++) {
+        for (int i = 0; i < data.size(); i++) {
             StatsDAO sd = gs.fromJson((String) data.get(i), StatsDAO.class);
             switch (i) {
                 case 0:
-                    mTtupyogu_age.setText(String.valueOf(sd.getAge_avg())==null?"정보없음":String.valueOf(sd.getAge_avg()));
+                    mTsungugu_age.setText(String.valueOf(sd.getAge_avg()));
+                    mTsungugu_wife.setText(String.valueOf(sd.getPartner_yn()));
+                    mTsungugu_univercity.setText(String.valueOf(sd.getUniv_over()));
+                    mTsungugu_population.setText(String.valueOf(sd.getPop_dnsity()));
+                    mTsungugu_ageing.setText(String.valueOf(sd.getAged_child_ratio()));
+                    mTsungugu_memberOfHouseHold.setText(String.valueOf(sd.getFamily_avg()));
+                    mTsungugu_dependency.setText(String.valueOf(sd.getChildhood_alimony()));
 
 
+                    Log.d(TAG, "setDataStatisticsOfpopulation sd.getAge_avg() : " + sd.getAge_avg());
+                    Log.d(TAG, "setDataStatisticsOfpopulation sd.getAged_child_ratio() : " + sd.getAged_child_ratio());
+                    Log.d(TAG, "setDataStatisticsOfpopulation sd.getFamily_avg() : " + sd.getFamily_avg());
+                    Log.d(TAG, "setDataStatisticsOfpopulation sd.getPop_dnsity() : " + sd.getPop_dnsity());
                     break;
                 case 1:
                     mTtupyogu_age.setText(String.valueOf(sd.getAge_avg()));
+                    mTtupyogu_wife.setText(String.valueOf(sd.getPartner_yn()));
+                    mTtupyogu_univercity.setText(String.valueOf(sd.getUniv_over()));
+                    mTtupyogu_population.setText(String.valueOf(sd.getPop_dnsity()));
+                    mTtupyogu_ageing.setText(String.valueOf(sd.getChildhood_alimony()));
+                    mTtupyogu_memberOfHouseHold.setText(String.valueOf(sd.getFamily_avg()));
+                    mTtupyogu_dependency.setText(String.valueOf(sd.getChildhood_alimony()));
                     break;
                 default:
                     break;
             }
         }
 
+        if (data.size() == 1) {
+            mTtupyogu_age.setText("정보없음");
+            mTtupyogu_wife.setText("정보없음");
+            mTtupyogu_univercity.setText("정보없음");
+            mTtupyogu_population.setText("정보없음");
+            mTtupyogu_ageing.setText("정보없음");
+            mTtupyogu_memberOfHouseHold.setText("정보없음");
+            mTtupyogu_dependency.setText("정보없음");
+        }
+
     }
 
     private void initStatisticsOfFamily(View view) {
-        mLwrraper_header_familly=(LinearLayout)view.findViewById(R.id.wrraper_header_familly);
-        mLwrraper_one_man=(LinearLayout)view.findViewById(R.id.wrraper_one_man);
-        mButton_one_man=(ImageButton)view.findViewById(R.id.button_one_man);
-        mTtupyogu_one_man=(TextView)view.findViewById(R.id.tupyogu_one_man);
-        mTsungugu_one_man=(TextView)view.findViewById(R.id.sungugu_one_man);
+        mLwrraper_header_familly = (LinearLayout) view.findViewById(R.id.wrraper_header_familly);
+        mLwrraper_one_man = (LinearLayout) view.findViewById(R.id.wrraper_one_man);
+        mButton_one_man = (ImageButton) view.findViewById(R.id.button_one_man);
+        mTtupyogu_one_man = (TextView) view.findViewById(R.id.tupyogu_one_man);
+        mTsungugu_one_man = (TextView) view.findViewById(R.id.sungugu_one_man);
 
-        mLwrraper_two_more=(LinearLayout)view.findViewById(R.id.wrraper_two_more);
-        mButton_two_more=(ImageButton)view.findViewById(R.id.button_two_more);
-        mTtupyogu_two_more=(TextView)view.findViewById(R.id.tupyogu_two_more);
-        mTsungugu_two_more=(TextView)view.findViewById(R.id.tupyogu_two_more);
+        mLwrraper_two_more = (LinearLayout) view.findViewById(R.id.wrraper_two_more);
+        mButton_two_more = (ImageButton) view.findViewById(R.id.button_two_more);
+        mTtupyogu_two_more = (TextView) view.findViewById(R.id.tupyogu_two_more);
+        mTsungugu_two_more = (TextView) view.findViewById(R.id.sungugu_two_more);
 
-        mLwrraper_myhouse=(LinearLayout)view.findViewById(R.id.wrraper_myhouse);
-        mButton_myhouse=(ImageButton)view.findViewById(R.id.button_myhouse);
-        mTtupyogu_myhouse=(TextView)view.findViewById(R.id.tupyogu_myhouse);
-        mTsungugu_myhouse=(TextView)view.findViewById(R.id.tupyogu_myhouse);
+        mLwrraper_myhouse = (LinearLayout) view.findViewById(R.id.wrraper_myhouse);
+        mButton_myhouse = (ImageButton) view.findViewById(R.id.button_myhouse);
+        mTtupyogu_myhouse = (TextView) view.findViewById(R.id.tupyogu_myhouse);
+        mTsungugu_myhouse = (TextView) view.findViewById(R.id.sungugu_myhouse);
 
-        mLwrraper_apt=(LinearLayout)view.findViewById(R.id.wrraper_apt);
-        mButton_apt=(ImageButton)view.findViewById(R.id.button_apt);
-        mTtupyogu_apt=(TextView)view.findViewById(R.id.tupyogu_apt);
-        mTsungugu_apt=(TextView)view.findViewById(R.id.tupyogu_apt);
+        mLwrraper_apt = (LinearLayout) view.findViewById(R.id.wrraper_apt);
+        mButton_apt = (ImageButton) view.findViewById(R.id.button_apt);
+        mTtupyogu_apt = (TextView) view.findViewById(R.id.tupyogu_apt);
+        mTsungugu_apt = (TextView) view.findViewById(R.id.sungugu_apt);
 
-        mLwrraper_40m_over=(LinearLayout)view.findViewById(R.id.wrraper_40m_over);
-        mButton_40m_over=(ImageButton)view.findViewById(R.id.button_40m_over);
-        mTtupyogu_40m_over=(TextView)view.findViewById(R.id.tupyogu_40m_over);
-        mTsungugu_40m_over=(TextView)view.findViewById(R.id.tupyogu_40m_over);
+        mLwrraper_40m_over = (LinearLayout) view.findViewById(R.id.wrraper_40m_over);
+        mButton_40m_over = (ImageButton) view.findViewById(R.id.button_40m_over);
+        mTtupyogu_40m_over = (TextView) view.findViewById(R.id.tupyogu_40m_over);
+        mTsungugu_40m_over = (TextView) view.findViewById(R.id.sungugu_40m_over);
     }
-
 
 
     public SearchFragment() {
@@ -476,6 +490,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
             handler.proceed(); // SSL 에러가 발생해도 계속 진행!
         }
+
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             Log.d(TAG, "shouldOverrideUrlLoading url : " + url);
@@ -493,7 +508,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
     private boolean isAllLevelClick(String sigungu, String hangjungdong, String tupyogu) {
 
-        if(sigungu != null
+        if (sigungu != null
                 && hangjungdong != null
                 && tupyogu != null) {
             return true;
@@ -505,10 +520,10 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     private void showMap(String sigungu, String hangjungdong, String tupyogu, String adm_cd) {
         //tupyogu = tupyogu.replace("제","");
         //tupyogu = tupyogu.replace("투표구","");
-        Log.d(TAG,"showMap mTest : "+mTest);
+        Log.d(TAG, "showMap mTest : " + mTest);
         JSONObject jo = new JSONObject();
         //jo.put("TYPE","GEODATA_TEST");
-        jo.put("TYPE","TEST");
+        jo.put("TYPE", "TEST");
         jo.put("SIGUNGUTEXT", sigungu);
         jo.put("HAENGTEXT", hangjungdong);
         jo.put("TUPYOGU_NUM", tupyogu);
@@ -524,13 +539,13 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         */
     }
 
-    private void showMap(String sigungu, String hangjungdong, String tupyogu,String adm_cd, double cox, double coy) {
+    private void showMap(String sigungu, String hangjungdong, String tupyogu, String adm_cd, double cox, double coy) {
         //tupyogu = tupyogu.replace("제","");
         //tupyogu = tupyogu.replace("투표구","");
-        Log.d(TAG,"showMap mTest : "+mTest);
+        Log.d(TAG, "showMap mTest : " + mTest);
         JSONObject jo = new JSONObject();
         //jo.put("TYPE","GEODATA_TEST");
-        jo.put("TYPE","TEST");
+        jo.put("TYPE", "TEST");
         jo.put("SIGUNGUTEXT", sigungu);
         jo.put("HAENGTEXT", hangjungdong);
         jo.put("TUPYOGU_NUM", tupyogu);
@@ -538,7 +553,10 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         jo.put("COX", cox);
         jo.put("COY", coy);
         Log.d(TAG, "showMap jo : " + jo);
+
+
         excuteTask(getString(R.string.server_url), jo.toString());
+        //excuteTask("http://192.168.25.4:8080/Woori/MobileReq.jsp", jo.toString());
         /*
         myWebview.loadUrl("javascript:drawMap('" + jo.toString() + "')");
         if(myWebview.getVisibility()!= View.VISIBLE)
@@ -549,19 +567,19 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
     public void tupyoguClickByRightMenu(String sigungu, String hanjungdong, String tupyogu) {
         Log.d(TAG, "tupyoguClickByRightMenu sigungu : " + sigungu + "  hanjungdong : " + hanjungdong + "   tupyogu : " + tupyogu);
-        if(isAllLevelClick(sigungu, hanjungdong, tupyogu)) {
+        if (isAllLevelClick(sigungu, hanjungdong, tupyogu)) {
             mSigungu = sigungu;
             mHangjungdong = hanjungdong;
             mTupyogu = tupyogu;
-            String[] array = {mSigungu,mHangjungdong,mTupyogu};
+            String[] array = {mSigungu, mHangjungdong, mTupyogu};
             final String adm_cd = ElectionManagerApp.getInstance().getTupyoguCode(array);
 
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    showMap(mSigungu,mHangjungdong,mTupyogu,adm_cd);
+                    showMap(mSigungu, mHangjungdong, mTupyogu, adm_cd);
                 }
-            },1000);
+            }, 1000);
         }
     }
 
@@ -591,7 +609,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
         webSettings.setAllowFileAccess(true);
         webSettings.setUseWideViewPort(false);
-        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
             webSettings.setAllowFileAccessFromFileURLs(true);
             webSettings.setAllowUniversalAccessFromFileURLs(true);
         }
@@ -634,38 +652,38 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
             }
         });
 
-        final Button btn_search = (Button)view.findViewById(R.id.button_search);
+        final Button btn_search = (Button) view.findViewById(R.id.button_search);
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String sigungu = (String) sp1.getSelectedItem();
                 String haengjoungdong = (String) sp2.getSelectedItem();
                 String tupyoguStr = (String) sp3.getSelectedItem();
-                String[] array = {sigungu,haengjoungdong,tupyoguStr};
+                String[] array = {sigungu, haengjoungdong, tupyoguStr};
                 String adm_cd = ElectionManagerApp.getInstance().getTupyoguCode(array);
 
 
-                Log.d(TAG, "tupyoguStr = "+tupyoguStr+ " ,adm_cd = "+adm_cd);
-                showMap(sigungu,haengjoungdong,tupyoguStr,adm_cd);
+                Log.d(TAG, "tupyoguStr = " + tupyoguStr + " ,adm_cd = " + adm_cd);
+                showMap(sigungu, haengjoungdong, tupyoguStr, adm_cd);
             }
         });
-        person = (ImageButton)view.findViewById(R.id.person);
+        person = (ImageButton) view.findViewById(R.id.person);
         person.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),PDFViewActivity.class);
+                Intent intent = new Intent(getActivity(), PDFViewActivity.class);
                 startActivity(intent);
             }
         });
-		gpsSearchBtn = (Button) view.findViewById(R.id.gpsSearch);
+        gpsSearchBtn = (Button) view.findViewById(R.id.gpsSearch);
         gpsSearchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "gpsSearchBtn click");
                 gps = new GpsInfo(getActivity());
                 // GPS 사용유무 가져오기
-                if(gps.isGetLocation()){
-                    if(gps.getLocation() != null){
+                if (gps.isGetLocation()) {
+                    if (gps.getLocation() != null) {
                         // 위도
                         double latitude = gps.getLatitude();
                         // 경도
@@ -679,39 +697,39 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                         Log.d(TAG, " result : " + setText);
                         String addr = gps.getAddress(latitude, longitude);
                         Log.d(TAG, "addr : " + addr);
-                        String convert = "변환X: " + out_pt.getX()+ " ,변환Y: " + out_pt.getY();
+                        String convert = "변환X: " + out_pt.getX() + " ,변환Y: " + out_pt.getY();
                         Log.d(TAG, "convert : " + convert);
-                        Toast.makeText(getActivity().getApplicationContext(), "당신의 위치 - \n위도: " + latitude + "\n경도: " + longitude+ "\n변환X: " + out_pt.getX()+ "\n변환Y: " + out_pt.getY(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity().getApplicationContext(), "당신의 위치 - \n위도: " + latitude + "\n경도: " + longitude + "\n변환X: " + out_pt.getX() + "\n변환Y: " + out_pt.getY(), Toast.LENGTH_SHORT).show();
 
                         // 구역이동 Spiner Value Setting
-                        setAreaFieldValue(addr,out_pt);
+                        setAreaFieldValue(addr, out_pt);
                     }
-                }else{
+                } else {
                     // GPS 를 사용할수 없으므로
                     gps.showSettingsAlert();
                 }
 
             }
         });
-		
+
         return view;
     }
 
-    public void setAreaFieldValue(String addr,GeoPoint point){
+    public void setAreaFieldValue(String addr, GeoPoint point) {
         Log.d(TAG, "setAreaFieldValue addr : " + addr);
         String address[] = addr.split(" ");
-        String sigungu      = "";
+        String sigungu = "";
         String doroBubjoung = "";
-        String gunmulBunji        = "";
-        String gunmul       = "";
-        String sigungutext  = "";
+        String gunmulBunji = "";
+        String gunmul = "";
+        String sigungutext = "";
 
-        if(address[2] == null || address[2].equals("null")) address[2] = "";
+        if (address[2] == null || address[2].equals("null")) address[2] = "";
 
-        sigungu      += address[1] + address[2];
-        sigungutext  += address[1] + " " + address[2];
+        sigungu += address[1] + address[2];
+        sigungutext += address[1] + " " + address[2];
         doroBubjoung += address[3];
-        gunmulBunji  += address[4];
+        gunmulBunji += address[4];
         Log.d(TAG, "sigungu : " + sigungu + " doroBubjoung : " + doroBubjoung + " gunmulBunji : " + gunmulBunji);
         //String url = "http://192.168.0.52:8080/Woori/MobileReq.jsp";
         JSONObject json = new JSONObject();
@@ -727,19 +745,20 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
         //excuteTask(url, json.toString());
     }
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position,
                                long id) {
         // TODO Auto-generated method stub
-        if(ignoreUpdate) {
+        if (ignoreUpdate) {
             ignoreUpdate = false;
             return;
         }
 
         switch (parent.getId()) {
             case R.id.spinner_1:
-                String sigungu = (String)parent.getSelectedItem();
-                JSONObject jo1 = (JSONObject)ElectionManagerApp.getInstance().getSelectItemsObject().get("HAENGJOUNGDONG");
+                String sigungu = (String) parent.getSelectedItem();
+                JSONObject jo1 = (JSONObject) ElectionManagerApp.getInstance().getSelectItemsObject().get("HAENGJOUNGDONG");
                 setUpSpinner(sp2, jo1.get(sigungu).toString());
                 break;
             case R.id.spinner_2:
@@ -754,7 +773,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     @Override
     public void onNothingSelected(AdapterView<?> arg0) {
         // TODO Auto-generated method stub
-        Log.d(TAG,"onNothingSelected");
+        Log.d(TAG, "onNothingSelected");
 
     }
 
@@ -796,12 +815,14 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
-    private void setUpSpinner(Spinner spinner,String items) {
-        System.out.println("items = "+items);
-        Type type = new TypeToken<List<String>>(){}.getType();
+
+    private void setUpSpinner(Spinner spinner, String items) {
+        System.out.println("items = " + items);
+        Type type = new TypeToken<List<String>>() {
+        }.getType();
         Gson converter = new Gson();
-        List<String> list =  converter.fromJson(items, type);
-        ArrayAdapter sp_Adapter = new ArrayAdapter(getActivity().getApplicationContext(),android.R.layout.simple_spinner_item,list);
+        List<String> list = converter.fromJson(items, type);
+        ArrayAdapter sp_Adapter = new ArrayAdapter(getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, list);
         sp_Adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(sp_Adapter);
         //sp_Adapter.notifyDataSetChanged();
@@ -824,7 +845,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
         @Override
         protected String doInBackground(Object... args) {
-            Bundle bundle = (Bundle)args[0];
+            Bundle bundle = (Bundle) args[0];
             String url = bundle.getString("URL");
             String params = bundle.getString("PARAMS");
             Log.d(TAG, "url : " + url + " params : " + params);
@@ -837,15 +858,15 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
         @Override
         protected void onPostExecute(String resultData) {
-            Log.d(TAG,"onPostExecute resultData : " + resultData);
+            Log.d(TAG, "onPostExecute resultData : " + resultData);
             try {
                 JSONObject re = null;
                 JSONParser par = new JSONParser();
-                System.out.println("resultData = "+resultData);
+                System.out.println("resultData = " + resultData);
                 re = (JSONObject) par.parse(resultData);
                 String sType = (String) re.get("TYPE");
                 String result = (String) re.get("RESULT");
-                if(sType.equals("GPS") || sType.equals("GPSTEST")) {
+                if (sType.equals("GPS") || sType.equals("GPSTEST")) {
                     /*if (result.equals("SUCCESS")) {
                         Log.d(TAG, "GPS SUCCESS");
 
@@ -868,46 +889,39 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                     }*/
                     if (result.equals("SUCCESS")) {
                         Log.d(TAG, "매칭 데이터 있음");
-                        JSONObject resData = (JSONObject)re.get("RESDATA");
-                        String sigungu = (String)resData.get("SIGUNGU");
-                        String haengjoungdong = (String)resData.get("HAENGJOUNGDONG");
-                        String tupyogu = (String)resData.get("TUPYOGU");
-                        double cox = (Double)resData.get("COX");
-                        double coy = (Double)resData.get("COY");
+                        JSONObject resData = (JSONObject) re.get("RESDATA");
+                        String sigungu = (String) resData.get("SIGUNGU");
+                        String haengjoungdong = (String) resData.get("HAENGJOUNGDONG");
+                        String tupyogu = (String) resData.get("TUPYOGU");
+                        double cox = (Double) resData.get("COX");
+                        double coy = (Double) resData.get("COY");
 
                         ignoreUpdate = true;
                         sp1.setSelection(getPosition(sp1, sigungu));
-                        JSONObject jo1 = (JSONObject)ElectionManagerApp.getInstance().getSelectItemsObject().get("HAENGJOUNGDONG");
+                        JSONObject jo1 = (JSONObject) ElectionManagerApp.getInstance().getSelectItemsObject().get("HAENGJOUNGDONG");
                         setUpSpinner(sp2, jo1.get(sigungu).toString());
                         sp2.setSelection(getPosition(sp2, haengjoungdong));
-                        JSONObject jo2 = (JSONObject)ElectionManagerApp.getInstance().getSelectItemsObject().get("TUPYOGU");
+                        JSONObject jo2 = (JSONObject) ElectionManagerApp.getInstance().getSelectItemsObject().get("TUPYOGU");
                         setUpSpinner(sp3, jo2.get(haengjoungdong).toString());
                         sp3.setSelection(getPosition(sp3, tupyogu));
                         //showMap(sigungu,haengjoungdong,tupyogu);
-                        String[] array = {sigungu,haengjoungdong,tupyogu};
+                        String[] array = {sigungu, haengjoungdong, tupyogu};
                         String adm_cd = ElectionManagerApp.getInstance().getTupyoguCode(array);
 
-                        showMap(sigungu,haengjoungdong,tupyogu,adm_cd,cox,coy);
+                        showMap(sigungu, haengjoungdong, tupyogu, adm_cd, cox, coy);
 
-                    } else if(result.equals("FAILED")) {
-                        Log.d(TAG,"매칭 데이터 없음");
-                        Toast.makeText(getActivity().getApplicationContext(),"현재 위치에 맞는 정보가 없습니다.",Toast.LENGTH_SHORT).show();
+                    } else if (result.equals("FAILED")) {
+                        Log.d(TAG, "매칭 데이터 없음");
+                        Toast.makeText(getActivity().getApplicationContext(), "현재 위치에 맞는 정보가 없습니다.", Toast.LENGTH_SHORT).show();
                     }
-                } else if(sType.equals("TEST")) {
+                } else if (sType.equals("TEST")) {
 
                     JSONArray alVoteDao = new JSONArray();
                     JSONArray alStatsDAO = new JSONArray();
                     JSONArray alFamilyDAO = new JSONArray();
-                    alVoteDao = (JSONArray)re.get("RATE");
-                    alStatsDAO = (JSONArray)re.get("STATS");
-                    alFamilyDAO = (JSONArray)re.get("FAMILYDAO");
-
-                    setVisivilityVoterRatioOfAge(alVoteDao.size());
-
-                    Gson gs = new Gson();
-                    Log.d(TAG,"alVoteDato.toJSONString : "+alVoteDao.toJSONString());
-                    Log.d(TAG,"alVoteDato.size() : "+alVoteDao.size());
-                    Log.d(TAG,"alVoteDato.get(0) : " +alVoteDao.get(0));
+                    alVoteDao = (JSONArray) re.get("RATE");
+                    alStatsDAO = (JSONArray) re.get("STATS");
+                    alFamilyDAO = (JSONArray) re.get("FAMILYDAO");
 
                     setVisivilityVoterRatioOfAge(alVoteDao.size());
                     setDataVoterRAtionOfAge(alVoteDao);
@@ -915,21 +929,11 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                     setVisivilityStatisticsOfpopulation(alStatsDAO.size());
                     setDataStatisticsOfpopulation(alStatsDAO);
 
-                    for(int i=0; i<alVoteDao.size(); i++) {
-                        VoteDAO vd = gs.fromJson((String) alVoteDao.get(i), VoteDAO.class);
-                        Log.d(TAG,"vd40 : "+vd.getV40th());
-                        Log.d(TAG,"vd30 : "+vd.getV30th());
-                        Log.d(TAG,"vd50 : "+vd.getV50th());
-                        Log.d(TAG,"vd60 : "+vd.getV60th_over());
-                        Log.d(TAG,"vd adm_cd : " + vd.getAdm_cd());
-
-
-                    }
-                    JSONObject mapData = (JSONObject)re.get("MAPDATA");
+                    JSONObject mapData = (JSONObject) re.get("MAPDATA");
                     myWebview.loadUrl("javascript:drawMap('" + mapData.toString() + "')");
-                    if(myWebview.getVisibility()!= View.VISIBLE)
+                    if (myWebview.getVisibility() != View.VISIBLE)
                         myWebview.setVisibility(View.VISIBLE);
-                   }
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
@@ -943,9 +947,9 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         }
     }
 
-    private void excuteTask(String url,String params) {
+    private void excuteTask(String url, String params) {
         Bundle bundle = new Bundle();
-        bundle.putString("URL",url);
+        bundle.putString("URL", url);
         bundle.putString("PARAMS", params);
         mTask = new SearchTask();
         mTask.execute(bundle);
@@ -963,6 +967,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         });
         //dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
     }
+
     private void cleanUp() {
         dialog.dismiss();
         dialog = null;
@@ -971,7 +976,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     private int getPosition(Spinner sp, String value) {
         int position = -1;
         if (value != null) {
-            position = ((ArrayAdapter)sp.getAdapter()).getPosition(value);
+            position = ((ArrayAdapter) sp.getAdapter()).getPosition(value);
         }
         return position;
     }
