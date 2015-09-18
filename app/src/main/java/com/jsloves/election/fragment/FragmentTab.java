@@ -39,8 +39,8 @@ public class FragmentTab extends Fragment {
         Bundle b2 = new Bundle();
         b2.putString("b2", "b2");
 
-        //TabHost.TabSpec tabSpec1 = mTabHost.newTabSpec("tab1").setIndicator("기관");
-        //TabHost.TabSpec tabSpec2 = mTabHost.newTabSpec("tab2").setIndicator("단체");
+        //TabHost.TabSpec tabSpec1 = mTabHost.newTabSpec("tab1").setIndicator("s");
+        //TabHost.TabSpec tabSpec2 = mTabHost.newTabSpec("tab2").setIndicator("s");
         //mTabHost.addTab(tabSpec1, OrganIntroFragment.class, b1);
         //mTabHost.addTab(tabSpec2, OrganIntroFragment2.class, b2);
 
