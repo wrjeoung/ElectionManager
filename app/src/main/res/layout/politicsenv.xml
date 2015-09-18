@@ -200,6 +200,8 @@
         android:stretchColumns="*">
 
         <TableRow
+            android:id="@+id/wrapper_voteratesub_header"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
@@ -252,11 +254,14 @@
         </TableRow>
 
         <TableRow
+            android:id="@+id/wrapper_voteratesub_sungugu"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp">
 
             <TextView
+                android:id="@+id/voteratesub_sungugu"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/primary_dark_material_light"
@@ -264,6 +269,7 @@
                 android:text="선거구" />
 
             <TextView
+                android:id="@+id/voteratesub_sungugu_avg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
@@ -272,6 +278,7 @@
                 android:text="-6.4" />
 
             <TextView
+                android:id="@+id/voteratesub_sungugu_6th"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
@@ -280,6 +287,7 @@
                 android:text="3.5" />
 
             <TextView
+                android:id="@+id/voteratesub_sungugu_19th"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
@@ -288,6 +296,7 @@
                 android:text="-10.6" />
 
             <TextView
+                android:id="@+id/voteratesub_sungugu_18th_1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
@@ -296,6 +305,7 @@
                 android:text="2.0" />
 
             <TextView
+                android:id="@+id/voteratesub_sungugu_18th_2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
@@ -305,11 +315,14 @@
         </TableRow>
 
         <TableRow
+            android:id="@+id/wrapper_voteratesub_haengjoung"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp">
 
             <TextView
+                android:id="@+id/voteratesub_haengjoung"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/primary_dark_material_light"
@@ -317,6 +330,7 @@
                 android:text="행정동" />
 
             <TextView
+                android:id="@+id/voteratesub_haengjoung_avg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
@@ -325,6 +339,7 @@
                 android:text="-5.0" />
 
             <TextView
+                android:id="@+id/voteratesub_haengjoung_6th"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
@@ -333,6 +348,7 @@
                 android:text="2.5" />
 
             <TextView
+                android:id="@+id/voteratesub_haengjoung_19th"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
@@ -341,6 +357,7 @@
                 android:text="-12.5" />
 
             <TextView
+                android:id="@+id/voteratesub_haengjoung_18th_1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
@@ -349,6 +366,7 @@
                 android:text="-1.5" />
 
             <TextView
+                android:id="@+id/voteratesub_haengjoung_18th_2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
@@ -358,11 +376,14 @@
         </TableRow>
 
         <TableRow
+            android:id="@+id/wrapper_voteratesub_tupyogu"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp">
 
             <TextView
+                android:id="@+id/voteratesub_tupyogu"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/primary_dark_material_light"
@@ -370,6 +391,7 @@
                 android:text="투표구" />
 
             <TextView
+                android:id="@+id/voteratesub_tupyogu_avg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
@@ -378,6 +400,7 @@
                 android:text="-3.2" />
 
             <TextView
+                android:id="@+id/voteratesub_tupyogu_6th"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
@@ -386,6 +409,7 @@
                 android:text="없음" />
 
             <TextView
+                android:id="@+id/voteratesub_tupyogu_19th"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
@@ -394,6 +418,7 @@
                 android:text="-11.3" />
 
             <TextView
+                android:id="@+id/voteratesub_tupyogu_18th_1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
@@ -402,6 +427,7 @@
                 android:text="1.6" />
 
             <TextView
+                android:id="@+id/voteratesub_tupyogu_18th_2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"

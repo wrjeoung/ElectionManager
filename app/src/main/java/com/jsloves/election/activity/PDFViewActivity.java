@@ -51,9 +51,9 @@ public class PDFViewActivity extends Activity implements View.OnClickListener {
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         pdfView = (PDFView) findViewById(R.id.pdfview);
-        pdfView.fromAsset("150_L.pdf")
+        pdfView.fromAsset("final.pdf")
 
-                .pages(0,2, 1, 3, 3,3)
+                //.pages(0,2, 1, 3, 3,3)
                 .defaultPage(1)
                 .showMinimap(false)
                 .enableSwipe(true)

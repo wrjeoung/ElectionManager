@@ -34,6 +34,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.jsloves.election.DTO.ElectDao;
 import com.jsloves.election.DTO.StatsDAO;
 import com.jsloves.election.DTO.VoteDAO;
 import com.jsloves.election.activity.PDFViewActivity;
@@ -92,6 +93,33 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     // GPS
     private Button gpsSearchBtn;
     private GpsInfo gps;
+
+    // politics enviroment of AreaInfo.
+    // sub of voteRate
+    // header
+    private TableRow mWrapper_voteratesub_header;
+    // sungugu.
+    private TableRow mWrapper_voteratesub_sungugu;
+    private TextView mVoteratesub_sunggugu_avg;
+    private TextView mVoteratesub_sunggugu_6th;
+    private TextView mVoteratesub_sunggugu_19th;
+    private TextView mVoteratesub_sunggugu_18th_1;
+    private TextView mVoteratesub_sunggugu_18th_2;
+    // haengjoungdong
+    private TableRow mWrapper_voteratesub_haengjoung;
+    private TextView mVoteratesub_haengjoung_avg;
+    private TextView mVoteratesub_haengjoung_6th;
+    private TextView mVoteratesub_haengjoung_19th;
+    private TextView mVoteratesub_haengjoung_18th_1;
+    private TextView mVoteratesub_haengjoung_18th_2;
+    // tupyogu
+    private TableRow mWrapper_voteratesub_tupyogu;
+    private TextView mVoteratesub_tupyogu_avg;
+    private TextView mVoteratesub_tupyogu_6th;
+    private TextView mVoteratesub_tupyogu_19th;
+    private TextView mVoteratesub_tupyogu_18th_1;
+    private TextView mVoteratesub_tupyogu_18th_2;
+
 
     // social enviroment of AreaInfo.
     // ratio of voter age group.
@@ -207,6 +235,95 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    private void initVoteRateSub(View view) {
+        mWrapper_voteratesub_header = (TableRow) view.findViewById(R.id.wrapper_voteratesub_header);
+        // sunggugu
+        mWrapper_voteratesub_sungugu = (TableRow) view.findViewById(R.id.wrapper_voteratesub_sungugu);
+        mVoteratesub_sunggugu_avg = (TextView) view.findViewById(R.id.voteratesub_sungugu_avg);
+        mVoteratesub_sunggugu_6th = (TextView) view.findViewById(R.id.voteratesub_sungugu_6th);
+        mVoteratesub_sunggugu_19th = (TextView) view.findViewById(R.id.voteratesub_sungugu_19th);
+        mVoteratesub_sunggugu_18th_1 = (TextView) view.findViewById(R.id.voteratesub_sungugu_18th_1);
+        mVoteratesub_sunggugu_18th_2 = (TextView) view.findViewById(R.id.voteratesub_sungugu_18th_2);
+        // haengjoungdong
+        mWrapper_voteratesub_haengjoung = (TableRow) view.findViewById(R.id.wrapper_voteratesub_haengjoung);
+        mVoteratesub_haengjoung_avg = (TextView) view.findViewById(R.id.voteratesub_haengjoung_avg);
+        mVoteratesub_haengjoung_6th = (TextView) view.findViewById(R.id.voteratesub_haengjoung_6th);
+        mVoteratesub_haengjoung_19th = (TextView) view.findViewById(R.id.voteratesub_haengjoung_19th);
+        mVoteratesub_haengjoung_18th_1 = (TextView) view.findViewById(R.id.voteratesub_haengjoung_18th_1);
+        mVoteratesub_haengjoung_18th_2 = (TextView) view.findViewById(R.id.voteratesub_haengjoung_18th_2);
+        // tupyogu
+        mWrapper_voteratesub_tupyogu = (TableRow) view.findViewById(R.id.wrapper_voteratesub_tupyogu);
+        mVoteratesub_tupyogu_avg = (TextView) view.findViewById(R.id.voteratesub_tupyogu_avg);
+        mVoteratesub_tupyogu_6th = (TextView) view.findViewById(R.id.voteratesub_tupyogu_6th);
+        mVoteratesub_tupyogu_19th = (TextView) view.findViewById(R.id.voteratesub_tupyogu_19th);
+        mVoteratesub_tupyogu_18th_1 = (TextView) view.findViewById(R.id.voteratesub_tupyogu_18th_1);
+        mVoteratesub_tupyogu_18th_2 = (TextView) view.findViewById(R.id.voteratesub_tupyogu_18th_2);
+    }
+
+    private void setVisivilityVoteRateSub(int size) {
+
+        switch (size) {
+            case 1:
+                mWrapper_voteratesub_header.setVisibility(View.VISIBLE);
+                mWrapper_voteratesub_sungugu.setVisibility(View.VISIBLE);
+                mWrapper_voteratesub_haengjoung.setVisibility(View.GONE);
+                mWrapper_voteratesub_tupyogu.setVisibility(View.GONE);
+                break;
+            case 2:
+                mWrraper_voteratio_header.setVisibility(View.VISIBLE);
+                mWrapper_voteratesub_sungugu.setVisibility(View.VISIBLE);
+                mWrapper_voteratesub_haengjoung.setVisibility(View.VISIBLE);
+                mWrapper_voteratesub_tupyogu.setVisibility(View.GONE);
+                break;
+            case 3:
+                mWrraper_voteratio_header.setVisibility(View.VISIBLE);
+                mWrapper_voteratesub_sungugu.setVisibility(View.VISIBLE);
+                mWrapper_voteratesub_haengjoung.setVisibility(View.VISIBLE);
+                mWrapper_voteratesub_tupyogu.setVisibility(View.VISIBLE);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void setDataVoteRateSub(JSONArray data) {
+
+        Gson gs = new Gson();
+        Log.d(TAG, "setDataVoteRateSub data.toJSONString : " + data.toJSONString());
+        Log.d(TAG, "setDataVoteRateSub data.size() : " + data.size());
+        Log.d(TAG, "setDataVoteRateSub data.get(0) : " + data.get(0));
+
+        for (int i = 0; i < data.size(); i++) {
+            ElectDao ed = gs.fromJson((String) data.get(i), ElectDao.class);
+
+            switch (i) {
+                case 0:
+                    mVoteratesub_sunggugu_avg.setText(String.valueOf(ed.getAvg()));
+                    mVoteratesub_sunggugu_6th.setText(String.valueOf(ed.getF6th()));
+                    mVoteratesub_sunggugu_19th.setText(String.valueOf(ed.getF19th()));
+                    mVoteratesub_sunggugu_18th_1.setText(String.valueOf(ed.getF18th_1()));
+                    mVoteratesub_sunggugu_18th_2.setText(String.valueOf(ed.getF18th_2()));
+                    break;
+                case 1:
+                    mVoteratesub_haengjoung_avg.setText(String.valueOf(ed.getAvg()));
+                    mVoteratesub_haengjoung_6th.setText(String.valueOf(ed.getF6th()));
+                    mVoteratesub_haengjoung_19th.setText(String.valueOf(ed.getF19th()));
+                    mVoteratesub_haengjoung_18th_1.setText(String.valueOf(ed.getF18th_1()));
+                    mVoteratesub_haengjoung_18th_2.setText(String.valueOf(ed.getF18th_2()));
+                    break;
+                case 2:
+                    mVoteratesub_tupyogu_avg.setText(String.valueOf(ed.getAvg()));
+                    mVoteratesub_tupyogu_6th.setText(String.valueOf(ed.getF6th()));
+                    mVoteratesub_tupyogu_19th.setText(String.valueOf(ed.getF19th()));
+                    mVoteratesub_tupyogu_18th_1.setText(String.valueOf(ed.getF18th_1()));
+                    mVoteratesub_tupyogu_18th_2.setText(String.valueOf(ed.getF18th_2()));
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
 
@@ -586,6 +703,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         Log.d(TAG, "onCreateView");
         mTest.append("Hahahahahahaha");
         View view = inflater.inflate(R.layout.fragment_search, container, false);
+        initVoteRateSub(view);
         initVoterRatioOfAge(view);
         initStatisticsOfpopulation(view);
         initStatisticsOfFamily(view);
@@ -726,7 +844,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         doroBubjoung += address[3];
         gunmulBunji += address[4];
         Log.d(TAG, "sigungu : " + sigungu + " doroBubjoung : " + doroBubjoung + " gunmulBunji : " + gunmulBunji);
-        //String url = "http://192.168.0.52:8080/Woori/MobileReq.jsp";
+        String url = "http://192.168.0.7:8080/Woori/MobileReq.jsp";
         JSONObject json = new JSONObject();
         //json.put("TYPE", "GPS");
         json.put("TYPE", "GPSTEST");
@@ -734,6 +852,8 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         json.put("SIGUNGUTEXT", sigungutext);
         json.put("DOROBUBJOUNG", doroBubjoung);
         json.put("GUNMULBUNJI", gunmulBunji);
+        //cox = 941434.0; coy = 1945787.0;
+        //cox = 943731.0; coy = 1947957.0; // haengjoungdong
         json.put("COX", point.getX());
         json.put("COY", point.getY());
         excuteTask(getString(R.string.server_url), json.toString());
@@ -744,13 +864,17 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position,
                                long id) {
+
+        final int viewId = parent.getId();
         // TODO Auto-generated method stub
         if (ignoreUpdate) {
+            if(viewId != R.id.spinner_3) {
+                return;
+            }
             ignoreUpdate = false;
-            return;
         }
 
-        switch (parent.getId()) {
+        switch (viewId) {
             case R.id.spinner_1:
                 String sigungu = (String) parent.getSelectedItem();
                 JSONObject jo1 = (JSONObject) ElectionManagerApp.getInstance().getSelectItemsObject().get("HAENGJOUNGDONG");
@@ -824,6 +948,32 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         spinner.setOnItemSelectedListener(SearchFragment.this);
     }
 
+    private void resetSpinnerFromAdmCd(String adm_cd) {
+        String haengCode = adm_cd.split("-")[0];
+        String sigunguCode = adm_cd.substring(0,5);
+
+        JSONObject joCode1 = (JSONObject)ElectionManagerApp.getInstance().getSelectItemsCodeObject();
+        JSONObject joCode2 = (JSONObject)joCode1.get("HAENGJOUNGDONG");
+        JSONObject joCode3 = (JSONObject)joCode1.get("TUPYOGU");
+
+        JSONObject joText1 = (JSONObject)ElectionManagerApp.getInstance().getSelectItemsObject();
+        JSONObject joText2 = (JSONObject)joText1.get("HAENGJOUNGDONG");
+        JSONObject joText3 = (JSONObject)joText1.get("TUPYOGU");
+
+        int sigunguIndex = ElectionManagerApp.getIndex((JSONArray) joCode1.get("SIGUNGU"), sigunguCode);
+        int haengIndex = ElectionManagerApp.getIndex((JSONArray) joCode2.get(sigunguCode), haengCode);
+        int tupyoguIndex = ElectionManagerApp.getIndex((JSONArray) joCode3.get(haengCode), adm_cd);
+
+        String sigunguText = (String)((JSONArray)joText1.get("SIGUNGU")).get(sigunguIndex);
+        String haengText = (String)((JSONArray)(joText2.get(sigunguText))).get(haengIndex);
+
+        sp1.setSelection(sigunguIndex);
+        setUpSpinner(sp2, joText2.get(sigunguText).toString());
+        sp2.setSelection(haengIndex);
+        setUpSpinner(sp3, joText3.get(haengText).toString());
+        sp3.setSelection(tupyoguIndex);
+    }
+
 
     public void cancel() {
         mTask.cancel(false);
@@ -864,24 +1014,32 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 if(sType.equals("GPS") || sType.equals("GPSTEST")) {
                     if (result.equals("SUCCESS")) {
                         Log.d(TAG, "매칭 데이터 있음");
+                        JSONArray alElectDao = new JSONArray();
+                        JSONArray alVoteDao = new JSONArray();
+                        JSONArray alStatsDAO = new JSONArray();
+                        JSONArray alFamilyDAO = new JSONArray();
+                        alElectDao = (JSONArray) re.get("ELECT");
+                        alVoteDao = (JSONArray) re.get("RATE");
+                        alStatsDAO = (JSONArray) re.get("STATS");
+                        alFamilyDAO = (JSONArray) re.get("FAMILYDAO");
+
+                        setVisivilityVoteRateSub(alElectDao.size());
+                        setDataVoteRateSub(alElectDao);
+                        setVisivilityVoterRatioOfAge(alVoteDao.size());
+                        setDataVoterRAtionOfAge(alVoteDao);
+
+                        setVisivilityStatisticsOfpopulation(alStatsDAO.size());
+                        setDataStatisticsOfpopulation(alStatsDAO);
+
                         JSONObject mapData = (JSONObject)re.get("MAPDATA");
                         double cox = (Double)mapData.get("COX");
                         double coy = (Double)mapData.get("COY");
                         String adm_cd = (String)mapData.get("ADM_CD");
 
                         ignoreUpdate = true;
-                        /*sp1.setSelection(getPosition(sp1, sigungu));
-                        JSONObject jo1 = (JSONObject)ElectionManagerApp.getInstance().getSelectItemsObject().get("HAENGJOUNGDONG");
-                        setUpSpinner(sp2, jo1.get(sigungu).toString());
-                        sp2.setSelection(getPosition(sp2, haengjoungdong));
-                        JSONObject jo2 = (JSONObject)ElectionManagerApp.getInstance().getSelectItemsObject().get("TUPYOGU");
-                        setUpSpinner(sp3, jo2.get(haengjoungdong).toString());
-                        sp3.setSelection(getPosition(sp3, tupyogu));
-                        //showMap(sigungu,haengjoungdong,tupyogu);
-                        String[] array = {sigungu,haengjoungdong,tupyogu};
-                        String adm_cd = ElectionManagerApp.getInstance().getTupyoguCode(array);
 
-                        showMap(adm_cd,cox,coy);*/
+                        resetSpinnerFromAdmCd(adm_cd);
+
                         myWebview.loadUrl("javascript:drawMap('" + mapData.toString() + "')");
                         if(myWebview.getVisibility()!= View.VISIBLE)
                             myWebview.setVisibility(View.VISIBLE);
@@ -892,13 +1050,17 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                     }
                 } else if (sType.equals("TEST")) {
 
+                    JSONArray alElectDao = new JSONArray();
                     JSONArray alVoteDao = new JSONArray();
                     JSONArray alStatsDAO = new JSONArray();
                     JSONArray alFamilyDAO = new JSONArray();
+                    alElectDao = (JSONArray) re.get("ELECT");
                     alVoteDao = (JSONArray) re.get("RATE");
                     alStatsDAO = (JSONArray) re.get("STATS");
                     alFamilyDAO = (JSONArray) re.get("FAMILYDAO");
 
+                    setVisivilityVoteRateSub(alElectDao.size());
+                    setDataVoteRateSub(alElectDao);
                     setVisivilityVoterRatioOfAge(alVoteDao.size());
                     setDataVoterRAtionOfAge(alVoteDao);
 
@@ -945,8 +1107,10 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     }
 
     private void cleanUp() {
-        dialog.dismiss();
-        dialog = null;
+        if(dialog != null) {
+            dialog.dismiss();
+            dialog = null;
+        }
     }
 
     private int getPosition(Spinner sp, String value) {
@@ -956,4 +1120,5 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         }
         return position;
     }
+
 }

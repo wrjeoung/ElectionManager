@@ -63,7 +63,7 @@ public class ElectionManagerApp extends Application {
         return tupyoguCode;
     }
 
-    private static int getIndex(JSONArray array, Object value) {
+    public static int getIndex(JSONArray array, Object value) {
         int index = -1;
 
         for(int i = 0; i < array.size(); i++) {
