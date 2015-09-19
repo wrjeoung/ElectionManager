@@ -35,6 +35,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jsloves.election.DTO.ElectDao;
+import com.jsloves.election.DTO.FamilyDAO;
 import com.jsloves.election.DTO.StatsDAO;
 import com.jsloves.election.DTO.VoteDAO;
 import com.jsloves.election.activity.PDFViewActivity;
@@ -584,6 +585,73 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         mTsungugu_40m_over = (TextView) view.findViewById(R.id.sungugu_40m_over);
     }
 
+    private void setVisivilityStaticsticsOfFamily(int size) {
+
+        if(size > 0) {
+            mLwrraper_header_familly.setVisibility(View.VISIBLE);
+            mLwrraper_one_man.setVisibility(View.VISIBLE);
+            mButton_one_man.setVisibility(View.VISIBLE);
+            mTtupyogu_one_man.setVisibility(View.VISIBLE);
+            mTsungugu_one_man.setVisibility(View.VISIBLE);
+
+            mLwrraper_two_more.setVisibility(View.VISIBLE);
+            mButton_two_more.setVisibility(View.VISIBLE);
+            mTtupyogu_two_more.setVisibility(View.VISIBLE);
+            mTsungugu_two_more.setVisibility(View.VISIBLE);
+
+            mLwrraper_myhouse.setVisibility(View.VISIBLE);
+            mButton_myhouse.setVisibility(View.VISIBLE);
+            mTtupyogu_myhouse.setVisibility(View.VISIBLE);
+            mTsungugu_myhouse.setVisibility(View.VISIBLE);
+
+            mLwrraper_apt.setVisibility(View.VISIBLE);
+            mButton_apt.setVisibility(View.VISIBLE);
+            mTtupyogu_apt.setVisibility(View.VISIBLE);
+            mTsungugu_apt.setVisibility(View.VISIBLE);
+
+            mLwrraper_40m_over.setVisibility(View.VISIBLE);
+            mButton_40m_over.setVisibility(View.VISIBLE);
+            mTtupyogu_40m_over.setVisibility(View.VISIBLE);
+            mTsungugu_40m_over.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void setDataStatisticsOfFamily(JSONArray data) {
+        Gson gs = new Gson();
+        Log.d(TAG, "setDataStatisticsOfFamily data.toJSONString : " + data.toJSONString());
+        Log.d(TAG, "setDataStatisticsOfFamily data.size() : " + data.size());
+        Log.d(TAG, "setDataStatisticsOfFamily data.get(0) : " + data.get(0));
+
+        for (int i = 0; i < data.size(); i++) {
+            FamilyDAO fd = gs.fromJson((String) data.get(i), FamilyDAO.class);
+            switch (i) {
+                case 0:
+                    mTsungugu_one_man.setText(String.valueOf(fd.getFamily_one()));
+                    mTsungugu_two_more.setText(String.valueOf(fd.getFamily_two_over()));
+                    mTsungugu_myhouse.setText(String.valueOf(fd.getMyhome_ratio()));
+                    mTsungugu_apt.setText(String.valueOf(fd.getApt_ratio()));
+                    mTsungugu_40m_over.setText(String.valueOf(fd.getF40m_over()));
+                    break;
+                case 1:
+                    mTtupyogu_one_man.setText(String.valueOf(fd.getFamily_one()));
+                    mTtupyogu_two_more.setText(String.valueOf(fd.getFamily_two_over()));
+                    mTtupyogu_myhouse.setText(String.valueOf(fd.getMyhome_ratio()));
+                    mTtupyogu_apt.setText(String.valueOf(fd.getApt_ratio()));
+                    mTtupyogu_40m_over.setText(String.valueOf(fd.getF40m_over()));
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        if (data.size() == 1) {
+            mTtupyogu_one_man.setText("정보없음");
+            mTtupyogu_two_more.setText("정보없음");
+            mTtupyogu_myhouse.setText("정보없음");
+            mTtupyogu_apt.setText("정보없음");
+            mTtupyogu_40m_over.setText("정보없음");
+        }
+    }
 
     public SearchFragment() {
         // Required empty public constructor
@@ -1031,6 +1099,9 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                         setVisivilityStatisticsOfpopulation(alStatsDAO.size());
                         setDataStatisticsOfpopulation(alStatsDAO);
 
+                        setVisivilityStaticsticsOfFamily(alFamilyDAO.size());
+                        setDataStatisticsOfFamily(alFamilyDAO);
+
                         JSONObject mapData = (JSONObject)re.get("MAPDATA");
                         double cox = (Double)mapData.get("COX");
                         double coy = (Double)mapData.get("COY");
@@ -1057,15 +1128,19 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                     alElectDao = (JSONArray) re.get("ELECT");
                     alVoteDao = (JSONArray) re.get("RATE");
                     alStatsDAO = (JSONArray) re.get("STATS");
-                    alFamilyDAO = (JSONArray) re.get("FAMILYDAO");
+                    alFamilyDAO = (JSONArray) re.get("FAMILY");
 
                     setVisivilityVoteRateSub(alElectDao.size());
                     setDataVoteRateSub(alElectDao);
+
                     setVisivilityVoterRatioOfAge(alVoteDao.size());
                     setDataVoterRAtionOfAge(alVoteDao);
 
                     setVisivilityStatisticsOfpopulation(alStatsDAO.size());
                     setDataStatisticsOfpopulation(alStatsDAO);
+
+                    setVisivilityStaticsticsOfFamily(alFamilyDAO.size());
+                    setDataStatisticsOfFamily(alFamilyDAO);
 
                     JSONObject mapData = (JSONObject) re.get("MAPDATA");
                     myWebview.loadUrl("javascript:drawMap('" + mapData.toString() + "')");
