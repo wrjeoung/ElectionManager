@@ -1089,7 +1089,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                         alElectDao = (JSONArray) re.get("ELECT");
                         alVoteDao = (JSONArray) re.get("RATE");
                         alStatsDAO = (JSONArray) re.get("STATS");
-                        alFamilyDAO = (JSONArray) re.get("FAMILYDAO");
+                        alFamilyDAO = (JSONArray) re.get("FAMILY");
 
                         setVisivilityVoteRateSub(alElectDao.size());
                         setDataVoteRateSub(alElectDao);
