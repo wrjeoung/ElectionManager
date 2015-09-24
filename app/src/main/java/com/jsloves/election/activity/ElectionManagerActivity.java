@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
@@ -27,9 +28,15 @@ import com.jsloves.election.util.PhoneInfo;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 public class ElectionManagerActivity extends AppCompatActivity
         implements AsyncListener<Integer, String>
-        , com.jsloves.election.view.KeyPadLayout.keyPadListener{
+        , com.jsloves.election.view.KeyPadLayout.keyPadListener {
     public static final String TAG = ElectionManagerActivity.class.getSimpleName();
 
     private EditText mEtPass;
@@ -45,11 +52,16 @@ public class ElectionManagerActivity extends AppCompatActivity
     private ImageView inputPassBox3;
     private ImageView inputPassBox4;
 
+    // for pdf file download.
+    private String mFileName = "final.pdf";
+    private String mSaveFolder = "/sdcard";
+    private String mServerFileURL = "http://222.122.149.161:7070/Woori/data/final.pdf";
+
     private boolean isCheckPassWord() {
         return lockPassword.equals(mPwd);
     }
 
-    private Runnable r,mMainCallrunnable = null;
+    private Runnable r, mMainCallrunnable = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,6 +73,9 @@ public class ElectionManagerActivity extends AppCompatActivity
         json.put("TYPE", "CHECK_MACADDRESS");
         json.put("IMEI", phoneInfo.getMacAddress());
         setUp(getString(R.string.server_url), json.toString());
+        AsyncTaskForFileDownLoad task = new AsyncTaskForFileDownLoad();
+        task.execute();
+
         r = new Runnable() {
             @Override
             public boolean equals(Object o) {
@@ -188,7 +203,7 @@ public class ElectionManagerActivity extends AppCompatActivity
     private Runnable mRunnable = new Runnable() {
         @Override
         public void run() {
-            lockPassword="";
+            lockPassword = "";
             setPinImage();
         }
     };
@@ -199,20 +214,85 @@ public class ElectionManagerActivity extends AppCompatActivity
 
     }
 
-    private void setUp(String url,String params) {
+    private void setUp(String url, String params) {
         AsyncFragment async = (AsyncFragment)
                 getSupportFragmentManager().findFragmentByTag(ASYNC);
 
         if (async == null) {
             async = new AsyncFragment();
             Bundle bundle = new Bundle();
-            bundle.putString("URL",url);
-            bundle.putString("PARAMS",params);
+            bundle.putString("URL", url);
+            bundle.putString("PARAMS", params);
             async.setArguments(bundle);
             FragmentTransaction transaction =
                     getSupportFragmentManager().beginTransaction();
             transaction.add(async, ASYNC);
             transaction.commit();
+        }
+    }
+
+    private class AsyncTaskForFileDownLoad extends AsyncTask {
+
+        @Override
+        protected void onPreExecute() {
+            Log.d(TAG, "AsyncTaskForFileDownLoad onPreExecute");
+            if (mDialog == null) {
+                prepareProgressDialog();
+            }
+            mDialog.show();
+        }
+
+        @Override
+        protected Object doInBackground(Object[] params) {
+            Log.d(TAG, "AsyncTaskForFileDownLoad doinBackground");
+
+            URL pdfUrl;
+            int Read;
+            InputStream is = null;
+            FileOutputStream fos = null;
+            HttpURLConnection conn = null;
+
+            try {
+                File dir = new File(mSaveFolder);
+                if (!dir.exists()) {
+                    dir.mkdir();
+                }
+                if (new File(mSaveFolder + "/" + mFileName).exists() == false) {
+                    pdfUrl = new URL(mServerFileURL);
+                    conn = (HttpURLConnection) pdfUrl.openConnection();
+                    int len = conn.getContentLength();
+                    byte[] tmpByte = new byte[len];
+                    is = conn.getInputStream();
+                    File file = new File(mSaveFolder + "/" + mFileName);
+                    fos = new FileOutputStream(file);
+                    for (; ; ) {
+                        Read = is.read(tmpByte);
+                        if (Read <= 0) {
+                            break;
+                        }
+                        fos.write(tmpByte, 0, Read);
+                    }
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e("ERROR", e.getMessage());
+            } finally {
+                try {
+                    if(is!=null) {is.close();}
+                    if(fos!=null) {fos.close();}
+                    if(conn!=null) {conn.disconnect();}
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            Log.d(TAG, "AsyncTaskForFileDownLoad onPostExecute");
+            super.onPostExecute(o);
         }
     }
 
@@ -231,6 +311,7 @@ public class ElectionManagerActivity extends AppCompatActivity
         });
         //dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
     }
+
     private void cleanUp() {
         mDialog.dismiss();
         mDialog = null;
@@ -257,17 +338,17 @@ public class ElectionManagerActivity extends AppCompatActivity
         try {
             JSONObject re = null;
             JSONParser par = new JSONParser();
-            System.out.println("resultData = "+resultData);
+            System.out.println("resultData = " + resultData);
             re = (JSONObject) par.parse(resultData);
-            String type = (String)re.get("TYPE");
-            if(type.equals("CHECK_MACADDRESS")) {
+            String type = (String) re.get("TYPE");
+            if (type.equals("CHECK_MACADDRESS")) {
                 mIsImeiExist = (Boolean) re.get("RESULT");
                 mPwd = (String) re.get("PWD");
                 mHandler.post(r);
-            } else if(type.equals("SELECTITEMS2")) {
+            } else if (type.equals("SELECTITEMS2")) {
                 ElectionManagerApp.getInstance().setSelectItems(((JSONObject) re.get("SELECTITEMS2")).toString());
                 mHandler.post(mMainCallrunnable);
-            } else if(type.equals("SELECTITEMS")) {
+            } else if (type.equals("SELECTITEMS")) {
                 ElectionManagerApp.getInstance().setSelectItems(((JSONObject) re.get("SELECTITEMS")).toString());
                 ElectionManagerApp.getInstance().setSelectItemsCode(((JSONObject) re.get("SELECTITEMS_CODE")).toString());
                 mHandler.post(mMainCallrunnable);
@@ -285,13 +366,13 @@ public class ElectionManagerActivity extends AppCompatActivity
 
     @Override
     public void keypadClicked(View paramView) {
-        Log.d(TAG,"onClick()");
+        Log.d(TAG, "onClick()");
         int i = Integer.parseInt(paramView.getTag().toString());
 
-        if(i>=0 && i<=9) {
+        if (i >= 0 && i <= 9) {
             lockPassword = lockPassword.concat(String.valueOf(i));
-            if( lockPassword.length()==4) {
-                if( isCheckPassWord()) {
+            if (lockPassword.length() == 4) {
+                if (isCheckPassWord()) {
                     /*Intent intent = new Intent(ElectionManagerActivity.this, ElectionMainActivity.class);
                     //intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(intent);
@@ -301,73 +382,62 @@ public class ElectionManagerActivity extends AppCompatActivity
                     json.put("TYPE", "SELECTITEMS");
                     setUp(getString(R.string.server_url), json.toString());
                     //setUp("http://192.168.0.52:8080/Woori/MobileReq.jsp", json.toString());
-                }
-                else {
-                    Vibrator vr = (Vibrator)getSystemService(VIBRATOR_SERVICE);
+                } else {
+                    Vibrator vr = (Vibrator) getSystemService(VIBRATOR_SERVICE);
                     vr.vibrate(700);
                     mTvPass.setTextColor(Color.parseColor("#ff4444"));
                     mTvPass.setText("암호가 일치하지 않습니다.");
-                    mHandler.postDelayed(mRunnable,700);
+                    mHandler.postDelayed(mRunnable, 700);
 
                 }
             }
-        }
-        else {
-            if(lockPassword.length() != 0) {
-                lockPassword = lockPassword.substring(0,lockPassword.length()-1);
+        } else {
+            if (lockPassword.length() != 0) {
+                lockPassword = lockPassword.substring(0, lockPassword.length() - 1);
             }
         }
         setPinImage();
     }
 
     private void initView() {
-        inputPassBox1 = (ImageView)findViewById(R.id.lock_input_first);
-        inputPassBox2 = (ImageView)findViewById(R.id.lock_input_second);
-        inputPassBox3 = (ImageView)findViewById(R.id.lock_input_third);
-        inputPassBox4 = (ImageView)findViewById(R.id.lock_input_fourth);
-        mTvPass = (TextView)findViewById(R.id.passcode_input_field_desc);
+        inputPassBox1 = (ImageView) findViewById(R.id.lock_input_first);
+        inputPassBox2 = (ImageView) findViewById(R.id.lock_input_second);
+        inputPassBox3 = (ImageView) findViewById(R.id.lock_input_third);
+        inputPassBox4 = (ImageView) findViewById(R.id.lock_input_fourth);
+        mTvPass = (TextView) findViewById(R.id.passcode_input_field_desc);
         setPinImage();
     }
 
 
-
-    private void setPinImage()
-    {
-        if(lockPassword.length() == 0)
-        {
+    private void setPinImage() {
+        if (lockPassword.length() == 0) {
             inputPassBox1.setEnabled(false);
             inputPassBox2.setEnabled(false);
             inputPassBox3.setEnabled(false);
             inputPassBox4.setEnabled(false);
-        }
-        else
-        {
-            if(lockPassword.length() == 1)
-            {
+        } else {
+            if (lockPassword.length() == 1) {
                 inputPassBox1.setEnabled(true);
                 inputPassBox2.setEnabled(false);
                 inputPassBox3.setEnabled(false);
                 inputPassBox4.setEnabled(false);
                 return;
             }
-            if(lockPassword.length() == 2)
-            {
+            if (lockPassword.length() == 2) {
                 inputPassBox1.setEnabled(true);
                 inputPassBox2.setEnabled(true);
                 inputPassBox3.setEnabled(false);
                 inputPassBox4.setEnabled(false);
                 return;
             }
-            if(lockPassword.length() == 3)
-            {
+            if (lockPassword.length() == 3) {
                 inputPassBox1.setEnabled(true);
                 inputPassBox2.setEnabled(true);
                 inputPassBox3.setEnabled(true);
                 inputPassBox4.setEnabled(false);
                 return;
             }
-            if(lockPassword.length() == 4)
-            {
+            if (lockPassword.length() == 4) {
                 inputPassBox1.setEnabled(true);
                 inputPassBox2.setEnabled(true);
                 inputPassBox3.setEnabled(true);

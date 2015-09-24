@@ -81,7 +81,6 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     private Spinner sp2;
     private Spinner sp3;
     private boolean ignoreUpdate;
-    private ImageButton person;
 
     private StringBuffer mTest = new StringBuffer();
 
@@ -219,6 +218,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     private TextView mTtupyogu_40m_over;
     private TextView mTsungugu_40m_over;
 
+    private ImageButton mPerson;
 
     /**
      * Use this factory method to create a new instance of
@@ -425,6 +425,54 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 default:
                     break;
             }
+        }
+    }
+
+    private class PdfViewOnclickListner implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(getActivity(), PDFViewActivity.class);
+            if(v == mPerson) {
+                intent.putExtra("pdfPageNum",1);
+            }
+            else if(v == mButton_age) {
+                intent.putExtra("pdfPageNum",1);
+            }
+            else if(v == mButton_wife) {
+                intent.putExtra("pdfPageNum",1);
+            }
+            else if(v == mButton_univercity) {
+                intent.putExtra("pdfPageNum",1);
+            }
+            else if(v == mButton_population) {
+                intent.putExtra("pdfPageNum",1);
+            }
+            else if(v == mButton_ageing) {
+                intent.putExtra("pdfPageNum",1);
+            }
+            else if(v == mButton_memberOfHouseHold) {
+                intent.putExtra("pdfPageNum",1);
+            }
+            else if(v == mButton_dependency) {
+                intent.putExtra("pdfPageNum",1);
+            }
+            else if(v == mButton_one_man) {
+                intent.putExtra("pdfPageNum",1);
+            }
+            else if(v == mButton_two_more) {
+                intent.putExtra("pdfPageNum",1);
+            }
+            else if(v == mButton_myhouse) {
+                intent.putExtra("pdfPageNum",1);
+            }
+            else if(v == mButton_apt) {
+                intent.putExtra("pdfPageNum",1);
+            }
+            else if(v == mButton_40m_over) {
+                intent.putExtra("pdfPageNum",1);
+            }
+            startActivity(intent);
         }
     }
 
@@ -844,18 +892,27 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 String adm_cd = ElectionManagerApp.getInstance().getTupyoguCode(array);
 
 
-                Log.d(TAG, "tupyoguStr = "+tupyoguStr+ " ,adm_cd = "+adm_cd);
+                Log.d(TAG, "tupyoguStr = " + tupyoguStr + " ,adm_cd = " + adm_cd);
                 showMap(adm_cd);
             }
         });
-        person = (ImageButton) view.findViewById(R.id.person);
-        person.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), PDFViewActivity.class);
-                startActivity(intent);
-            }
-        });
+        PdfViewOnclickListner pdfOnCLick = new PdfViewOnclickListner();
+
+        mPerson = (ImageButton) view.findViewById(R.id.person);
+        mPerson.setOnClickListener(pdfOnCLick);
+        mButton_age.setOnClickListener(pdfOnCLick);
+        mButton_wife.setOnClickListener(pdfOnCLick);
+        mButton_univercity.setOnClickListener(pdfOnCLick);
+        mButton_population.setOnClickListener(pdfOnCLick);
+        mButton_ageing.setOnClickListener(pdfOnCLick);
+        mButton_memberOfHouseHold.setOnClickListener(pdfOnCLick);
+        mButton_dependency.setOnClickListener(pdfOnCLick);
+        mButton_one_man.setOnClickListener(pdfOnCLick);
+        mButton_two_more.setOnClickListener(pdfOnCLick);
+        mButton_myhouse.setOnClickListener(pdfOnCLick);
+        mButton_apt.setOnClickListener(pdfOnCLick);
+        mButton_40m_over.setOnClickListener(pdfOnCLick);
+
         gpsSearchBtn = (Button) view.findViewById(R.id.gpsSearch);
         gpsSearchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -892,7 +949,6 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
             }
         });
-
         return view;
     }
 

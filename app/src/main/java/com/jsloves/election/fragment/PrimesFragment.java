@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 public class PrimesFragment extends Fragment {
 
+    private static final String TAG = PrimesFragment.class.getSimpleName();
     private AsyncListener<Integer,String> listener;
     private PrimesTask task;
 
@@ -34,6 +36,7 @@ public class PrimesFragment extends Fragment {
     }
 
     protected String doInBackground2(Object... args) {
+        Log.d(TAG, "doInBackground2");
         return "return result";
     }
 

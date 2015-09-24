@@ -33,8 +33,10 @@ import java.io.File;
 
 
 public class PDFViewActivity extends Activity implements View.OnClickListener {
-    private PDFView pdfView;
     private static final String TAG = PDFViewActivity.class.getSimpleName();
+    private PDFView pdfView;
+    private String mSavedFilePath="/sdcard/final.pdf";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,10 +56,10 @@ public class PDFViewActivity extends Activity implements View.OnClickListener {
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         pdfView = (PDFView) findViewById(R.id.pdfview);
-        Log.d(TAG,"absolutepath : " + Environment.getExternalStorageDirectory().getAbsolutePath());
-        //pdfView.fromFile(new File("/sdcard/final.pdf"))
+        Log.d(TAG, "absolutepath : " + Environment.getExternalStorageDirectory().getAbsolutePath());
+        pdfView.fromFile(new File(mSavedFilePath))
 
-        pdfView.fromAsset("final.pdf")
+//        pdfView.fromAsset("final.pdf")
 
                 .pages(0, 2, 1, 3, 3, 3)
                 .defaultPage(1)
