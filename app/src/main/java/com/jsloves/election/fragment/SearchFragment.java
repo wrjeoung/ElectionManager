@@ -9,18 +9,22 @@ import android.net.http.SslError;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.ConsoleMessage;
+import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.webkit.JsResult;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -87,6 +91,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     private String mSigungu;
     private String mHangjungdong;
     private String mTupyogu;
+    private String mAdm_cd;
     private Handler mHandler = new Handler();
 
 
@@ -425,6 +430,81 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 default:
                     break;
             }
+        }
+    }
+
+    private class ChromeClient extends WebChromeClient {
+        @Override
+        public boolean onCreateWindow(WebView view, boolean dialog,
+                                      boolean userGesture, Message resultMsg) {
+            // TODO Auto-generated method stub
+            return super.onCreateWindow(view, dialog, userGesture, resultMsg);
+        }
+
+        @Override
+        public boolean onJsConfirm(WebView view, String url, String message,
+                                   JsResult result) {
+            Log.d(TAG, "[onJsConfirm]");
+
+            final JsResult res = result;
+            new AlertDialog.Builder(getActivity())
+                    .setTitle(R.string.app_name)
+                    .setMessage(message)
+                    .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                        public void onCancel(DialogInterface dialog) {
+                            res.cancel();
+                        }
+                    })
+                    .setPositiveButton(android.R.string.ok,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                                    int which) {
+                                    res.confirm();
+                                }
+                            })
+                    .setNegativeButton(android.R.string.cancel,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                                    int which) {
+                                    res.cancel();
+                                }
+                            }).show();
+
+            return true;
+        }
+
+        /** JavaScript Alert */
+        @Override
+        public boolean onJsAlert(WebView view, String url, String message,
+                                 JsResult result) {
+            Log.d(TAG,"[onJsAlert]");
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(
+                    getActivity());
+            builder.setMessage(message)
+                    .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                        public void onCancel(DialogInterface dialog) {
+
+                            dialog.dismiss();
+                        }
+                    })
+                    .setNeutralButton(android.R.string.ok,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface arg0,
+                                                    int arg1) {
+                                    arg0.dismiss();
+                                }
+                            }).show();
+            result.cancel();
+
+            return true;
+        }
+
+        @JavascriptInterface
+        public void funcCallSearchByJSParam(final String adm_cd) {
+            Log.d(TAG, "funcCallSearchByJSParam() >>>>>>>>>>> :" + adm_cd);
+            mAdm_cd = adm_cd;
+            showMap(mAdm_cd);
         }
     }
 
@@ -829,6 +909,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         myWebview.setWebViewClient(new MainWebViewClient());
         myWebview.setHorizontalScrollBarEnabled(true);
         myWebview.setVerticalScrollBarEnabled(true);
+        myWebview.addJavascriptInterface(new ChromeClient(), "ElectionManager");
         WebSettings webSettings = myWebview.getSettings();
         webSettings.setDefaultTextEncodingName("UTF-8");
         webSettings.setJavaScriptEnabled(true);
@@ -857,7 +938,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 return super.onConsoleMessage(consoleMessage);
             }
         });
-        //String url = "http://172.30.90.228:8080/Woori/areaMap.jsp";
+        //String url = "http://10.112.58.94:8080/Woori/areaMap.jsp";
         myWebview.loadUrl(getString(R.string.mapView_url));
         //myWebview.loadUrl(url);
         myWebview.setVisibility(View.GONE);
@@ -1073,6 +1154,8 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     }
 
     private void resetSpinnerFromAdmCd(String adm_cd) {
+        ignoreUpdate = true;
+
         String haengCode = adm_cd.split("-")[0];
         String sigunguCode = adm_cd.substring(0,5);
 
@@ -1163,8 +1246,6 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                         double coy = (Double)mapData.get("COY");
                         String adm_cd = (String)mapData.get("ADM_CD");
 
-                        ignoreUpdate = true;
-
                         resetSpinnerFromAdmCd(adm_cd);
 
                         myWebview.loadUrl("javascript:drawMap('" + mapData.toString() + "')");
@@ -1197,6 +1278,11 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
                     setVisivilityStaticsticsOfFamily(alFamilyDAO.size());
                     setDataStatisticsOfFamily(alFamilyDAO);
+
+                    if(mAdm_cd != null && mAdm_cd.length() > 1) {
+                        resetSpinnerFromAdmCd(mAdm_cd);
+                        mAdm_cd = null;
+                    }
 
                     JSONObject mapData = (JSONObject) re.get("MAPDATA");
                     myWebview.loadUrl("javascript:drawMap('" + mapData.toString() + "')");
