@@ -435,6 +435,12 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
     private class ChromeClient extends WebChromeClient {
         @Override
+        public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+            Log.d(TAG, consoleMessage.message() + '\n' + consoleMessage.messageLevel() + '\n' + consoleMessage.sourceId());
+            return super.onConsoleMessage(consoleMessage);
+        }
+
+        @Override
         public boolean onCreateWindow(WebView view, boolean dialog,
                                       boolean userGesture, Message resultMsg) {
             // TODO Auto-generated method stub
@@ -910,6 +916,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         myWebview.setHorizontalScrollBarEnabled(true);
         myWebview.setVerticalScrollBarEnabled(true);
         myWebview.addJavascriptInterface(new ChromeClient(), "ElectionManager");
+
         WebSettings webSettings = myWebview.getSettings();
         webSettings.setDefaultTextEncodingName("UTF-8");
         webSettings.setJavaScriptEnabled(true);
@@ -931,13 +938,6 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         sp3 = (Spinner) view.findViewById(R.id.spinner_3);
 
         setUpSpinner(sp1, ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU").toString());
-        myWebview.setWebChromeClient(new WebChromeClient() {
-            @Override
-            public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
-                Log.d(TAG, consoleMessage.message() + '\n' + consoleMessage.messageLevel() + '\n' + consoleMessage.sourceId());
-                return super.onConsoleMessage(consoleMessage);
-            }
-        });
         //String url = "http://10.112.58.94:8080/Woori/areaMap.jsp";
         myWebview.loadUrl(getString(R.string.mapView_url));
         //myWebview.loadUrl(url);
