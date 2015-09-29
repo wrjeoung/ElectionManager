@@ -19,12 +19,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.ConsoleMessage;
 import android.webkit.JavascriptInterface;
+import android.webkit.JsResult;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.webkit.JsResult;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -40,6 +40,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jsloves.election.DTO.ElectDao;
 import com.jsloves.election.DTO.FamilyDAO;
+import com.jsloves.election.DTO.PdfDAO;
 import com.jsloves.election.DTO.StatsDAO;
 import com.jsloves.election.DTO.VoteDAO;
 import com.jsloves.election.activity.PDFViewActivity;
@@ -100,7 +101,14 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     private GpsInfo gps;
 
     // politics enviroment of AreaInfo.
+    // voteRate
+    // Button
+    private ImageButton mVoterate_btn;
+
     // sub of voteRate
+    // Button
+    private ImageButton mVoteratesub_btnM;
+    private ImageButton mVoteratesub_btnP;
     // header
     private TableRow mWrapper_voteratesub_header;
     // sungugu.
@@ -244,6 +252,9 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     }
 
     private void initVoteRateSub(View view) {
+        mVoteratesub_btnM = (ImageButton) view.findViewById(R.id.voteratesub_btnM);
+        mVoteratesub_btnP = (ImageButton) view.findViewById(R.id.voteratesub_btnP);
+
         mWrapper_voteratesub_header = (TableRow) view.findViewById(R.id.wrapper_voteratesub_header);
         // sunggugu
         mWrapper_voteratesub_sungugu = (TableRow) view.findViewById(R.id.wrapper_voteratesub_sungugu);
@@ -515,49 +526,19 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     }
 
     private class PdfViewOnclickListner implements View.OnClickListener {
-
         @Override
         public void onClick(View v) {
+            if(v.getTag() == null) {
+                return;
+            }
+
             Intent intent = new Intent(getActivity(), PDFViewActivity.class);
-            if(v == mPerson) {
-                intent.putExtra("pdfPageNum",1);
-            }
-            else if(v == mButton_age) {
-                intent.putExtra("pdfPageNum",1);
-            }
-            else if(v == mButton_wife) {
-                intent.putExtra("pdfPageNum",1);
-            }
-            else if(v == mButton_univercity) {
-                intent.putExtra("pdfPageNum",1);
-            }
-            else if(v == mButton_population) {
-                intent.putExtra("pdfPageNum",1);
-            }
-            else if(v == mButton_ageing) {
-                intent.putExtra("pdfPageNum",1);
-            }
-            else if(v == mButton_memberOfHouseHold) {
-                intent.putExtra("pdfPageNum",1);
-            }
-            else if(v == mButton_dependency) {
-                intent.putExtra("pdfPageNum",1);
-            }
-            else if(v == mButton_one_man) {
-                intent.putExtra("pdfPageNum",1);
-            }
-            else if(v == mButton_two_more) {
-                intent.putExtra("pdfPageNum",1);
-            }
-            else if(v == mButton_myhouse) {
-                intent.putExtra("pdfPageNum",1);
-            }
-            else if(v == mButton_apt) {
-                intent.putExtra("pdfPageNum",1);
-            }
-            else if(v == mButton_40m_over) {
-                intent.putExtra("pdfPageNum",1);
-            }
+            String[] pages = v.getTag().toString().split(";");
+
+            int startPageNum = Integer.parseInt(pages[0]);
+            int endPageNum = pages.length > 1 ? Integer.parseInt(pages[pages.length-1]) : startPageNum;
+            intent.putExtra("pdfStartPageNum",startPageNum);
+            intent.putExtra("pdfEndPageNum",endPageNum);
             startActivity(intent);
         }
     }
@@ -787,6 +768,45 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         }
     }
 
+    private void setDataOfPdf(JSONArray data) {
+        Gson gs = new Gson();
+        Log.d(TAG, "setDataOfPdf data.toJSONString : " + data.toJSONString());
+        Log.d(TAG, "setDataOfPdf data.size() : " + data.size());
+        Log.d(TAG, "setDataOfPdf data.get(0) : " + data.get(0));
+
+        for (int i = 0; i < data.size(); i++) {
+            PdfDAO pd = gs.fromJson((String) data.get(i), PdfDAO.class);
+
+            String pdf_code = pd.getPdf_code();
+            String pdf_page = pd.getPdf_page();
+            String pdf_etc = pd.getPdf_etc();
+            if(pdf_code.equals("B_11")) {
+                if(pdf_etc.equalsIgnoreCase("p")) {
+                    mVoterate_btn.setTag(pdf_page);
+                }
+            } else if(pdf_code.equals("B_21")) {
+                if(pdf_etc.equalsIgnoreCase("p")) {
+                    mVoteratesub_btnP.setTag(pdf_page);
+                } else if(pdf_etc.equalsIgnoreCase("m")) {
+                    mVoteratesub_btnM.setTag(pdf_page);
+                }
+            } else if(pdf_code.equals("A_11")) {
+                if(pdf_etc.equalsIgnoreCase("m")) {
+                    mPerson.setTag(pdf_page);
+                }
+            } else if(pdf_code.equals("A_24")) {
+                if(pdf_etc.equalsIgnoreCase("p")) {
+                    mButton_wife.setTag(pdf_page);
+                }
+            } else if(pdf_code.equals("A_23")) {
+                if(pdf_etc.equalsIgnoreCase("p")) {
+                    mButton_univercity.setTag(pdf_page);
+                }
+            }
+
+        }
+    }
+
     public SearchFragment() {
         // Required empty public constructor
     }
@@ -849,7 +869,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         Log.d(TAG, "showMap jo : " + jo);
 
         excuteTask(getString(R.string.server_url), jo.toString());
-        //excuteTask("http://192.168.0.6:8080/Woori/MobileReq.jsp", jo.toString());
+        //excuteTask("http://192.168.0.8:8080/Woori/MobileReq.jsp", jo.toString());
         /*myWebview.loadUrl("javascript:drawMap('" + jo.toString() + "')");
         if(myWebview.getVisibility()!= View.VISIBLE)
             myWebview.setVisibility(View.VISIBLE);
@@ -978,6 +998,11 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
             }
         });
         PdfViewOnclickListner pdfOnCLick = new PdfViewOnclickListner();
+
+        mVoterate_btn = (ImageButton) view.findViewById(R.id.voterate_btn);
+        mVoterate_btn.setOnClickListener(pdfOnCLick);
+        mVoteratesub_btnM.setOnClickListener(pdfOnCLick);
+        mVoteratesub_btnP.setOnClickListener(pdfOnCLick);
 
         mPerson = (ImageButton) view.findViewById(R.id.person);
         mPerson.setOnClickListener(pdfOnCLick);
@@ -1225,10 +1250,12 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                         JSONArray alVoteDao = new JSONArray();
                         JSONArray alStatsDAO = new JSONArray();
                         JSONArray alFamilyDAO = new JSONArray();
+                        JSONArray alPdfDAO = new JSONArray();
                         alElectDao = (JSONArray) re.get("ELECT");
                         alVoteDao = (JSONArray) re.get("RATE");
                         alStatsDAO = (JSONArray) re.get("STATS");
                         alFamilyDAO = (JSONArray) re.get("FAMILY");
+                        alPdfDAO = (JSONArray) re.get("PDF");
 
                         setVisivilityVoteRateSub(alElectDao.size());
                         setDataVoteRateSub(alElectDao);
@@ -1240,6 +1267,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
                         setVisivilityStaticsticsOfFamily(alFamilyDAO.size());
                         setDataStatisticsOfFamily(alFamilyDAO);
+                        setDataOfPdf(alPdfDAO);
 
                         JSONObject mapData = (JSONObject)re.get("MAPDATA");
                         double cox = (Double)mapData.get("COX");
@@ -1262,10 +1290,12 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                     JSONArray alVoteDao = new JSONArray();
                     JSONArray alStatsDAO = new JSONArray();
                     JSONArray alFamilyDAO = new JSONArray();
+                    JSONArray alPdfDAO = new JSONArray();
                     alElectDao = (JSONArray) re.get("ELECT");
                     alVoteDao = (JSONArray) re.get("RATE");
                     alStatsDAO = (JSONArray) re.get("STATS");
                     alFamilyDAO = (JSONArray) re.get("FAMILY");
+                    alPdfDAO = (JSONArray) re.get("PDF");
 
                     setVisivilityVoteRateSub(alElectDao.size());
                     setDataVoteRateSub(alElectDao);
@@ -1278,6 +1308,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
                     setVisivilityStaticsticsOfFamily(alFamilyDAO.size());
                     setDataStatisticsOfFamily(alFamilyDAO);
+                    setDataOfPdf(alPdfDAO);
 
                     if(mAdm_cd != null && mAdm_cd.length() > 1) {
                         resetSpinnerFromAdmCd(mAdm_cd);
