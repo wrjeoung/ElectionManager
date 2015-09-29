@@ -24,6 +24,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 
@@ -35,7 +36,9 @@ import java.io.File;
 public class PDFViewActivity extends Activity implements View.OnClickListener {
     private static final String TAG = PDFViewActivity.class.getSimpleName();
     private PDFView pdfView;
-    private String mSavedFilePath="/sdcard/final.pdf";
+    private String mSavedFilePath = "/sdcard/final.pdf";
+    private int mStartPageNum;
+    private int mEndPageNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,21 +53,28 @@ public class PDFViewActivity extends Activity implements View.OnClickListener {
         bt_r = (Button) findViewById(R.id.right);
         bt_e = (Button) findViewById(R.id.exit);
 
+
         bt_l.setOnClickListener(this);
         bt_r.setOnClickListener(this);
         bt_e.setOnClickListener(this);
-        int startPageNum = getIntent().getIntExtra("pdfStartPageNum",1);
-        int endPageNum = getIntent().getIntExtra("pdfEndPageNum",1);
+        mStartPageNum = getIntent().getIntExtra("pdfStartPageNum", 1);
+        mEndPageNum = getIntent().getIntExtra("pdfEndPageNum", 1);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         pdfView = (PDFView) findViewById(R.id.pdfview);
+        pdfView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return false;
+            }
+        });
         Log.d(TAG, "absolutepath : " + Environment.getExternalStorageDirectory().getAbsolutePath());
         pdfView.fromFile(new File(mSavedFilePath))
 
 //        pdfView.fromAsset("final.pdf")
 
                 //.pages(0, 2, 1, 3, 3, 3)
-                .defaultPage(startPageNum)
+                .defaultPage(mStartPageNum)
                 .showMinimap(false)
                 .enableSwipe(true)
                         //.onDraw(onDrawListener)
@@ -74,25 +84,36 @@ public class PDFViewActivity extends Activity implements View.OnClickListener {
     }
 
     @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return true;
+    }
+
+    @Override
     public void onClick(View v) {
         try {
 
-            Log.d("PDFViewActivity", "getCurrentPage : " + pdfView.getCurrentPage());
-            Log.d("PDFViewActivity", "getPageCount : " + pdfView.getPageCount());
+            Log.d("PDFViewActivity", "onclick() getCurrentPage : " + pdfView.getCurrentPage());
+            Log.d("PDFViewActivity", "onclick() getPageCount : " + pdfView.getPageCount());
+            Log.d("PDFViewActivity", "onclick() mStartPageNum : " + mStartPageNum);
+            Log.d("PDFViewActivity", "onclick() mEndPageNum : " + mEndPageNum);
 
             switch (v.getId()) {
 
                 case R.id.left:
-                    if (pdfView.getCurrentPage() != 0) {
-                        Log.d("PDFViewActivity","left!!!");
-                        pdfView.jumpTo(pdfView.getCurrentPage());
-                    }
+                    if (pdfView.getCurrentPage() <= mStartPageNum - 1)
+                        break;
+
+                    Log.d("PDFViewActivity", "left!!!");
+                    pdfView.jumpTo(pdfView.getCurrentPage());
+
                     break;
                 case R.id.right:
-                    if (pdfView.getCurrentPage() != pdfView.getPageCount()-1) {
-                        Log.d("PDFViewActivity", "right!!!");
-                        pdfView.jumpTo(pdfView.getCurrentPage() + 2);
-                    }
+                    if (pdfView.getCurrentPage() >= mEndPageNum - 1)
+                        break;
+
+                    Log.d("PDFViewActivity", "right!!!");
+                    pdfView.jumpTo(pdfView.getCurrentPage() + 2);
+
                     break;
                 case R.id.exit:
                     finish();
