@@ -53,6 +53,8 @@ public class PDFViewActivity extends Activity implements View.OnClickListener {
         bt_l.setOnClickListener(this);
         bt_r.setOnClickListener(this);
         bt_e.setOnClickListener(this);
+        int startPageNum = getIntent().getIntExtra("pdfStartPageNum",1);
+        int endPageNum = getIntent().getIntExtra("pdfEndPageNum",1);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         pdfView = (PDFView) findViewById(R.id.pdfview);
@@ -61,8 +63,8 @@ public class PDFViewActivity extends Activity implements View.OnClickListener {
 
 //        pdfView.fromAsset("final.pdf")
 
-                .pages(0, 2, 1, 3, 3, 3)
-                .defaultPage(1)
+                //.pages(0, 2, 1, 3, 3, 3)
+                .defaultPage(startPageNum)
                 .showMinimap(false)
                 .enableSwipe(true)
                         //.onDraw(onDrawListener)
