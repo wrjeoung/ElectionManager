@@ -529,6 +529,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     private class PdfViewOnclickListner implements View.OnClickListener {
         @Override
         public void onClick(View v) {
+            Log.d(TAG,"PdfViewOnclickListner v.getTag() : "+v.getTag());
             if(v.getTag() == null) {
                 return;
             }

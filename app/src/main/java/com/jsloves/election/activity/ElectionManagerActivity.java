@@ -29,10 +29,15 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class ElectionManagerActivity extends AppCompatActivity
         implements AsyncListener<Integer, String>
@@ -72,9 +77,8 @@ public class ElectionManagerActivity extends AppCompatActivity
         JSONObject json = new JSONObject();
         json.put("TYPE", "CHECK_MACADDRESS");
         json.put("IMEI", phoneInfo.getMacAddress());
+        json.put("MD5SUM",md5CheckSum());
         setUp(getString(R.string.server_url), json.toString());
-        AsyncTaskForFileDownLoad task = new AsyncTaskForFileDownLoad();
-        task.execute();
 
         r = new Runnable() {
             @Override
@@ -200,6 +204,55 @@ public class ElectionManagerActivity extends AppCompatActivity
 
     }
 
+    private String md5CheckSum()
+    {
+        String result=null;
+        FileInputStream fis=null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            fis = new FileInputStream(mSaveFolder+"/"+mFileName);
+
+            byte[] dataBytes = new byte[1024];
+
+            int nread = 0;
+            while ((nread = fis.read(dataBytes)) != -1) {
+                md.update(dataBytes, 0, nread);
+            };
+
+            byte[] mdbytes = md.digest();
+
+            //convert the byte to hex format method 1
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < mdbytes.length; i++) {
+                sb.append(Integer.toString((mdbytes[i] & 0xff) + 0x100, 16).substring(1));
+            }
+
+            Log.d(TAG,"Md5CheckSum() Digest(in hex format) 1. : " + sb.toString());
+            //convert the byte to hex format method 2
+            StringBuffer hexString = new StringBuffer();
+            for (int i = 0; i < mdbytes.length; i++) {
+                String hex = Integer.toHexString(0xff & mdbytes[i]);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+            result = hexString.toString();
+            Log.d(TAG,"Md5CheckSum() Digest(in hex format) 2. : " + hexString.toString());
+        }catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Log.e(TAG,"Md5CheckSum() pdf file not found exception!!");
+        }catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            Log.e(TAG, "Md5CheckSum() no such algorithm exception!!");
+        }catch (IOException e) {
+            e.printStackTrace();
+            Log.e(TAG, "Md5CheckSum() IO exception!!");
+        }finally {
+            if(fis!=null) { try{fis.close();}catch (IOException e){}}
+        }
+        return result;
+    }
+
+
     private Runnable mRunnable = new Runnable() {
         @Override
         public void run() {
@@ -279,9 +332,15 @@ public class ElectionManagerActivity extends AppCompatActivity
                 Log.e("ERROR", e.getMessage());
             } finally {
                 try {
-                    if(is!=null) {is.close();}
-                    if(fos!=null) {fos.close();}
-                    if(conn!=null) {conn.disconnect();}
+                    if (is != null) {
+                        is.close();
+                    }
+                    if (fos != null) {
+                        fos.close();
+                    }
+                    if (conn != null) {
+                        conn.disconnect();
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -341,6 +400,17 @@ public class ElectionManagerActivity extends AppCompatActivity
             System.out.println("resultData = " + resultData);
             re = (JSONObject) par.parse(resultData);
             String type = (String) re.get("TYPE");
+            Log.d(TAG,"onPostExecute re1 : "+re);
+
+
+            boolean updatePdfFile = (boolean) re.get("updatePdfFile");
+            Log.d(TAG,"onPostExecute re2 : "+re);
+            Log.d(TAG,"updatePdfFile : "+updatePdfFile);
+            if(updatePdfFile) {
+                AsyncTaskForFileDownLoad task = new AsyncTaskForFileDownLoad();
+                task.execute();
+            }
+
             if (type.equals("CHECK_MACADDRESS")) {
                 mIsImeiExist = (Boolean) re.get("RESULT");
                 mPwd = (String) re.get("PWD");
