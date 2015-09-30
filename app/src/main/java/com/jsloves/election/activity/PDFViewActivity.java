@@ -31,6 +31,7 @@ import android.widget.Button;
 import com.joanzapata.pdfview.PDFView;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 
 public class PDFViewActivity extends Activity implements View.OnClickListener {
@@ -69,18 +70,21 @@ public class PDFViewActivity extends Activity implements View.OnClickListener {
             }
         });
         Log.d(TAG, "absolutepath : " + Environment.getExternalStorageDirectory().getAbsolutePath());
-        pdfView.fromFile(new File(mSavedFilePath))
-
-//        pdfView.fromAsset("final.pdf")
-
-                //.pages(0, 2, 1, 3, 3, 3)
-                .defaultPage(mStartPageNum)
-                .showMinimap(false)
-                .enableSwipe(true)
-                        //.onDraw(onDrawListener)
-                        //.onLoad(onLoadCompleteListener)
-                        //.onPageChange(onPageChangeListener)
-                .load();
+        try {
+            if(new File(mSavedFilePath).exists()) {
+                pdfView.fromFile(new File(mSavedFilePath))
+                        // pdfView.fromAsset("final.pdf")
+                        //.pages(0, 2, 1, 3, 3, 3)
+                        .defaultPage(mStartPageNum)
+                        .showMinimap(false)
+                        .enableSwipe(true)
+                                //.onDraw(onDrawListener)
+                                //.onLoad(onLoadCompleteListener)
+                                //.onPageChange(onPageChangeListener)
+                        .load();            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -406,7 +406,8 @@ public class ElectionManagerActivity extends AppCompatActivity
             boolean updatePdfFile = (boolean) re.get("updatePdfFile");
             Log.d(TAG,"onPostExecute re2 : "+re);
             Log.d(TAG,"updatePdfFile : "+updatePdfFile);
-            if(updatePdfFile) {
+            if(updatePdfFile
+                    || !(new File(mSaveFolder + "/" + mFileName).exists())) {
                 AsyncTaskForFileDownLoad task = new AsyncTaskForFileDownLoad();
                 task.execute();
             }
