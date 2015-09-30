@@ -9,6 +9,7 @@ import android.net.http.SslError;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -18,6 +19,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.ConsoleMessage;
+import android.webkit.CookieSyncManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.JsResult;
 import android.webkit.SslErrorHandler;
@@ -93,7 +95,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     private String mHangjungdong;
     private String mTupyogu;
     private String mAdm_cd;
-    private Handler mHandler = new Handler();
+    private Handler mHandler = new Handler(Looper.getMainLooper());
 
 
     // GPS
@@ -233,7 +235,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
     private ImageButton mPerson;
     private boolean mPageLoadFinished;
-    private final long PAGEDELAYTIME = 960;
+    private final long PAGEDELAYTIME = 1000;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -962,14 +964,9 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         setUpSpinner(sp1, ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU").toString());
         //String url = "http://10.112.58.94:8080/Woori/areaMap.jsp";
         //myWebview.loadUrl(url);
-        myWebview.setVisibility(View.GONE);
-        myWebview.post(new Runnable() {
-            @Override
-            public void run() {
-                mPageLoadFinished = false;
-                myWebview.loadUrl(getString(R.string.mapView_url));
-            }
-        });
+        //myWebview.setVisibility(View.GONE);
+        mPageLoadFinished = false;
+        myWebview.loadUrl(getString(R.string.mapView_url));
         myWebview.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -1063,14 +1060,8 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
             }
         });
-
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                mAdm_cd = "3105300-00";
-                showMap(mAdm_cd);
-            }
-        });
+        mAdm_cd = "3105300-00";
+        showMap(mAdm_cd);
         return view;
     }
 
@@ -1294,12 +1285,11 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
                         //myWebview.loadUrl("javascript:drawMap('" + mapData.toString() + "')");
                         final long delayTime = mPageLoadFinished ? 0 : PAGEDELAYTIME;
-                        myWebview.postDelayed(new Runnable() {
+
+                        mHandler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 myWebview.loadUrl("javascript:drawMap('" + mapData.toString() + "')");
-                                if (myWebview.getVisibility() != View.VISIBLE)
-                                    myWebview.setVisibility(View.VISIBLE);
                             }
                         }, delayTime);
 
@@ -1341,13 +1331,11 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                     final JSONObject mapData = (JSONObject) re.get("MAPDATA");
                     final long delayTime = mPageLoadFinished ? 0 : PAGEDELAYTIME;
 
-                    myWebview.postDelayed(new Runnable() {
+                    mHandler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             myWebview.loadUrl("javascript:drawMap('" + mapData.toString() + "')");
-                            if (myWebview.getVisibility() != View.VISIBLE)
-                                myWebview.setVisibility(View.VISIBLE);
-                            }
+                        }
                     }, delayTime);
                 }
             } catch (Exception e) {
