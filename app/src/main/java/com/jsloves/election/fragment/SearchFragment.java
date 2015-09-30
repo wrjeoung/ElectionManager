@@ -235,7 +235,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
     private ImageButton mPerson;
     private boolean mPageLoadFinished;
-    private final long PAGEDELAYTIME = 1000;
+    private JSONObject mMapdata;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -845,6 +845,11 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
             if(url.equals(getString(R.string.mapView_url))) {
                 mPageLoadFinished = true;
             }
+
+            if(mPageLoadFinished && mMapdata != null ) {
+                myWebview.loadUrl("javascript:drawMap('" + mMapdata.toString() + "')");
+                mMapdata = null;
+            }
             //CookieSyncManager.getInstance().sync();
         }
 
@@ -966,6 +971,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         //myWebview.loadUrl(url);
         //myWebview.setVisibility(View.GONE);
         mPageLoadFinished = false;
+        mMapdata = null;
         myWebview.loadUrl(getString(R.string.mapView_url));
         myWebview.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -1276,22 +1282,18 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                         setDataStatisticsOfFamily(alFamilyDAO);
                         setDataOfPdf(alPdfDAO);
 
-                        final JSONObject mapData = (JSONObject)re.get("MAPDATA");
+                        final JSONObject mapData =  (JSONObject)re.get("MAPDATA");
                         double cox = (Double)mapData.get("COX");
                         double coy = (Double)mapData.get("COY");
                         String adm_cd = (String)mapData.get("ADM_CD");
 
                         resetSpinnerFromAdmCd(adm_cd);
 
-                        //myWebview.loadUrl("javascript:drawMap('" + mapData.toString() + "')");
-                        final long delayTime = mPageLoadFinished ? 0 : PAGEDELAYTIME;
-
-                        mHandler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                myWebview.loadUrl("javascript:drawMap('" + mapData.toString() + "')");
-                            }
-                        }, delayTime);
+                        if(mPageLoadFinished) {
+                            myWebview.loadUrl("javascript:drawMap('" + mapData.toString() + "')");
+                        } else {
+                            mMapdata = mapData;
+                        }
 
                     } else if (result.equals("FAILED")) {
                         Log.d(TAG, "매칭 데이터 없음");
@@ -1328,15 +1330,13 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                         mAdm_cd = null;
                     }
 
-                    final JSONObject mapData = (JSONObject) re.get("MAPDATA");
-                    final long delayTime = mPageLoadFinished ? 0 : PAGEDELAYTIME;
+                    final JSONObject mapData =  (JSONObject)re.get("MAPDATA");
 
-                    mHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            myWebview.loadUrl("javascript:drawMap('" + mapData.toString() + "')");
-                        }
-                    }, delayTime);
+                    if(mPageLoadFinished) {
+                        myWebview.loadUrl("javascript:drawMap('" + mapData.toString() + "')");
+                    } else {
+                        mMapdata = mapData;
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
