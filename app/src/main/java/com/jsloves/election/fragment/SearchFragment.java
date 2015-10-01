@@ -195,11 +195,6 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     private ImageButton mButton_ageing;
     private TextView mTtupyogu_ageing;
     private TextView mTsungugu_ageing;
-    // 평균가구원.
-    private LinearLayout mLwrraper_memberOfHouseHold;
-    private ImageButton mButton_memberOfHouseHold;
-    private TextView mTtupyogu_memberOfHouseHold;
-    private TextView mTsungugu_memberOfHouseHold;
     // 유년부양비
     private LinearLayout mLwrraper_dependency;
     private ImageButton mButton_dependency;
@@ -232,6 +227,12 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     private ImageButton mButton_40m_over;
     private TextView mTtupyogu_40m_over;
     private TextView mTsungugu_40m_over;
+
+    // 평균가구원.
+    private LinearLayout mLwrraper_memberOfHouseHold;
+    private ImageButton mButton_memberOfHouseHold;
+    private TextView mTtupyogu_memberOfHouseHold;
+    private TextView mTsungugu_memberOfHouseHold;
 
     private ImageButton mPerson;
     private boolean mPageLoadFinished;
@@ -574,11 +575,6 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         mTtupyogu_ageing = (TextView) view.findViewById(R.id.tupyogu_ageing);
         mTsungugu_ageing = (TextView) view.findViewById(R.id.sungugu_ageing);
 
-        mLwrraper_memberOfHouseHold = (LinearLayout) view.findViewById(R.id.wrraper_memberOfHouseHold);
-        mButton_memberOfHouseHold = (ImageButton) view.findViewById(R.id.button_memberOfHouseHold);
-        mTtupyogu_memberOfHouseHold = (TextView) view.findViewById(R.id.tupyogu_memberOfHouseHold);
-        mTsungugu_memberOfHouseHold = (TextView) view.findViewById(R.id.sungugu_memberOfHouseHold);
-
         mLwrraper_dependency = (LinearLayout) view.findViewById(R.id.wrraper_dependency);
         mButton_dependency = (ImageButton) view.findViewById(R.id.button_dependency);
         mTtupyogu_dependency = (TextView) view.findViewById(R.id.tupyogu_dependency);
@@ -614,11 +610,6 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
             mTtupyogu_ageing.setVisibility(View.VISIBLE);
             mTsungugu_ageing.setVisibility(View.VISIBLE);
 
-            mLwrraper_memberOfHouseHold.setVisibility(View.VISIBLE);
-            mButton_memberOfHouseHold.setVisibility(View.VISIBLE);
-            mTtupyogu_memberOfHouseHold.setVisibility(View.VISIBLE);
-            mTsungugu_memberOfHouseHold.setVisibility(View.VISIBLE);
-
             mLwrraper_dependency.setVisibility(View.VISIBLE);
             mButton_dependency.setVisibility(View.VISIBLE);
             mTtupyogu_dependency.setVisibility(View.VISIBLE);
@@ -641,13 +632,11 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                     mTsungugu_univercity.setText(String.valueOf(sd.getUniv_over()));
                     mTsungugu_population.setText(String.valueOf(sd.getPop_dnsity()));
                     mTsungugu_ageing.setText(String.valueOf(sd.getAged_child_ratio()));
-                    mTsungugu_memberOfHouseHold.setText(String.valueOf(sd.getFamily_avg()));
                     mTsungugu_dependency.setText(String.valueOf(sd.getChildhood_alimony()));
-
 
                     Log.d(TAG, "setDataStatisticsOfpopulation sd.getAge_avg() : " + sd.getAge_avg());
                     Log.d(TAG, "setDataStatisticsOfpopulation sd.getAged_child_ratio() : " + sd.getAged_child_ratio());
-                    Log.d(TAG, "setDataStatisticsOfpopulation sd.getFamily_avg() : " + sd.getFamily_avg());
+                    //Log.d(TAG, "setDataStatisticsOfpopulation sd.getFamily_avg() : " + sd.getFamily_avg());
                     Log.d(TAG, "setDataStatisticsOfpopulation sd.getPop_dnsity() : " + sd.getPop_dnsity());
                     break;
                 case 1:
@@ -656,7 +645,6 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                     mTtupyogu_univercity.setText(String.valueOf(sd.getUniv_over()));
                     mTtupyogu_population.setText(String.valueOf(sd.getPop_dnsity()));
                     mTtupyogu_ageing.setText(String.valueOf(sd.getChildhood_alimony()));
-                    mTtupyogu_memberOfHouseHold.setText(String.valueOf(sd.getFamily_avg()));
                     mTtupyogu_dependency.setText(String.valueOf(sd.getChildhood_alimony()));
                     break;
                 default:
@@ -670,7 +658,6 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
             mTtupyogu_univercity.setText("정보없음");
             mTtupyogu_population.setText("정보없음");
             mTtupyogu_ageing.setText("정보없음");
-            mTtupyogu_memberOfHouseHold.setText("정보없음");
             mTtupyogu_dependency.setText("정보없음");
         }
 
@@ -702,6 +689,11 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         mButton_40m_over = (ImageButton) view.findViewById(R.id.button_40m_over);
         mTtupyogu_40m_over = (TextView) view.findViewById(R.id.tupyogu_40m_over);
         mTsungugu_40m_over = (TextView) view.findViewById(R.id.sungugu_40m_over);
+
+        mLwrraper_memberOfHouseHold = (LinearLayout) view.findViewById(R.id.wrraper_memberOfHouseHold);
+        mButton_memberOfHouseHold = (ImageButton) view.findViewById(R.id.button_memberOfHouseHold);
+        mTtupyogu_memberOfHouseHold = (TextView) view.findViewById(R.id.tupyogu_memberOfHouseHold);
+        mTsungugu_memberOfHouseHold = (TextView) view.findViewById(R.id.sungugu_memberOfHouseHold);
     }
 
     private void setVisivilityStaticsticsOfFamily(int size) {
@@ -732,6 +724,11 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
             mButton_40m_over.setVisibility(View.VISIBLE);
             mTtupyogu_40m_over.setVisibility(View.VISIBLE);
             mTsungugu_40m_over.setVisibility(View.VISIBLE);
+
+            mLwrraper_memberOfHouseHold.setVisibility(View.VISIBLE);
+            mButton_memberOfHouseHold.setVisibility(View.VISIBLE);
+            mTtupyogu_memberOfHouseHold.setVisibility(View.VISIBLE);
+            mTsungugu_memberOfHouseHold.setVisibility(View.VISIBLE);
         }
     }
 
@@ -750,6 +747,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                     mTsungugu_myhouse.setText(String.valueOf(fd.getMyhome_ratio()));
                     mTsungugu_apt.setText(String.valueOf(fd.getApt_ratio()));
                     mTsungugu_40m_over.setText(String.valueOf(fd.getF40m_over()));
+                    mTsungugu_memberOfHouseHold.setText(String.valueOf(fd.getFamily_avg()));
                     break;
                 case 1:
                     mTtupyogu_one_man.setText(String.valueOf(fd.getFamily_one()));
@@ -757,6 +755,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                     mTtupyogu_myhouse.setText(String.valueOf(fd.getMyhome_ratio()));
                     mTtupyogu_apt.setText(String.valueOf(fd.getApt_ratio()));
                     mTtupyogu_40m_over.setText(String.valueOf(fd.getF40m_over()));
+                    mTtupyogu_memberOfHouseHold.setText(String.valueOf(fd.getFamily_avg()));
                     break;
                 default:
                     break;
@@ -769,6 +768,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
             mTtupyogu_myhouse.setText("정보없음");
             mTtupyogu_apt.setText("정보없음");
             mTtupyogu_40m_over.setText("정보없음");
+           mTtupyogu_memberOfHouseHold.setText("정보없음");
         }
     }
 

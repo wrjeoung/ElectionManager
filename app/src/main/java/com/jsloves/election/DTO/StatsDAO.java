@@ -3,21 +3,19 @@ package com.jsloves.election.DTO;
 import java.io.Serializable;
 
 public class StatsDAO implements Serializable{
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private int level;
 	private String adm_cd;
-
-	private float age_avg;
 	private float partner_yn;
 	private float univ_over;
 	private int pop_dnsity;
 	private float aged_child_ratio;
-	private float family_avg;
 	private float childhood_alimony;
+	private float age_avg;
 
 	public int getLevel() {
 		return level;
@@ -55,12 +53,6 @@ public class StatsDAO implements Serializable{
 	public void setAged_child_ratio(float aged_child_ratio) {
 		this.aged_child_ratio = aged_child_ratio;
 	}
-	public float getFamily_avg() {
-		return family_avg;
-	}
-	public void setFamily_avg(float family_avg) {
-		this.family_avg = family_avg;
-	}
 	public float getChildhood_alimony() {
 		return childhood_alimony;
 	}
@@ -73,5 +65,5 @@ public class StatsDAO implements Serializable{
 	public void setAge_avg(float age_avg) {
 		this.age_avg = age_avg;
 	}
-	
+
 }

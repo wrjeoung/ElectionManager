@@ -3,17 +3,21 @@ package com.jsloves.election.DTO;
 import java.io.Serializable;
 
 public class FamilyDAO implements Serializable{
-	
-	//`ADM_CD`,`FAMILY_ONE`,`FAMILY_TWO_OVER`,`MYHOME_RATIO`,`APT_RATIO`,`40M_OVER`
+
+	/**
+	 *
+	 */
 	private static final long serialVersionUID = 1L;
+	//`ADM_CD`,`FAMILY_ONE`,`FAMILY_TWO_OVER`,`MYHOME_RATIO`,`APT_RATIO`,`40M_OVER`
 	private int level;
-	private String adm_cd; 
+	private String adm_cd;
 	private float family_one;
 	private float family_two_over;
 	private float myhome_ratio;
 	private float apt_ratio;
 	private float f40m_over;
-	
+	private float family_avg;
+
 	public int getLevel() {
 		return level;
 	}
@@ -55,5 +59,11 @@ public class FamilyDAO implements Serializable{
 	}
 	public void setAdm_cd(String adm_cd) {
 		this.adm_cd = adm_cd;
+	}
+	public float getFamily_avg() {
+		return family_avg;
+	}
+	public void setFamily_avg(float family_avg) {
+		this.family_avg = family_avg;
 	}
 }

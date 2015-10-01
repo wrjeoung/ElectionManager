@@ -693,53 +693,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/wrraper_memberOfHouseHold"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingRight="10dp">
-
-        <ImageButton
-            android:id="@+id/button_memberOfHouseHold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/detail_selector" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="3dp"
-            android:layout_weight="2"
-            android:background="@color/primary_dark_material_light"
-            android:gravity="center"
-            android:text="평균가구원" />
-
-        <TextView
-            android:id="@+id/tupyogu_memberOfHouseHold"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="1dp"
-            android:layout_weight="1"
-            android:background="@color/primary_dark_material_light"
-            android:gravity="center"
-            android:text="45.2" />
-
-        <TextView
-            android:id="@+id/sungugu_memberOfHouseHold"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="1dp"
-            android:layout_weight="1"
-            android:background="@color/primary_dark_material_light"
-            android:gravity="center"
-            android:text="44.3" />
-
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/wrraper_dependency"
         android:visibility="gone"
         android:layout_width="match_parent"
@@ -1102,6 +1055,53 @@
             android:background="@color/primary_dark_material_light"
             android:gravity="center"
             android:text="18.4" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/wrraper_memberOfHouseHold"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingRight="10dp">
+
+        <ImageButton
+            android:id="@+id/button_memberOfHouseHold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/detail_selector" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="3dp"
+            android:layout_weight="2"
+            android:background="@color/primary_dark_material_light"
+            android:gravity="center"
+            android:text="평균가구원" />
+
+        <TextView
+            android:id="@+id/tupyogu_memberOfHouseHold"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="1dp"
+            android:layout_weight="1"
+            android:background="@color/primary_dark_material_light"
+            android:gravity="center"
+            android:text="45.2" />
+
+        <TextView
+            android:id="@+id/sungugu_memberOfHouseHold"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="1dp"
+            android:layout_weight="1"
+            android:background="@color/primary_dark_material_light"
+            android:gravity="center"
+            android:text="44.3" />
 
     </LinearLayout>
 
