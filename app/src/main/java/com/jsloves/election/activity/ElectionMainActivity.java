@@ -2,6 +2,7 @@ package com.jsloves.election.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -106,6 +107,8 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         titles[0] = getString(R.string.area_info);
         titles[1] = getString(R.string.jungchi_hwangyong);
