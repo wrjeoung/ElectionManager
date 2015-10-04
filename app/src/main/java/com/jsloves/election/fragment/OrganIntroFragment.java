@@ -130,7 +130,7 @@ public class OrganIntroFragment extends Fragment implements OnItemSelectedListen
         //JSONObject json1 = new JSONObject();
         //json1.put("TYPE", "SELECTORGAN1");
 
-        //excuteTask("http://192.168.0.2:8080/Woori/MobileReq.jsp", json1.toString());
+        //excuteTask("http://192.168.0.2:8080/ElectionManager_server/MobileReq.jsp", json1.toString());
         //excuteTask(getString(R.string.server_url), json1.toString());
     }
 
@@ -217,7 +217,7 @@ public class OrganIntroFragment extends Fragment implements OnItemSelectedListen
                 json1.put("ADM_CD", adm_cd);
                 Log.d("lcy",adm_cd);
 
-                //excuteTask("http://192.168.42.189:8080/Woori/MobileReq.jsp", json1.toString());
+                //excuteTask("http://192.168.42.189:8080/ElectionManager_server/MobileReq.jsp", json1.toString());
                 excuteTask(getString(R.string.server_url), json1.toString());
 
             }

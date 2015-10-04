@@ -879,7 +879,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         Log.d(TAG, "showMap jo : " + jo);
 
         excuteTask(getString(R.string.server_url), jo.toString());
-        //excuteTask("http://192.168.0.8:8080/Woori/MobileReq.jsp", jo.toString());
+        //excuteTask("http://192.168.0.8:8080/ElectionManager_server/MobileReq.jsp", jo.toString());
         /*myWebview.loadUrl("javascript:drawMap('" + jo.toString() + "')");
         if(myWebview.getVisibility()!= View.VISIBLE)
             myWebview.setVisibility(View.VISIBLE);
@@ -900,7 +900,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
 
         excuteTask(getString(R.string.server_url), jo.toString());
-        //excuteTask("http://192.168.25.4:8080/Woori/MobileReq.jsp", jo.toString());
+        //excuteTask("http://192.168.25.4:8080/ElectionManager_server/MobileReq.jsp", jo.toString());
         /*
         myWebview.loadUrl("javascript:drawMap('" + jo.toString() + "')");
         if(myWebview.getVisibility()!= View.VISIBLE)
@@ -967,7 +967,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         sp2 = (Spinner) view.findViewById(R.id.spinner_2);
         sp3 = (Spinner) view.findViewById(R.id.spinner_3);
         setUpSpinner(sp1, ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU").toString());
-        //String url = "http://10.112.58.94:8080/Woori/areaMap.jsp";
+        //String url = "http://10.112.58.94:8080/ElectionManager_server/areaMap.jsp";
         //myWebview.loadUrl(url);
         //myWebview.setVisibility(View.GONE);
         mPageLoadFinished = false;
@@ -1087,7 +1087,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         doroBubjoung += address[3];
         gunmulBunji += address[4];
         Log.d(TAG, "sigungu : " + sigungu + " doroBubjoung : " + doroBubjoung + " gunmulBunji : " + gunmulBunji);
-        String url = "http://192.168.0.7:8080/Woori/MobileReq.jsp";
+        String url = "http://192.168.0.7:8080/ElectionManager_server/MobileReq.jsp";
         JSONObject json = new JSONObject();
         //json.put("TYPE", "GPS");
         json.put("TYPE", "GPSTEST");

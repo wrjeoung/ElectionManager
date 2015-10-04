@@ -126,11 +126,11 @@ public class OrganIntroDetailFragment extends Fragment {
             }
         });
 
-        //myWebview.loadUrl("http://222.122.149.161:7070/Woori/OrganIntroDetail.jsp?organ_seq="+organ_seq);
-        //myWebview.loadUrl("http://192.168.42.189:8080/Woori/OrganIntroDetail.jsp?organ_seq="+organ_seq);
+        //myWebview.loadUrl("http://222.122.149.161:7070/ElectionManager_server/OrganIntroDetail.jsp?organ_seq="+organ_seq);
+        //myWebview.loadUrl("http://192.168.42.189:8080/ElectionManager_server/OrganIntroDetail.jsp?organ_seq="+organ_seq);
         Log.d("lcy", "call WebView before");
-        myWebview.loadUrl("http://222.122.149.161:7070/Woori/OrganIntroDetail.jsp?organ_seq=" + organ_seq + "&organ_gb="+organ_gb);
-        //myWebview.loadUrl("http://192.168.42.189:8080/Woori/OrganIntroDetail.jsp?organ_seq=" + organ_seq + "&organ_gb="+organ_gb);
+        myWebview.loadUrl("http://222.122.149.161:7070/ElectionManager_server/OrganIntroDetail.jsp?organ_seq=" + organ_seq + "&organ_gb="+organ_gb);
+        //myWebview.loadUrl("http://192.168.42.189:8080/ElectionManager_server/OrganIntroDetail.jsp?organ_seq=" + organ_seq + "&organ_gb="+organ_gb);
         Log.d("lcy", "call WebView after");
 
         final Button btn_back = (Button)view.findViewById(R.id.button_back);

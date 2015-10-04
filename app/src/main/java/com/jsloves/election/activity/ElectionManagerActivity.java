@@ -60,7 +60,7 @@ public class ElectionManagerActivity extends AppCompatActivity
     // for pdf file download.
     private String mFileName = "final.pdf";
     private String mSaveFolder = "/sdcard";
-    private String mServerFileURL = "http://222.122.149.161:7070/Woori/data/final.pdf";
+    private String mServerFileURL = "http://222.122.149.161:7070/ElectionManager_server/data/final.pdf";
 
     private boolean isCheckPassWord() {
         return lockPassword.equals(mPwd);
@@ -452,7 +452,7 @@ public class ElectionManagerActivity extends AppCompatActivity
                     //json.put("TYPE", "SELECTITEMS2");
                     json.put("TYPE", "SELECTITEMS");
                     setUp(getString(R.string.server_url), json.toString());
-                    //setUp("http://192.168.0.52:8080/Woori/MobileReq.jsp", json.toString());
+                    //setUp("http://192.168.0.52:8080/ElectionManager_server/MobileReq.jsp", json.toString());
                 } else {
                     Vibrator vr = (Vibrator) getSystemService(VIBRATOR_SERVICE);
                     vr.vibrate(700);
