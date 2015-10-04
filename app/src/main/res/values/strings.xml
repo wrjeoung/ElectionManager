@@ -36,8 +36,8 @@
         <item>@drawable/board</item>
     </string-array>
 
-    <!--<string name="server_url">http://222.122.149.161:7070/ElectionManager_server/MobileReq.jsp</string>-->
-    <string name="server_url">http://192.168.0.57:8080/ElectionManager_server/MobileReq.jsp</string>
+    <string name="server_url">http://222.122.149.161:7070/ElectionManager_server/MobileReq.jsp</string>
+    <!--<string name="server_url">http://192.168.0.57:8080/ElectionManager_server/MobileReq.jsp</string>-->
 
 
 
@@ -46,7 +46,7 @@
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <!--<string name="mapView_url">http://222.122.149.161:7070/ElectionManager_server/areaMap.jsp</string>-->
-    <string name="mapView_url">http://192.168.0.57:8080/ElectionManager_server/areaMap.jsp</string>
+    <string name="mapView_url">http://222.122.149.161:7070/ElectionManager_server/areaMap.jsp</string>
+    <!--<string name="mapView_url">http://192.168.0.57:8080/ElectionManager_server/areaMap.jsp</string>-->
 
 </resources>
