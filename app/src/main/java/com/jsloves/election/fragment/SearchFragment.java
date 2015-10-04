@@ -19,7 +19,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.ConsoleMessage;
-import android.webkit.CookieSyncManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.JsResult;
 import android.webkit.SslErrorHandler;
@@ -783,6 +782,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
             String pdf_code = pd.getPdf_code();
             String pdf_page = pd.getPdf_page();
             String pdf_etc = pd.getPdf_etc();
+
             if(pdf_code.equals("B_11")) {
                 if(pdf_etc.equalsIgnoreCase("p")) {
                     mVoterate_btn.setTag(pdf_page);
@@ -797,6 +797,10 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 if(pdf_etc.equalsIgnoreCase("m")) {
                     mPerson.setTag(pdf_page);
                 }
+            } else if(pdf_code.equals("A_25")) {
+                if(pdf_etc.equalsIgnoreCase("p")) {
+                    mButton_age.setTag(pdf_page);
+                }
             } else if(pdf_code.equals("A_24")) {
                 if(pdf_etc.equalsIgnoreCase("p")) {
                     mButton_wife.setTag(pdf_page);
@@ -804,6 +808,42 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
             } else if(pdf_code.equals("A_23")) {
                 if(pdf_etc.equalsIgnoreCase("p")) {
                     mButton_univercity.setTag(pdf_page);
+                }
+            } else if(pdf_code.equals("A_26")) {
+                if(pdf_etc.equalsIgnoreCase("p")) {
+                    mButton_population.setTag(pdf_page);
+                }
+            } else if(pdf_code.equals("A_27")) {
+                if(pdf_etc.equalsIgnoreCase("p")) {
+                    mButton_ageing.setTag(pdf_page);
+                }
+            } else if(pdf_code.equals("A_28")) {
+                if(pdf_etc.equalsIgnoreCase("p")) {
+                    mButton_dependency.setTag(pdf_page);
+                }
+            } else if(pdf_code.equals("A_32")) {
+                if(pdf_etc.equalsIgnoreCase("p")) {
+                    mButton_one_man.setTag(pdf_page);
+                }
+            } else if(pdf_code.equals("A_33")) {
+                if(pdf_etc.equalsIgnoreCase("p")) {
+                    mButton_two_more.setTag(pdf_page);
+                }
+            } else if(pdf_code.equals("A_34")) {
+                if(pdf_etc.equalsIgnoreCase("p")) {
+                    mButton_myhouse.setTag(pdf_page);
+                }
+            } else if(pdf_code.equals("A_35")) {
+                if(pdf_etc.equalsIgnoreCase("p")) {
+                    mButton_apt.setTag(pdf_page);
+                }
+            } else if(pdf_code.equals("A_36")) {
+                if(pdf_etc.equalsIgnoreCase("p")) {
+                    mButton_40m_over.setTag(pdf_page);
+                }
+            } else if(pdf_code.equals("A_31")) {
+                if(pdf_etc.equalsIgnoreCase("p")) {
+                    mButton_memberOfHouseHold.setTag(pdf_page);
                 }
             }
 
