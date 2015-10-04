@@ -12,11 +12,12 @@ import org.json.simple.parser.ParseException;
  */
 public class ElectionManagerApp extends Application {
     private static ElectionManagerApp instance;
-    private static String selectItems= null;
-    private static String selectItemsCode = null;
-    public static void setSelectItems(String s) { selectItems= new String(s); }
-    public static void setSelectItemsCode(String s) { selectItemsCode= new String(s); }
-    public static JSONObject getSelectItemsObject() {
+    private String selectItems= null;
+    private String selectItemsCode = null;
+    public static final String DEFAULT_ADM_CD = "3105300-00";
+    public void setSelectItems(String s) { selectItems= new String(s); }
+    public void setSelectItemsCode(String s) { selectItemsCode= new String(s); }
+    public JSONObject getSelectItemsObject() {
         JSONObject jo = null;
         try {
             JSONParser par = new JSONParser();
@@ -26,7 +27,7 @@ public class ElectionManagerApp extends Application {
         }
         return jo;
     }
-    public static JSONObject getSelectItemsCodeObject() {
+    public JSONObject getSelectItemsCodeObject() {
         JSONObject jo = null;
         try {
             JSONParser par = new JSONParser();
@@ -37,7 +38,7 @@ public class ElectionManagerApp extends Application {
         return jo;
     }
 
-    public static String getTupyoguCode(String[] array) {
+    public String getTupyoguCode(String[] array) {
         String sigunguText = array[0];
         String haengjoungdongText = array[1];
         String tupyoguText = array[2];

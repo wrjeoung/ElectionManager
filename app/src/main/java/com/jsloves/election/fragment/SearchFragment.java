@@ -957,13 +957,14 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
             mTupyogu = tupyogu;
             String[] array = {mSigungu, mHangjungdong, mTupyogu};
             final String adm_cd = ElectionManagerApp.getInstance().getTupyoguCode(array);
-
-            mHandler.postDelayed(new Runnable() {
+            mAdm_cd = adm_cd;
+            showMap(mAdm_cd);
+            /*mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     showMap(adm_cd);
                 }
-            }, 1000);
+            }, 1000);*/
         }
     }
 
@@ -1106,7 +1107,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
             }
         });
-        mAdm_cd = "3105300-00";
+        mAdm_cd = ElectionManagerApp.DEFAULT_ADM_CD;
         showMap(mAdm_cd);
         return view;
     }

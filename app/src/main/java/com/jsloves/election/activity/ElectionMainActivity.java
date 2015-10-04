@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -33,6 +34,7 @@ import com.jsloves.election.fragment.HomeMenuOnCLickListner;
 import com.jsloves.election.layout.SlidingTabLayout;
 import com.jsloves.election.layout.ViewPagerAdapter;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.lang.reflect.Type;
@@ -55,6 +57,7 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
     private int mLastExpandedPosition=-1;
     private FragmentManager mFragmentManager;
     private ViewPagerAdapter mVpageAdapter;
+    private ActionBar mActionbar;
 
     @Override
     public void onCLickLinstnerByHome(int id) {
@@ -123,6 +126,8 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
+            mActionbar = getSupportActionBar();
+            setActionBarTitle(getSigunguTextFromAdm_cd(ElectionManagerApp.DEFAULT_ADM_CD));
             toolbar.setNavigationIcon(R.drawable.ic_ab_drawer);
         }
         pager = (ViewPager) findViewById(R.id.viewpager);
@@ -263,6 +268,20 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
         Gson converter = new Gson();
         itemList =  converter.fromJson(item, type);
         return itemList;
+    }
+
+    public void setActionBarTitle(String title) {
+        mActionbar.setTitle(title);
+    }
+
+    private String getSigunguTextFromAdm_cd(String adm_cd) {
+        String sigunguCode = adm_cd.substring(0,5);
+        final JSONArray sigunguTextArray = (JSONArray)ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU");
+        final JSONArray sigunguCodeArray = (JSONArray)ElectionManagerApp.getInstance().getSelectItemsCodeObject().get("SIGUNGU");
+
+        int sigunguIndex = ElectionManagerApp.getIndex(sigunguCodeArray, sigunguCode);
+
+        return (String)sigunguTextArray.get(sigunguIndex);
     }
 
     @Override

@@ -176,7 +176,7 @@ public class AdapterRootRightMenu extends BaseExpandableListAdapter {
 
                 ((ElectionMainActivity)mContext).getmVpageAdapter().getmSearchFragment().tupyoguClickByRightMenu(selectedSg, selectedHd, selectedTg);
                 ((ElectionMainActivity)mContext).getmDrawerLayout().closeDrawer(GravityCompat.END);
-
+                ((ElectionMainActivity)mContext).setActionBarTitle(selectedSg);
                 mPager.setCurrentItem(0);
                 return false;
             }
