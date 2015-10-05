@@ -40,6 +40,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jsloves.election.DTO.ElectDao;
+import com.jsloves.election.DTO.EtcDAO;
 import com.jsloves.election.DTO.FamilyDAO;
 import com.jsloves.election.DTO.PdfDAO;
 import com.jsloves.election.DTO.StatsDAO;
@@ -102,6 +103,16 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     private GpsInfo gps;
 
     // politics enviroment of AreaInfo.
+    // Etc
+    // tupyogu_name
+    private LinearLayout mWrapper_tupyogu_name;
+    private TextView mTupyogu_name;
+    // tupyogu_addr
+    private LinearLayout mWrapper_tupyogu_addr;
+    private TextView mTupyogu_addr;
+    // elector_cnt
+    private TextView mElector_cnt;
+
     // voteRate
     // Button
     private ImageButton mVoterate_btn;
@@ -252,6 +263,55 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    private void initEtcInfo(View view) {
+        mWrapper_tupyogu_name = (LinearLayout) view.findViewById(R.id.wrapper_tupyogu_name);
+        mTupyogu_name = (TextView) view.findViewById(R.id.tupyogu_name);
+
+        mWrapper_tupyogu_addr = (LinearLayout) view.findViewById(R.id.wrapper_tupyogu_addr);
+        mTupyogu_addr = (TextView) view.findViewById(R.id.tupyogu_addr);
+
+        mElector_cnt = (TextView) view.findViewById(R.id.elector_cnt);
+    }
+
+    private void setVisivilityEtcInfo(boolean visible) {
+
+        if(visible) {
+            mWrapper_tupyogu_name.setVisibility(View.VISIBLE);
+            mWrapper_tupyogu_addr.setVisibility(View.VISIBLE);
+        } else {
+            mWrapper_tupyogu_name.setVisibility(View.GONE);
+            mWrapper_tupyogu_addr.setVisibility(View.GONE);
+        }
+    }
+
+    private void setDataEtcInfo(JSONArray data) {
+        Gson gs = new Gson();
+        Log.d(TAG, "setDataEtcInfo data.toJSONString : " + data.toJSONString());
+        Log.d(TAG, "setDataEtcInfo data.size() : " + data.size());
+        Log.d(TAG, "setDataEtcInfo data.get(0) : " + data.get(0));
+
+        for (int i = 0; i < data.size(); i++) {
+            EtcDAO ed = gs.fromJson((String) data.get(i), EtcDAO.class);
+            final String tupyogu_addr = ed.getTupyogu_addr();
+            final String tupyogu_name = ed.getTupyogu_name();
+            final String elector_cnt = String.valueOf(ed.getElector_cnt());
+
+            boolean isTupyoguVisible = tupyogu_addr != null && tupyogu_addr.length() > 1 && tupyogu_name != null && tupyogu_name.length() > 1;
+            if(isTupyoguVisible) {
+                mTupyogu_name.setText(tupyogu_name);
+                mTupyogu_addr.setText(tupyogu_addr);
+            }
+            mElector_cnt.setText(get_Number(elector_cnt)+"명");
+            setVisivilityEtcInfo(isTupyoguVisible);
+        }
+    }
+
+    private String get_Number(String number){
+        String strNumber = "";
+        strNumber = number.replaceAll("(?<=[0-9])(?=([0-9][0-9][0-9])+(?![0-9]))", ",");
+        return strNumber;
     }
 
     private void initVoteRateSub(View view) {
@@ -976,6 +1036,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         Log.d(TAG, "onCreateView");
         mTest.append("Hahahahahahaha");
         View view = inflater.inflate(R.layout.fragment_search, container, false);
+        initEtcInfo(view);
         initVoteRateSub(view);
         initVoterRatioOfAge(view);
         initStatisticsOfpopulation(view);
@@ -1305,11 +1366,13 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                         JSONArray alStatsDAO = new JSONArray();
                         JSONArray alFamilyDAO = new JSONArray();
                         JSONArray alPdfDAO = new JSONArray();
+                        JSONArray alEtcDAO = new JSONArray();
                         alElectDao = (JSONArray) re.get("ELECT");
                         alVoteDao = (JSONArray) re.get("RATE");
                         alStatsDAO = (JSONArray) re.get("STATS");
                         alFamilyDAO = (JSONArray) re.get("FAMILY");
                         alPdfDAO = (JSONArray) re.get("PDF");
+                        alEtcDAO = (JSONArray) re.get("ETC");
 
                         setVisivilityVoteRateSub(alElectDao.size());
                         setDataVoteRateSub(alElectDao);
@@ -1322,6 +1385,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                         setVisivilityStaticsticsOfFamily(alFamilyDAO.size());
                         setDataStatisticsOfFamily(alFamilyDAO);
                         setDataOfPdf(alPdfDAO);
+                        setDataEtcInfo(alEtcDAO);
 
                         final JSONObject mapData =  (JSONObject)re.get("MAPDATA");
                         double cox = (Double)mapData.get("COX");
@@ -1347,11 +1411,13 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                     JSONArray alStatsDAO = new JSONArray();
                     JSONArray alFamilyDAO = new JSONArray();
                     JSONArray alPdfDAO = new JSONArray();
+                    JSONArray alEtcDAO = new JSONArray();
                     alElectDao = (JSONArray) re.get("ELECT");
                     alVoteDao = (JSONArray) re.get("RATE");
                     alStatsDAO = (JSONArray) re.get("STATS");
                     alFamilyDAO = (JSONArray) re.get("FAMILY");
                     alPdfDAO = (JSONArray) re.get("PDF");
+                    alEtcDAO = (JSONArray) re.get("ETC");
 
                     setVisivilityVoteRateSub(alElectDao.size());
                     setDataVoteRateSub(alElectDao);
@@ -1365,6 +1431,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                     setVisivilityStaticsticsOfFamily(alFamilyDAO.size());
                     setDataStatisticsOfFamily(alFamilyDAO);
                     setDataOfPdf(alPdfDAO);
+                    setDataEtcInfo(alEtcDAO);
 
                     if(mAdm_cd != null && mAdm_cd.length() > 1) {
                         resetSpinnerFromAdmCd(mAdm_cd);

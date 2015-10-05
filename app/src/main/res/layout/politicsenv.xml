@@ -11,6 +11,7 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/wrapper_tupyogu_name"
             android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -24,7 +25,6 @@
                 android:src="@drawable/arrow_right" />
 
             <TextView
-                android:id="@+id/politic_text1_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -41,7 +41,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
-                android:id="@+id/politic_text1_value"
+                android:id="@+id/tupyogu_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -52,6 +52,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/wrapper_tupyogu_addr"
             android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -65,7 +66,6 @@
                 android:src="@drawable/arrow_right" />
 
             <TextView
-                android:id="@+id/politic_text2_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -82,7 +82,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
-                android:id="@+id/politic_text2_value"
+                android:id="@+id/tupyogu_addr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -106,7 +106,6 @@
                 android:src="@drawable/arrow_right" />
 
             <TextView
-                android:id="@+id/politic_text3_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -123,12 +122,12 @@
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
-                android:id="@+id/politic_text3_value"
+                android:id="@+id/elector_cnt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:paddingBottom="2dip"
-                android:text="4,000명 (2.5%)"
+                android:text=""
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
         </LinearLayout>
