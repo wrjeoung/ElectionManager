@@ -105,6 +105,11 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        Log.d(TAG,"onBackPressed");
+        super.onBackPressed();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,8 +1,10 @@
 package com.jsloves.election.activity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -17,7 +19,11 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jsloves.election.fragment.AsyncFragment;
@@ -27,6 +33,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.w3c.dom.Text;
 
 public class JoinActivity extends AppCompatActivity implements AsyncListener<Integer, String> {
 
@@ -47,6 +54,15 @@ public class JoinActivity extends AppCompatActivity implements AsyncListener<Int
     private String imsi = null;
     private String phoneNumber = null;
     private String mac = null;
+    private LinearLayout mLl_pass_wrapper;
+
+    private TextView mTv_name;
+    private TextView mTv_id;
+    private LinearLayout mLi_id_wrapper;
+    private TextView mTv_pass;
+    private TextView mTv_pass_conf;
+    private TextView mTv_mac_add;
+    private CheckBox mCh_no_que_pass;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,102 +94,147 @@ public class JoinActivity extends AppCompatActivity implements AsyncListener<Int
         System.out.println("imsi:"+ imsi);
         System.out.println("phoneNumber:"+phoneNumber);
         System.out.println("user:"+user_id.getText());
-        System.out.println("name:"+ name.getText());
-        System.out.println("password:"+passwords.getText());
+        System.out.println("name:" + name.getText());
+        System.out.println("password:" + passwords.getText());
         System.out.println("password_conf:"+password_conf.getText());
         System.out.println("d_id:"+d_id.getText());
 
-        idcheck_but.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                System.out.println("onClick idcheck");
+        // 2015.10.06 Rjeong 비밀번호 변경 작업. [
+        String whereFrom = getIntent().getStringExtra("whereFrom");
+        if( whereFrom.equals("modify_myinfo")) {
+            mLl_pass_wrapper = (LinearLayout) findViewById(R.id.ll_wrapper_pass_display);
+            mTv_name = (TextView) findViewById(R.id.tv_name);
+            mTv_id = (TextView) findViewById(R.id.tv_id);
+            mLi_id_wrapper = (LinearLayout) findViewById(R.id.ll_wrrapper_id);
+            mTv_pass = (TextView) findViewById(R.id.tv_pass);
+            mTv_pass_conf = (TextView) findViewById(R.id.tv_pass_conf);
+            mTv_mac_add = (TextView) findViewById(R.id.tv_mac_add);
+            mCh_no_que_pass = (CheckBox) findViewById(R.id.ch_no_que_pass);
 
-                if (user_id.getText().toString().equals(null) || user_id.getText().toString().equals("")) {
-                    Toast.makeText(JoinActivity.this, "아이디를 입력하여 주세요.", Toast.LENGTH_SHORT).show();
-                }else {
+            d_id.setVisibility(View.GONE);
+            name.setVisibility(View.GONE);
+            mTv_name.setVisibility(View.GONE);
+            mTv_id.setVisibility(View.GONE);
+            mLi_id_wrapper.setVisibility(View.GONE);
+            mTv_mac_add.setVisibility(View.GONE);
+            mLl_pass_wrapper.setVisibility(View.VISIBLE);
 
-                    try {
+            SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
+            Boolean no_question_pass = pref.getBoolean("no_question_pass", false);
+            mCh_no_que_pass.setChecked(no_question_pass);
+            mCh_no_que_pass.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    Log.d(TAG,"onCheckedChanged isChecked : "+isChecked);
+                    SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putBoolean("no_question_pass",isChecked);
+                    editor.commit();
+                }
+            });
 
-                        System.out.println("user_id:" + user_id.getText());
+            login_but.setText("비밀번호 수정");
+            login_but.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d(TAG,"onClick modify password");
+
+                }
+            });
+        }
+        // 2015.10.06 Rjeong 비밀번호 변경 작업. ]
+        else {
+            idcheck_but.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    System.out.println("onClick idcheck");
+
+                    if (user_id.getText().toString().equals(null) || user_id.getText().toString().equals("")) {
+                        Toast.makeText(JoinActivity.this, "아이디를 입력하여 주세요.", Toast.LENGTH_SHORT).show();
+                    } else {
+
+                        try {
+
+                            System.out.println("user_id:" + user_id.getText());
+                            JSONObject jo1 = new JSONObject();
+                            jo1.put("TYPE", "IDCHECK");
+                            jo1.put("USERID", user_id.getText().toString());
+
+                            if (android.os.Build.VERSION.SDK_INT > 9) {
+                                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                                StrictMode.setThreadPolicy(policy);
+                            }
+
+                            System.out.println("[IDCHECK] before http call");
+                            setUp(getString(R.string.server_url), jo1.toString());
+                            System.out.println("[IDCHECK] after http call");
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            });
+
+            login_but.setOnClickListener(new OnClickListener() {
+
+                public void onClick(View v) {
+                    System.out.println("onClick JOIN");
+                    System.out.println("user_id:" + user_id.getText());
+                    System.out.println("name:" + name.getText());
+                    System.out.println("password:" + passwords.getText());
+                    System.out.println("password_conf:" + password_conf.getText());
+                    System.out.println("d_id:" + imei);
+                    System.out.println("mac:" + mac);
+
+                    if (user_id.getText().toString().equals(null) || user_id.getText().toString().equals("")) {
+                        Toast.makeText(JoinActivity.this, "아이디를 입력하여 주세요.", Toast.LENGTH_SHORT).show();
+                    } else if (!id_check.equals("SUCCESS")) {
+                        Toast.makeText(JoinActivity.this, "아이디 중복을 확인하여 주세요.", Toast.LENGTH_SHORT).show();
+                    } else if (name.getText().toString().equals(null) || name.getText().toString().equals("")) {
+                        Toast.makeText(JoinActivity.this, "이름을 입력하여 주세요.", Toast.LENGTH_SHORT).show();
+                    } else if (passwords.getText().toString().equals(null) || passwords.getText().toString().equals("")) {
+                        Toast.makeText(JoinActivity.this, "비밀번호을 입력하여 주세요.", Toast.LENGTH_SHORT).show();
+                    } else if (!passwords.getText().toString().equals(password_conf.getText().toString())) {
+                        System.out.println("password:" + passwords.getText() + ",password_conf:" + password_conf.getText());
+                        Toast.makeText(JoinActivity.this, "비밀번호를 확인하여 주세요.", Toast.LENGTH_SHORT).show();
+                    } else if (passwords.getText().toString().length() != 4) {
+                        Toast.makeText(JoinActivity.this, "비밀번호는 4자리 입니다.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        System.out.println("password:" + passwords.getText() + ",password_conf:" + password_conf.getText());
                         JSONObject jo1 = new JSONObject();
-                        jo1.put("TYPE", "IDCHECK");
-                        jo1.put("USERID", user_id.getText().toString());
+                        JSONObject jo2 = new JSONObject();
+                        JSONArray contents = new JSONArray();
 
-                        if(android.os.Build.VERSION.SDK_INT > 9) {
-                            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                            StrictMode.setThreadPolicy(policy);
+                        try {
+
+                            jo1.put("TYPE", "JOIN");
+                            jo2.put("USERID", user_id.getText().toString());
+                            jo2.put("USERNM", name.getText().toString());
+                            jo2.put("PWD", passwords.getText().toString());
+                            jo2.put("DEVICEID", imei);
+                            jo2.put("MAC", mac);
+                            jo2.put("PHONENUMBER", phoneNumber);
+                            //jo2.put("CLASSCD",classcodes.getText().toString());
+                            contents.add(jo2);
+                            jo1.put("CONTENTS", contents);
+
+                            if (android.os.Build.VERSION.SDK_INT > 9) {
+                                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                                StrictMode.setThreadPolicy(policy);
+                            }
+
+                            System.out.println("[JOIN] before http call");
+                            setUp(getString(R.string.server_url), jo1.toString());
+                            System.out.println("[JOIN] after http call");
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-
-                        System.out.println("[IDCHECK] before http call");
-                        setUp(getString(R.string.server_url), jo1.toString());
-                        System.out.println("[IDCHECK] after http call");
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
                 }
-            }
-        });
-
-        login_but.setOnClickListener(new OnClickListener() {
-
-            public void onClick(View v) {
-                System.out.println("onClick JOIN");
-                System.out.println("user_id:"+user_id.getText());
-                System.out.println("name:"+ name.getText());
-                System.out.println("password:"+passwords.getText());
-                System.out.println("password_conf:"+password_conf.getText());
-                System.out.println("d_id:"+imei);
-                System.out.println("mac:"+mac);
-
-                if(user_id.getText().toString().equals(null)||user_id.getText().toString().equals("")){
-                    Toast.makeText(JoinActivity.this, "아이디를 입력하여 주세요.", Toast.LENGTH_SHORT).show();
-                }else if(!id_check.equals("SUCCESS")) {
-                    Toast.makeText(JoinActivity.this,"아이디 중복을 확인하여 주세요.", Toast.LENGTH_SHORT).show();
-                }else if(name.getText().toString().equals(null)||name.getText().toString().equals("")) {
-                    Toast.makeText(JoinActivity.this,"이름을 입력하여 주세요.", Toast.LENGTH_SHORT).show();
-                }else if(passwords.getText().toString().equals(null)||passwords.getText().toString().equals("")) {
-                    Toast.makeText(JoinActivity.this,"비밀번호을 입력하여 주세요.", Toast.LENGTH_SHORT).show();
-                }else if(!passwords.getText().toString().equals(password_conf.getText().toString())){
-                    System.out.println("password:"+passwords.getText() + ",password_conf:"+password_conf.getText());
-                    Toast.makeText(JoinActivity.this, "비밀번호를 확인하여 주세요.", Toast.LENGTH_SHORT).show();
-                }else if(passwords.getText().toString().length()!=4){
-                    Toast.makeText(JoinActivity.this, "비밀번호는 4자리 입니다.", Toast.LENGTH_SHORT).show();
-                }else {
-                    System.out.println("password:" + passwords.getText() + ",password_conf:" + password_conf.getText());
-                    JSONObject jo1 = new JSONObject();
-                    JSONObject jo2 = new JSONObject();
-                    JSONArray contents = new JSONArray();
-
-                    try {
-
-                        jo1.put("TYPE", "JOIN");
-                        jo2.put("USERID", user_id.getText().toString());
-                        jo2.put("USERNM",name.getText().toString());
-                        jo2.put("PWD",passwords.getText().toString());
-                        jo2.put("DEVICEID",imei);
-                        jo2.put("MAC",mac);
-                        jo2.put("PHONENUMBER", phoneNumber);
-                        //jo2.put("CLASSCD",classcodes.getText().toString());
-                        contents.add(jo2);
-                        jo1.put("CONTENTS", contents);
-
-                        if(android.os.Build.VERSION.SDK_INT > 9) {
-                            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                            StrictMode.setThreadPolicy(policy);
-                        }
-
-                        System.out.println("[JOIN] before http call");
-                        setUp(getString(R.string.server_url), jo1.toString());
-                        System.out.println("[JOIN] after http call");
-
-                    } catch (Exception e){
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-
+            });
+        }
     }
 
     private void setUp(String url,String params) {

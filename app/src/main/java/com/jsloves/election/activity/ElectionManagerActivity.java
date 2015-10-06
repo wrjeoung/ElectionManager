@@ -3,9 +3,11 @@
  */
 package com.jsloves.election.activity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -42,7 +44,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class ElectionManagerActivity extends AppCompatActivity
         implements AsyncListener<Integer, String>
-        , com.jsloves.election.view.KeyPadLayout.keyPadListener {
+        , com.jsloves.election.view.KeyPadLayout.KeyPadListener {
     public static final String TAG = ElectionManagerActivity.class.getSimpleName();
 
     private EditText mEtPass;
@@ -91,50 +93,23 @@ public class ElectionManagerActivity extends AppCompatActivity
 
             @Override
             public void run() {
+                Log.d(TAG,"exist imei : "+mIsImeiExist);
                 if (mIsImeiExist) {
-                    Log.d("JS", "isIMIEcheck");
-                    setContentView(R.layout.layout_lock_screen_activity);
-                    initView();
+                    SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
+                    Boolean no_question_pass = pref.getBoolean("no_question_pass",false);
+                    Log.d(TAG,"no_question_pass : "+no_question_pass);
 
-//                    mHandler.postDelayed(mRunnable, 1000);
+                    if(no_question_pass ) {
+                        JSONObject json = new JSONObject();
+                        json.put("TYPE", "SELECTITEMS");
+                        setUp(getString(R.string.server_url), json.toString());
+                    } else {
+                        setContentView(R.layout.layout_lock_screen_activity);
+                        initView();
+                    }
 
-
-//                    mEtPass.addTextChangedListener(new TextWatcher() {
-//                        @Override
-//                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//                        }
-//
-//                        @Override
-//                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//                        }
-//
-//                        @Override
-//                        public void afterTextChanged(Editable s) {
-//                            if(mEtPass.getText().toString().length() == 4) {
-//                                mTvPass = (TextView) findViewById(R.id.tv_pass);
-//                                if(( isCheckPassWord())) {
-//                                    Intent intent = new Intent(ElectionManagerActivity.this, ElectionMainActivity.class);
-//                                    //intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//                                    startActivity(intent);
-//                                    finish();
-//                                }
-//                                else {
-//                                    Vibrator vr = (Vibrator)getSystemService(VIBRATOR_SERVICE);
-//                                    vr.vibrate(700);
-//                                    mEtPass.getText().clear();
-//                                    mTvPass.setTextColor(Color.parseColor("#ff4444"));
-//                                    mTvPass.setText("암호가 일치하지 않습니다.");
-//
-//                                }
-//                            }
-//                        }
-//                    });
-//                    mEtPass = (EditText) findViewById(R.id.et_pass);
                 } else {
                     Intent intent = new Intent(ElectionManagerActivity.this, JoinActivity.class);
-                    //Intent intent = new Intent(ElectionManagerActivity.this, SearchActivity.class);
                     startActivity(intent);
                     finish();
                 }
@@ -150,61 +125,6 @@ public class ElectionManagerActivity extends AppCompatActivity
                 finish();
             }
         };
-
-
-
-       /* r = new Runnable() {
-            @Override
-            public void run() {
-                if (mIsImeiExist){
-                    Log.d("JS", "isIMIEcheck");
-                    setContentView(R.layout.lockscreen);
-                    mHandler.postDelayed(mRunnable, 1000);
-
-                    mEtPass = (EditText) findViewById(R.id.et_pass);
-
-                    mEtPass.addTextChangedListener(new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            if(mEtPass.getText().toString().length() == 4) {
-                                mTvPass = (TextView) findViewById(R.id.tv_pass);
-                                if(( isCheckPassWord())) {
-                                    Intent intent = new Intent(ElectionManagerActivity.this, ElectionMainActivity.class);
-                                    //intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                    startActivity(intent);
-                                    finish();
-                                }
-                                else {
-                                    Vibrator vr = (Vibrator)getSystemService(VIBRATOR_SERVICE);
-                                    vr.vibrate(700);
-                                    mEtPass.getText().clear();
-                                    mTvPass.setTextColor(Color.parseColor("#ff4444"));
-                                    mTvPass.setText("암호가 일치하지 않습니다.");
-
-                                }
-                            }
-                        }
-                    });
-                } else {
-                    Intent intent = new Intent(ElectionManagerActivity.this, JoinActivity.class);
-                    //Intent intent = new Intent(ElectionManagerActivity.this, SearchActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-            }
-        };*/
-
-
     }
 
     private String md5CheckSum()
@@ -418,7 +338,7 @@ public class ElectionManagerActivity extends AppCompatActivity
             if (type.equals("CHECK_MACADDRESS")) {
                 mIsImeiExist = (Boolean) re.get("RESULT");
                 mPwd = (String) re.get("PWD");
-                mHandler.post(r);
+                mHandler.postDelayed(r,500);
             } else if (type.equals("SELECTITEMS2")) {
                 ElectionManagerApp.getInstance().setSelectItems(((JSONObject) re.get("SELECTITEMS2")).toString());
                 mHandler.post(mMainCallrunnable);
@@ -462,7 +382,6 @@ public class ElectionManagerActivity extends AppCompatActivity
                     mTvPass.setTextColor(Color.parseColor("#ff4444"));
                     mTvPass.setText("암호가 일치하지 않습니다.");
                     mHandler.postDelayed(mRunnable, 700);
-
                 }
             }
         } else {

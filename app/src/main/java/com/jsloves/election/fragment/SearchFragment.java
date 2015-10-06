@@ -942,15 +942,18 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
         @Override
         public void onPageFinished(WebView view, String url) {
-            if(url.equals(getString(R.string.mapView_url))) {
-                mPageLoadFinished = true;
-            }
+            Log.d(TAG,"onPageFinished() isAdded() : "+isAdded());
+            if(isAdded()) {
+                if (url.equals(getString(R.string.mapView_url))) {
+                    mPageLoadFinished = true;
+                }
 
-            if(mPageLoadFinished && mMapdata != null ) {
-                myWebview.loadUrl("javascript:drawMap('" + mMapdata.toString() + "')");
-                mMapdata = null;
+                if (mPageLoadFinished && mMapdata != null) {
+                    myWebview.loadUrl("javascript:drawMap('" + mMapdata.toString() + "')");
+                    mMapdata = null;
+                }
+                //CookieSyncManager.getInstance().sync();
             }
-            //CookieSyncManager.getInstance().sync();
         }
 
     }

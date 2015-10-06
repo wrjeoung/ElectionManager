@@ -19,7 +19,7 @@ public class KeyPadLayout extends LinearLayout
     public static final int KEYPAD_BACK = 11;
     public static final int KEYPAD_CANCEL = 10;
     private Context context;
-    private keyPadListener keyPadListener;
+    private KeyPadListener mKeyPadListener;
     private ImageButton lockButtonBack;
     private Button lockButtonCancel;
     private ImageButton lockButtonNum0;
@@ -45,7 +45,7 @@ public class KeyPadLayout extends LinearLayout
     public KeyPadLayout(Context paramContext, AttributeSet paramAttributeSet)
     {
         super(paramContext, paramAttributeSet);
-        setKeypadListener((keyPadListener)paramContext);
+        setKeypadListener((KeyPadListener)paramContext);
         Log.d(TAG, "KeyPadLayout2()");
         this.context = paramContext;
         init();
@@ -90,13 +90,13 @@ public class KeyPadLayout extends LinearLayout
 
     public void onClick(View paramView)
     {
-        this.keyPadListener.keypadClicked(paramView);
+        this.mKeyPadListener.keypadClicked(paramView);
     }
 
-    public void setKeypadListener(keyPadListener paramkeyPadListener)
+    public void setKeypadListener(KeyPadListener paramkeyPadListener)
     {
         Log.d(TAG,"setKeypadListener");
-        this.keyPadListener = paramkeyPadListener;
+        this.mKeyPadListener = paramkeyPadListener;
     }
 
     public void setNoCancelButton(boolean paramBoolean)
@@ -127,7 +127,7 @@ public class KeyPadLayout extends LinearLayout
         this.lockButtonCancel.setOnClickListener(null);
     }
 
-    public static abstract interface keyPadListener
+    public static abstract interface KeyPadListener
     {
         public abstract void keypadClicked(View paramView);
     }
