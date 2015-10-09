@@ -1,12 +1,12 @@
 package com.jsloves.election.fragment;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.os.AsyncTask;
-import android.support.v4.app.Fragment;
-import android.app.Activity;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -18,12 +18,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jsloves.election.DTO.OrganDAO;
+import com.jsloves.election.activity.ElectionMainActivity;
 import com.jsloves.election.activity.R;
 import com.jsloves.election.application.ElectionManagerApp;
 import com.jsloves.election.layout.CustomBaseAdapter;
@@ -85,6 +86,7 @@ public class OrganIntroFragment2 extends Fragment implements AdapterView.OnItemS
     private View view = null;
 
     private OnFragmentInteractionListener mListener;
+    private Activity mActivity;
 
     /**
      * Use this factory method to create a new instance of
@@ -226,6 +228,7 @@ public class OrganIntroFragment2 extends Fragment implements AdapterView.OnItemS
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Log.d("lcy", "onAttach2");
+        mActivity = activity;
         /**try {
          mListener = (OnFragmentInteractionListener) activity;
          } catch (ClassCastException e) {
@@ -239,6 +242,7 @@ public class OrganIntroFragment2 extends Fragment implements AdapterView.OnItemS
         super.onDetach();
         Log.d("lcy", "onDetach2");
         mListener = null;
+        mActivity = null;
     }
 
     /**
@@ -406,6 +410,13 @@ public class OrganIntroFragment2 extends Fragment implements AdapterView.OnItemS
         switch (parent.getId()) {
             case R.id.spinner_7:
                 String sigungu = (String)parent.getSelectedItem();
+                String title = ((ElectionMainActivity) mActivity).getActionBarTitle();
+                if(!sigungu.equals(title)) {
+                    JSONArray jArray = (JSONArray)ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU");
+                    int index = ElectionManagerApp.getIndex(jArray,title);
+                    sp7.setSelection(index,true);
+                    break;
+                }
                 JSONObject jo1 = (JSONObject)ElectionManagerApp.getInstance().getSelectItemsObject().get("HAENGJOUNGDONG");
                 setUpSpinner(sp8, jo1.get(sigungu).toString());
                 break;
@@ -416,6 +427,8 @@ public class OrganIntroFragment2 extends Fragment implements AdapterView.OnItemS
                 break;
         }
 
+        if(sp7.getVisibility() != View.GONE)
+            sp7.setVisibility(View.GONE);
     }
 
     @Override

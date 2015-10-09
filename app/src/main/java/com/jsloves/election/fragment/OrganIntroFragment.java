@@ -1,13 +1,12 @@
 package com.jsloves.election.fragment;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.nfc.Tag;
-import android.os.AsyncTask;
-import android.support.v4.app.Fragment;
-import android.app.Activity;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -15,22 +14,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.jsloves.election.DTO.OrganDAO;
+import com.jsloves.election.activity.ElectionMainActivity;
 import com.jsloves.election.activity.R;
 import com.jsloves.election.application.ElectionManagerApp;
 import com.jsloves.election.layout.CustomBaseAdapter;
 import com.jsloves.election.layout.DataClass;
 import com.jsloves.election.util.HttpConnection;
-import android.widget.AdapterView.OnItemSelectedListener;
-import com.jsloves.election.DTO.OrganDAO;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -39,7 +39,6 @@ import org.json.simple.parser.ParseException;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Type;
-import java.nio.BufferUnderflowException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,6 +90,7 @@ public class OrganIntroFragment extends Fragment implements OnItemSelectedListen
     private View view = null;
 
     private OnFragmentInteractionListener mListener;
+    private Activity mActivity;
 
     /**
      * Use this factory method to create a new instance of
@@ -154,7 +154,6 @@ public class OrganIntroFragment extends Fragment implements OnItemSelectedListen
         sp6 = (Spinner) view.findViewById(R.id.spinner_6);
 
         Log.d("lcy", ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU").toString());
-
         setUpSpinner(sp4, ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU").toString());
 
         // ArrayAdapter 연결
@@ -175,17 +174,17 @@ public class OrganIntroFragment extends Fragment implements OnItemSelectedListen
                 TextView tv_seq = null;
 
                 tv_seq = (TextView) view.findViewById(R.id.tv_seq);
-                System.out.println("tv_seq:"+tv_seq.getText());
-                String  str_seq = tv_seq.getText().toString();
+                System.out.println("tv_seq:" + tv_seq.getText());
+                String str_seq = tv_seq.getText().toString();
 
                 FragmentManager fragmentManager = getFragmentManager();
 
                 OrganIntroDetailFragment frament = new OrganIntroDetailFragment();
                 frament.onDestroyView();
                 Bundle bundle = new Bundle();
-                bundle.putString("organ_tap","organ1");
-                bundle.putString("organ_seq",str_seq);
-                bundle.putString("organ_gb",organ_gb);
+                bundle.putString("organ_tap", "organ1");
+                bundle.putString("organ_seq", str_seq);
+                bundle.putString("organ_gb", organ_gb);
                 frament.setArguments(bundle);
 
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -212,10 +211,10 @@ public class OrganIntroFragment extends Fragment implements OnItemSelectedListen
                 String sigungu = (String) sp4.getSelectedItem();
                 String haengjoungdong = (String) sp5.getSelectedItem();
                 String tupyoguStr = (String) sp6.getSelectedItem();
-                String[] array = {sigungu,haengjoungdong,tupyoguStr};
+                String[] array = {sigungu, haengjoungdong, tupyoguStr};
                 String adm_cd = ElectionManagerApp.getInstance().getTupyoguCode(array);
                 json1.put("ADM_CD", adm_cd);
-                Log.d("lcy",adm_cd);
+                Log.d("lcy", adm_cd);
 
                 //excuteTask("http://192.168.42.189:8080/ElectionManager_server/MobileReq.jsp", json1.toString());
                 excuteTask(getString(R.string.server_url), json1.toString());
@@ -238,6 +237,7 @@ public class OrganIntroFragment extends Fragment implements OnItemSelectedListen
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Log.d("lcy", "onAttach");
+        mActivity =  activity;
         /**try {
             mListener = (OnFragmentInteractionListener) activity;
         } catch (ClassCastException e) {
@@ -251,6 +251,7 @@ public class OrganIntroFragment extends Fragment implements OnItemSelectedListen
         super.onDetach();
         Log.d("lcy", "onDetach");
         mListener = null;
+        mActivity = null;
     }
 
     /**
@@ -417,6 +418,13 @@ public class OrganIntroFragment extends Fragment implements OnItemSelectedListen
         switch (parent.getId()) {
             case R.id.spinner_4:
                 String sigungu = (String)parent.getSelectedItem();
+                String title = ((ElectionMainActivity) mActivity).getActionBarTitle();
+                if(!sigungu.equals(title)) {
+                    JSONArray jArray = (JSONArray)ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU");
+                    int index = ElectionManagerApp.getIndex(jArray,title);
+                    sp4.setSelection(index,true);
+                    break;
+                }
                 JSONObject jo1 = (JSONObject)ElectionManagerApp.getInstance().getSelectItemsObject().get("HAENGJOUNGDONG");
                 setUpSpinner(sp5, jo1.get(sigungu).toString());
                 break;
@@ -426,6 +434,9 @@ public class OrganIntroFragment extends Fragment implements OnItemSelectedListen
                 setUpSpinner(sp6, jo2.get(haengjoungdong).toString());
                 break;
         }
+
+        if(sp4.getVisibility() != View.GONE)
+            sp4.setVisibility(View.GONE);
 
     }
 
