@@ -35,9 +35,13 @@
         <item>@drawable/saup</item>
         <item>@drawable/board</item>
     </string-array>
-
+    <!--Woori research server.-->
     <string name="server_url">http://222.122.149.161:7070/ElectionManager_server/MobileReq.jsp</string>
+    <!--wrjeoung home. -->
     <!--<string name="server_url">http://192.168.0.57:8080/ElectionManager_server/MobileReq.jsp</string>-->
+    <!--for starbucks. -->
+    <!--<string name="server_url">http://172.30.90.89:8080/ElectionManager_server/MobileReq.jsp</string>-->
+
 
 
 
@@ -46,7 +50,11 @@
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!--Woori research server.-->
     <string name="mapView_url">http://222.122.149.161:7070/ElectionManager_server/areaMap.jsp</string>
+    <!--wrjeoung home. -->
     <!--<string name="mapView_url">http://192.168.0.57:8080/ElectionManager_server/areaMap.jsp</string>-->
+    <!--for starbucks. -->
+    <!--<string name="mapView_url">http://172.30.90.89:8080/ElectionManager_server/areaMap.jsp</string>-->
 
 </resources>
