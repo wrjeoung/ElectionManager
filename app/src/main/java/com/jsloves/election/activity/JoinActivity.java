@@ -137,7 +137,24 @@ public class JoinActivity extends AppCompatActivity implements AsyncListener<Int
             login_but.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d(TAG,"onClick modify password");
+                    String pass = (String)passwords.getText().toString();
+                    String passcf = (String)password_conf.getText().toString();
+                    Log.d(TAG,"onClick pass : "+pass);
+                    Log.d(TAG,"onClick passcf : "+passcf);
+
+                    if(!pass.equals(passcf)) {
+                        Toast.makeText(JoinActivity.this,"패스워드가 일치하지 않습니다.",Toast.LENGTH_SHORT).show();
+                    } else if(pass.length() != 4){
+                        Toast.makeText(JoinActivity.this,"패스워드를 4자리로 입력해주세요.",Toast.LENGTH_SHORT).show();
+                    } else {
+                        JSONObject jo = new JSONObject();
+                        jo.put("TYPE","MODIFYPASS");
+                        jo.put("PASS",pass);
+                        jo.put("MACADD",mac);
+                        setUp(getString(R.string.server_url), jo.toString());
+
+                    }
+
 
                 }
             });
@@ -331,6 +348,19 @@ public class JoinActivity extends AppCompatActivity implements AsyncListener<Int
                     System.out.println("FAILED");
                     Toast.makeText(JoinActivity.this, "회원가입 실패", Toast.LENGTH_SHORT).show();
                 }
+
+            }else if(sType.equals("MODIFYPASS")) {
+                Long update_pass;
+                update_pass = (Long) re.get("UPDATEPASS");
+                if(update_pass==1) {
+                    Toast.makeText(JoinActivity.this, "패스워드 변경 완료", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(JoinActivity.this, ElectionHomeActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(JoinActivity.this, "패스워드 변경 실패", Toast.LENGTH_SHORT).show();
+                }
+
 
             }
 

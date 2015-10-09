@@ -63,7 +63,7 @@ public class ElectionManagerActivity extends AppCompatActivity
     // for pdf file download.
     private String mFileName = "final.pdf";
     private String mSaveFolder = "/sdcard";
-    private String mServerFileURL = "http://222.122.149.161:7070/ElectionManager_server/data/final.pdf";
+    private String mServerFileURL = null;
 
     private boolean isCheckPassWord() {
         return lockPassword.equals(mPwd);
@@ -324,20 +324,13 @@ public class ElectionManagerActivity extends AppCompatActivity
             re = (JSONObject) par.parse(resultData);
             String type = (String) re.get("TYPE");
             Log.d(TAG,"onPostExecute re1 : "+re);
-
-
-            boolean updatePdfFile = (boolean) re.get("updatePdfFile");
             Log.d(TAG,"onPostExecute re2 : "+re);
-            Log.d(TAG,"updatePdfFile : "+updatePdfFile);
-            if(updatePdfFile
-                    || !(new File(mSaveFolder + "/" + mFileName).exists())) {
-                AsyncTaskForFileDownLoad task = new AsyncTaskForFileDownLoad();
-                task.execute();
-            }
 
             if (type.equals("CHECK_MACADDRESS")) {
                 mIsImeiExist = (Boolean) re.get("RESULT");
                 mPwd = (String) re.get("PWD");
+                Log.d(TAG,"pdfpath : "+(String) re.get("PDFPATH"));
+                mServerFileURL = (String) re.get("PDFPATH");
                 mHandler.postDelayed(r,500);
             } else if (type.equals("SELECTITEMS2")) {
                 ElectionManagerApp.getInstance().setSelectItems(((JSONObject) re.get("SELECTITEMS2")).toString());
@@ -346,6 +339,13 @@ public class ElectionManagerActivity extends AppCompatActivity
                 ElectionManagerApp.getInstance().setSelectItems(((JSONObject) re.get("SELECTITEMS")).toString());
                 ElectionManagerApp.getInstance().setSelectItemsCode(((JSONObject) re.get("SELECTITEMS_CODE")).toString());
                 mHandler.post(mMainCallrunnable);
+            }
+            boolean updatePdfFile = (boolean) re.get("updatePdfFile");
+            Log.d(TAG,"updatePdfFile : "+updatePdfFile);
+            if(updatePdfFile
+                    || !(new File(mSaveFolder + "/" + mFileName).exists())) {
+                AsyncTaskForFileDownLoad task = new AsyncTaskForFileDownLoad();
+                task.execute();
             }
         } catch (Exception e) {
             e.printStackTrace();
