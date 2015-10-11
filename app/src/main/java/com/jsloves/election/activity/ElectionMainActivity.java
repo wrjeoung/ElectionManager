@@ -279,6 +279,10 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
         mActionbar.setTitle(title);
     }
 
+    public String getActionBarTitle() {
+        return (String)mActionbar.getTitle();
+    }
+
     private String getSigunguTextFromAdm_cd(String adm_cd) {
         String sigunguCode = adm_cd.substring(0,5);
         final JSONArray sigunguTextArray = (JSONArray)ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU");
