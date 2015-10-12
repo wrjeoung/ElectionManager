@@ -14,7 +14,16 @@ public class ElectionManagerApp extends Application {
     private static ElectionManagerApp instance;
     private String selectItems= null;
     private String selectItemsCode = null;
-    public static final String DEFAULT_ADM_CD = "3105300-00";
+    private String defaultAdm_Cd = null;
+
+    public void setDefaultAdm_Cd(String adm_cd) {
+        defaultAdm_Cd = adm_cd;
+    }
+
+    public String getDefaultAdm_Cd() {
+        return defaultAdm_Cd;
+    }
+
     public void setSelectItems(String s) { selectItems= new String(s); }
     public void setSelectItemsCode(String s) { selectItemsCode= new String(s); }
     public JSONObject getSelectItemsObject() {

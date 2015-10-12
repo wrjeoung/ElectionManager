@@ -102,6 +102,7 @@ public class ElectionManagerActivity extends AppCompatActivity
                     if(no_question_pass ) {
                         JSONObject json = new JSONObject();
                         json.put("TYPE", "SELECTITEMS");
+                        json.put("ADM_CD", ElectionManagerApp.getInstance().getDefaultAdm_Cd());
                         setUp(getString(R.string.server_url), json.toString());
                     } else {
                         setContentView(R.layout.layout_lock_screen_activity);
@@ -331,6 +332,7 @@ public class ElectionManagerActivity extends AppCompatActivity
                 mPwd = (String) re.get("PWD");
                 Log.d(TAG,"pdfpath : "+(String) re.get("PDFPATH"));
                 mServerFileURL = (String) re.get("PDFPATH");
+                ElectionManagerApp.getInstance().setDefaultAdm_Cd((String) re.get("ADM_CD"));
                 mHandler.postDelayed(r,500);
             } else if (type.equals("SELECTITEMS2")) {
                 ElectionManagerApp.getInstance().setSelectItems(((JSONObject) re.get("SELECTITEMS2")).toString());
@@ -374,8 +376,8 @@ public class ElectionManagerActivity extends AppCompatActivity
                     JSONObject json = new JSONObject();
                     //json.put("TYPE", "SELECTITEMS2");
                     json.put("TYPE", "SELECTITEMS");
+                    json.put("ADM_CD", ElectionManagerApp.getInstance().getDefaultAdm_Cd());
                     setUp(getString(R.string.server_url), json.toString());
-                    //setUp("http://192.168.0.52:8080/ElectionManager_server/MobileReq.jsp", json.toString());
                 } else {
                     Vibrator vr = (Vibrator) getSystemService(VIBRATOR_SERVICE);
                     vr.vibrate(700);

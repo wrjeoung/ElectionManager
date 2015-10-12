@@ -132,7 +132,7 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             mActionbar = getSupportActionBar();
-            setActionBarTitle(getSigunguTextFromAdm_cd(ElectionManagerApp.DEFAULT_ADM_CD));
+            setActionBarTitle(getSigunguTextFromAdm_cd(ElectionManagerApp.getInstance().getDefaultAdm_Cd()));
             toolbar.setNavigationIcon(R.drawable.ic_ab_drawer);
         }
         pager = (ViewPager) findViewById(R.id.viewpager);

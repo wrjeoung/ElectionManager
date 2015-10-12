@@ -1171,7 +1171,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
             }
         });
-        mAdm_cd = ElectionManagerApp.DEFAULT_ADM_CD;
+        mAdm_cd = ElectionManagerApp.getInstance().getDefaultAdm_Cd();
         showMap(mAdm_cd);
         return view;
     }
