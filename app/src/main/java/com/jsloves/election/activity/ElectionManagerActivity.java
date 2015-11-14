@@ -80,9 +80,17 @@ public class ElectionManagerActivity extends AppCompatActivity
 
         Log.d("JS", "폰번호 : " + phoneInfo.getPhoneNumber() + " IMEI : " + phoneInfo.getImei() + " MacAddress : " + phoneInfo.getMacAddress());
         JSONObject json = new JSONObject();
+        String md5chekSum = null;
+        boolean existsPdfAtclient = false;
+        existsPdfAtclient = new File(mSaveFolder + "/" + mFileName).exists();
+        if (existsPdfAtclient == true) {
+            md5chekSum = md5CheckSum();
+        }
+
+        json.put("existsPdfAtclient",existsPdfAtclient);
         json.put("TYPE", "CHECK_MACADDRESS");
         json.put("IMEI", phoneInfo.getMacAddress());
-        json.put("MD5SUM",md5CheckSum());
+        json.put("MD5SUM",md5chekSum);
         setUp(getString(R.string.server_url), json.toString());
 
         r = new Runnable() {
@@ -134,6 +142,7 @@ public class ElectionManagerActivity extends AppCompatActivity
         FileInputStream fis=null;
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
+            Log.d(TAG,"md5CheckSum() mSaveFolder : "+mSaveFolder+" mFileName : "+mFileName);
             fis = new FileInputStream(mSaveFolder+"/"+mFileName);
 
             byte[] dataBytes = new byte[1024];
@@ -234,7 +243,10 @@ public class ElectionManagerActivity extends AppCompatActivity
                 if (!dir.exists()) {
                     dir.mkdir();
                 }
-                if (new File(mSaveFolder + "/" + mFileName).exists() == false) {
+                // 2015.11.14 rjeong
+                // mSeverFileURL - macaddress가 등록되지 않은 기기에서 앱 실행시 DB에 PDFPATH 컬럼이 존재 하지 않기 때문에 null리턴.
+                if (new File(mSaveFolder + "/" + mFileName).exists() == false && mServerFileURL != null) {
+                    Log.d("rjeong",mServerFileURL);
                     pdfUrl = new URL(mServerFileURL);
                     conn = (HttpURLConnection) pdfUrl.openConnection();
                     int len = conn.getContentLength();
@@ -342,7 +354,7 @@ public class ElectionManagerActivity extends AppCompatActivity
                 ElectionManagerApp.getInstance().setSelectItemsCode(((JSONObject) re.get("SELECTITEMS_CODE")).toString());
                 mHandler.post(mMainCallrunnable);
             }
-            boolean updatePdfFile = (boolean) re.get("updatePdfFile");
+            boolean updatePdfFile = (Boolean) re.get("updatePdfFile");
             Log.d(TAG,"updatePdfFile : "+updatePdfFile);
             if(updatePdfFile
                     || !(new File(mSaveFolder + "/" + mFileName).exists())) {

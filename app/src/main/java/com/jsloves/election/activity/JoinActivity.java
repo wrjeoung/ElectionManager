@@ -101,7 +101,8 @@ public class JoinActivity extends AppCompatActivity implements AsyncListener<Int
 
         // 2015.10.06 Rjeong 비밀번호 변경 작업. [
         String whereFrom = getIntent().getStringExtra("whereFrom");
-        if( whereFrom.equals("modify_myinfo")) {
+
+        if( whereFrom != null && whereFrom.equals("modify_myinfo")) {
             mLl_pass_wrapper = (LinearLayout) findViewById(R.id.ll_wrapper_pass_display);
             mTv_name = (TextView) findViewById(R.id.tv_name);
             mTv_id = (TextView) findViewById(R.id.tv_id);
