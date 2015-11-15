@@ -29,7 +29,6 @@ import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -99,7 +98,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
 
     // GPS
-    private Button gpsSearchBtn;
+    private ImageButton gpsSearchBtn;
     private GpsInfo gps;
 
     // politics enviroment of AreaInfo.
@@ -1098,7 +1097,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
             }
         });
 
-        final Button btn_search = (Button) view.findViewById(R.id.button_search);
+        final ImageButton btn_search = (ImageButton) view.findViewById(R.id.button_search);
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1135,7 +1134,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         mButton_apt.setOnClickListener(pdfOnCLick);
         mButton_40m_over.setOnClickListener(pdfOnCLick);
 
-        gpsSearchBtn = (Button) view.findViewById(R.id.gpsSearch);
+        gpsSearchBtn = (ImageButton) view.findViewById(R.id.gpsSearch);
         gpsSearchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

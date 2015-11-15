@@ -17,6 +17,7 @@
 
             <Spinner
                 android:id="@+id/spinner_1"
+                android:layout_gravity="center"
                 android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -24,21 +25,26 @@
 
             <Spinner
                 android:id="@+id/spinner_2"
+                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
             <Spinner
                 android:id="@+id/spinner_3"
+                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/button_search"
-                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_width="80dip"
                 android:layout_height="wrap_content"
-                android:text="@string/search" />
+                android:src="@drawable/search_button_selector"
+                android:layout_marginLeft="30dp"
+                android:background="@null"/>
         </LinearLayout>
 
         <ScrollView
@@ -62,11 +68,13 @@
                         android:id="@+id/webView"
                         android:layout_width="match_parent"
                         android:layout_height="300dip">
-                        <Button
+
+                        <ImageButton
                             android:id="@+id/gpsSearch"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="현재위치" />
+                            android:src="@drawable/gps_button_selector"
+                            android:background="@null"/>
                     </WebView>
                 </LinearLayout>
 
