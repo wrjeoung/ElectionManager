@@ -17,31 +17,32 @@
 
             <Spinner
                 android:id="@+id/spinner_1"
-                android:layout_gravity="center"
+                android:layout_gravity="center_vertical"
                 android:visibility="gone"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:popupBackground="#ffffff"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
             <Spinner
                 android:id="@+id/spinner_2"
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
             <Spinner
                 android:id="@+id/spinner_3"
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
             <ImageButton
                 android:id="@+id/button_search"
-                android:layout_gravity="center"
-                android:layout_width="80dip"
-                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_width="80dp"
+                android:layout_height="50dp"
                 android:src="@drawable/search_button_selector"
                 android:layout_marginLeft="30dp"
                 android:background="@null"/>
@@ -50,7 +51,8 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/material_blue_grey_800">
+            android:background="@color/material_blue_grey_800"
+            >
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -60,7 +62,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="10dp"
                     android:background="@color/material_blue_grey_900"
                     android:orientation="vertical">
 
@@ -82,20 +83,22 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="10dp"
                     android:background="@color/material_blue_grey_900"
+                    android:layout_marginTop="10dp"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/textView3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:paddingBottom="@dimen/activity_vertical_margin"
                         android:paddingLeft="@dimen/activity_horizontal_margin"
                         android:paddingRight="@dimen/activity_horizontal_margin"
                         android:paddingTop="@dimen/activity_vertical_margin"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="정치환경"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                         />
                     <include layout="@layout/politicsenv" />
 
                 </LinearLayout>
