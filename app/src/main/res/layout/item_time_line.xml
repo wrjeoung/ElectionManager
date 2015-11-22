@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:orientation="horizontal"
+    android:weightSum="720">
+
+    <FrameLayout
+        android:id="@+id/layout_time"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="120">
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="14dp"
+            android:textColor="#9e9e9e"
+            android:textSize="10sp" />
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:layout_marginRight="4dp"
+            android:background="#3fb7ff" />
+
+        <View
+            android:id="@+id/img_time"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_gravity="right"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/ring" />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_memo"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="600"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="500"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_memo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:background="@drawable/memo_timeline"
+                android:gravity="left|top"
+                android:text="memo"
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_writer"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|bottom"
+                android:layout_marginBottom="10dp"
+                android:textColor="#898989"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right"
+            android:layout_weight="100"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <support.widget.NImageView
+                android:id="@+id/img_photo"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:padding="6dip"
+                android:scaleType="fitStart"
+                android:src="@drawable/sample1" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -5,6 +5,7 @@
 
     <color name="material_teal">@color/material_deep_teal_500</color>
     <color name="ripple_material_teal">#ff149691</color>
+    <color name="transparent">#00FFFFFF</color>
 
     <color name="white">#ffffff</color>
     <color name="blue">#304f9f</color>
@@ -13,12 +14,18 @@
 
     <color name="colorPrimary">@color/material_deep_teal_500</color>
     <color name="colorPrimaryDark">@color/material_deep_teal_500</color>
+    <color name="accent">#eeff41</color>
 
     <color name="windowBackgroundColor">#333333</color>
     <color name="black_translucent">#80000000</color>
 
     <color name="gray_66">#ff666666</color>
     <color name="title_bg">#ee7449</color>
+
+    <color name="color_hint">#ffc8c3c3</color>
+    <color name="color_value">#ffd94b4b</color>
+
+    <color name="main_color">#ff1ebfaa</color>
 
 
 </resources>

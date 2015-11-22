@@ -180,7 +180,7 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
                         break;
                     case 1:
                         mDrawerList.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
-                        toolbar.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
+                        //toolbar.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
                         slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
                         pager.setCurrentItem(position-1);
                         mDrawerLayout.closeDrawer(GravityCompat.START);

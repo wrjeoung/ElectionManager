@@ -1,0 +1,98 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/layout_top"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:weightSum="1230">
+
+        <LinearLayout
+            android:id="@+id/layout_userinfo"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="300"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:weightSum="300">
+
+            <FrameLayout
+                android:id="@+id/fragment_default_userinfo"
+                android:layout_width="match_parent"
+                android:layout_height="0dip"
+                android:layout_weight="250" />
+
+            <Button
+                android:id="@+id/btn_expand"
+                android:layout_width="match_parent"
+                android:layout_height="0dip"
+                android:layout_weight="50"
+                android:gravity="center" />
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="930" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        android:weightSum="1230">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="140"
+            android:gravity="right"
+            android:orientation="horizontal"
+            android:weightSum="720">
+
+            <ImageView
+                android:id="@+id/img_write"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="160"
+                android:src="@drawable/btn_write" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:weightSum="1230">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="300"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:weightSum="300">
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/fragment_detail_userinfo"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="400"
+            android:background="#ffffff"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+</FrameLayout>

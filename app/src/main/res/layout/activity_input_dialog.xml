@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:weightSum="700">
+
+    <EditText
+        android:id="@+id/edt_msg"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="180"
+        android:background="@android:color/transparent"
+        android:gravity="left|top"
+        android:hint="@string/input_edit_hint"
+        android:padding="10dp"
+        android:textColor="@android:color/black"
+        android:textColorHint="@color/color_hint"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:id="@+id/layout_tag"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="70"
+        android:background="@android:color/transparent"
+        android:orientation="horizontal"
+        android:weightSum="680">
+
+        <TextView
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="120"
+            android:gravity="center"
+            android:text="TAG : "
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/edt_tag"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="560"
+            android:background="@android:color/transparent"
+            android:gravity="left|center_vertical"
+            android:hint="TAG 입력"
+            android:paddingRight="4dp"
+            android:singleLine="true"
+            android:textColor="#989898"
+            android:textColorHint="@color/color_hint"
+            android:textSize="20sp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_time"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="50"
+        android:gravity="right|center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:id="@+id/txt_day"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/txt_time"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="6dp"
+            android:gravity="center"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/layout_photo"
+        android:layout_width="90.0dp"
+        android:layout_marginTop="10.0dp"
+        android:layout_marginBottom="10.0dp"
+        android:layout_height="0dip"
+        android:layout_weight="180">
+
+        <support.widget.NImageView
+            android:id="@+id/img_photo"
+            android:layout_width="85.0dp"
+            android:layout_height="85.0dp"
+            android:background="@drawable/btn_add_nor"
+            android:scaleType="fitXY" />
+
+        <ImageView
+            android:id="@+id/delete_icon"
+            android:layout_width="20.0dp"
+            android:layout_height="20.0dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/btn_del_nor"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_share"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="100"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:weightSum="680">
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="560"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:singleLine="true"
+            android:textColor="#828282"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/btn_share"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_margin="2dp"
+            android:layout_weight="120"
+            android:text="공유" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="2"
+        android:background="@color/main_color"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="138"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="680">
+
+        <LinearLayout
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="300"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <Button
+                android:id="@+id/btn_ok"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/btn_ok" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

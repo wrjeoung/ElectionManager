@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_popup_dialog_item_container"
+    android:layout_width="148.67dp"
+    android:layout_height="47.33dp"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="vertical" >
+    
+	<TextView 
+	    android:id="@+id/btn_popup_dialog_item_button"
+	    android:layout_width="148.67dp"
+	    android:layout_height="47.33dp"
+	    android:gravity="center"
+	    android:textColor="@drawable/btn_popup_dialog_item"
+	    android:textSize="13.33sp"
+	    android:textStyle="bold" />
+	
+</LinearLayout>
