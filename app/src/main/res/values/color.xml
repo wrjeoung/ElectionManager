@@ -19,7 +19,7 @@
     <color name="windowBackgroundColor">#333333</color>
     <color name="black_translucent">#80000000</color>
 
-    <color name="gray_66">#ff666666</color>
+    <color name="input_pw">#5e5e5e</color>
     <color name="title_bg">#ee7449</color>
 
     <color name="color_hint">#ffc8c3c3</color>
