@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:text="암호 설정"
-                android:textColor="#ff1dcd41"
+                android:textColor="#ee7499"
                 android:textSize="28.0sp" />
 
             <TextView
@@ -35,7 +35,7 @@
                 android:gravity="center"
                 android:lines="3"
                 android:text="암호를 입력해주세요"
-                android:textColor="@color/gray_66"
+                android:textColor="@color/input_pw"
                 android:textSize="17.0sp" />
 
             <LinearLayout

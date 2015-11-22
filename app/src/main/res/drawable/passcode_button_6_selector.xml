@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector
   xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_pressed="true" android:drawable="@drawable/settings_number_6_sel" />
-    <item android:drawable="@drawable/settings_number_6_enb" />
+    <item android:state_pressed="true" android:drawable="@drawable/no_6_on" />
+    <item android:drawable="@drawable/no_6_off" />
 </selector>
