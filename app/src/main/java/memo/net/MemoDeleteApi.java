@@ -19,8 +19,8 @@ public class MemoDeleteApi extends BaseApi {
     @Override
     public Map<String, Object> makeParam() {
         HashMap<String, Object> params = new HashMap<String, Object>();
-        params.put("TYPE","MEMODEL");
-        params.put("MEMOSEQ", memoSeq);
+        params.put("Type","Del");
+        params.put("MemoSeq", memoSeq);
 
         return params;
     }
@@ -32,6 +32,6 @@ public class MemoDeleteApi extends BaseApi {
 
     @Override
     public String getPath() {
-        return "/ElectionManager_server/MobileReq.jsp";
+        return "/ElectionManager_server/MemoServlet";
     }
 }

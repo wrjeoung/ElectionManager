@@ -12,6 +12,8 @@ import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
+import memo.activity.BoardActivity;
+
 /**
  * Created by wrjeong on 2015. 8. 31..
  */
@@ -92,7 +94,7 @@ public class ElectionHomeActivity extends AppCompatActivity implements View.OnCl
                 startActivity(intent);
                 break;
             case R.id.board:
-                intent.putExtra("startPosition", 5);
+                intent = new Intent(ElectionHomeActivity.this,BoardActivity.class);
                 startActivity(intent);
                 break;
             case R.id.modify_myinfo:

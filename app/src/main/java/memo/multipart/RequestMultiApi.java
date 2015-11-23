@@ -31,6 +31,9 @@ public class RequestMultiApi {
 //        post.setEntity(httpEntity);
         HttpClient httpClient = new DefaultHttpClient();
         HttpPost httpPost = new HttpPost(url);
+        httpPost.setHeader("Connection", "Keep-Alive");
+        httpPost.setHeader("Accept-Charset", "UTF-8");
+        httpPost.setHeader("ENCTYPE", "multipart/form-data");
         httpPost.setEntity(multipart);
 
 

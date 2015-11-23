@@ -53,4 +53,10 @@
         <item name="android:windowEnterAnimation">@anim/show_loading_dialog</item>
         <item name="android:windowExitAnimation">@anim/hide_loading_dialog</item>
     </style>
+
+    <style name="AppTheme.DialogActivity" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+    </style>
 </resources>

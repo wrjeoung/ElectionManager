@@ -20,9 +20,9 @@ public class MemoListApi extends BaseApi {
     @Override
     public Map<String, Object> makeParam() {
         HashMap<String, Object> params = new HashMap<String, Object>();
-        params.put("TYPE","MEMOLIST");
-        params.put("ADM_CD", admCd);
-        params.put("OFFSET", offset);
+        params.put("Type","List");
+        params.put("AdmCd", admCd);
+        params.put("Offset", offset);
 
         return params;
     }
@@ -34,6 +34,6 @@ public class MemoListApi extends BaseApi {
 
     @Override
     public String getPath() {
-        return "/ElectionManager_server/MobileReq.jsp";
+        return "/ElectionManager_server/MemoServlet";
     }
 }

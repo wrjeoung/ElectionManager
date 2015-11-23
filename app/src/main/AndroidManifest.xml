@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- GPS -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- external storage -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name="com.jsloves.election.application.ElectionManagerApp"
@@ -58,6 +59,10 @@
             android:name="memo.activity.BoardActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Toolbar" />
+        <activity
+            android:name="memo.activity.NDialogActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DialogActivity" />
 
     </application>
 </manifest>
