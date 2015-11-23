@@ -9,29 +9,43 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.jsloves.election.activity.R;
+import com.jsloves.election.application.ElectionManagerApp;
+
+import org.json.simple.JSONObject;
 
 import java.io.File;
+import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import memo.multipart.MultipartResponse;
 import memo.net.BoardListBody;
+import memo.net.MemoAddApi;
 import memo.utils.Utility;
 import support.BaseActivity;
 import support.util.Builder;
@@ -47,7 +61,7 @@ import com.base.toolcom.nam.mybaseproject.net.MemoUpdateApi;
 /**
  * Created by Nam on 15. 7. 22..
  */
-public class NDialogActivity extends BaseActivity {
+public class NDialogActivity extends BaseActivity implements AdapterView.OnItemSelectedListener {
     public static String INPUT_TYPE_MEMO = "input_meno";
     public static String INPUT_TYPE_MEMO_UPDATE = "input_memo_update";
 
@@ -57,6 +71,10 @@ public class NDialogActivity extends BaseActivity {
 
     public final static int REQ_CODE_PICK_GALLERY = 0;
     public final static int REQ_CODE_TAKE_PHOTO = 300;
+
+    private Spinner mSp0;
+    private Spinner mSp1;
+    private Spinner mSp2;
 
     private Context mContext;
     private String mInputType;
@@ -109,6 +127,27 @@ public class NDialogActivity extends BaseActivity {
         if (mInputType.equals(INPUT_TYPE_MEMO_UPDATE)) {
             initMemoInfo();
         }
+        initSpinner();
+    }
+
+    private void initSpinner() {
+        setUpSpinner(mSp0, ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU").toString());
+        String sigungu = (String) mSp0.getSelectedItem();
+        JSONObject jo1 = (JSONObject) ElectionManagerApp.getInstance().getSelectItemsObject().get("HAENGJOUNGDONG");
+        setUpSpinner(mSp1, jo1.get(sigungu).toString());
+        String haengjoungdong = (String) mSp1.getSelectedItem();
+        JSONObject jo2 = (JSONObject) ElectionManagerApp.getInstance().getSelectItemsObject().get("TUPYOGU");
+        setUpSpinner(mSp2, jo2.get(haengjoungdong).toString());
+    }
+
+    private void setUpSpinner(Spinner spinner, String items) {
+        Type type = new TypeToken<List<String>>() {
+        }.getType();
+        Gson converter = new Gson();
+        List<String> list = converter.fromJson(items, type);
+        ArrayAdapter sp_Adapter = new ArrayAdapter(getApplicationContext(), R.layout.row_spinner_item, list);
+        spinner.setAdapter(sp_Adapter);
+        spinner.setOnItemSelectedListener(this);
     }
 
     private void handleIntent(Intent getIntent) {
@@ -118,7 +157,7 @@ public class NDialogActivity extends BaseActivity {
             mMemoInfo = (BoardListBody.BoardDTO) getIntent.getSerializableExtra("MEMOINFO");
 
             if (TextUtils.isEmpty(mInputType) || TextUtils.isEmpty(mAdmCd))
-                errorNoti(this, getString(R.string.error_param), true);
+                ;//errorNoti(this, getString(R.string.error_param), true);
         }
     }
 
@@ -144,6 +183,10 @@ public class NDialogActivity extends BaseActivity {
     }
 
     private void buildComponents() {
+        mSp0 = (Spinner) findViewById(R.id.sp0);
+        mSp1 = (Spinner) findViewById(R.id.sp1);
+        mSp2 = (Spinner) findViewById(R.id.sp2);
+
         mInputMsg = (EditText) findViewById(R.id.edt_msg);
         mInputTag = (EditText) findViewById(R.id.edt_tag);
         mImagePhoto = (NImageView) findViewById(R.id.img_photo);
@@ -217,9 +260,8 @@ public class NDialogActivity extends BaseActivity {
                     }
 
                     showLoadingDlg(false);
-                    // 추가 예정 jhkim
-                    /*
-                    MemoAddApi api = new MemoAddApi(mContext, mPhoneNumber, contents, tag, attachmentPath, selectedUserList, new MemoAddApi.InsertMemoListener() {
+
+                    MemoAddApi api = new MemoAddApi(mContext, contents, mAdmCd,tag, attachmentPath,  new MemoAddApi.InsertMemoListener() {
                         @Override
                         public void onReceiver(MultipartResponse response) {
                             hideLoadingDlg();
@@ -232,7 +274,7 @@ public class NDialogActivity extends BaseActivity {
                     } else {
                         api.execute();
                     }
-                    */
+
                 } else if (mInputType.equals(INPUT_TYPE_MEMO_UPDATE)) {
                     //메모 수정
                     String contents = mInputMsg.getText().toString();
@@ -436,6 +478,37 @@ public class NDialogActivity extends BaseActivity {
         context.startActivityForResult(intent, requestCode);
 
         Log.e("nam", "admCd : " + admCd);
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int i, long l) {
+        final int viewId = parent.getId();
+        // TODO Auto-generated method stub
+        /*
+        if (ignoreUpdate) {
+            if(viewId != R.id.spinner_3) {
+                return;
+            }
+            ignoreUpdate = false;
+        }
+       */
+        switch (viewId) {
+            case R.id.sp0:
+                String sigungu = (String) parent.getSelectedItem();
+                JSONObject jo1 = (JSONObject) ElectionManagerApp.getInstance().getSelectItemsObject().get("HAENGJOUNGDONG");
+                setUpSpinner(mSp1, jo1.get(sigungu).toString());
+                break;
+            case R.id.sp1:
+                String haengjoungdong = (String) parent.getSelectedItem();
+                JSONObject jo2 = (JSONObject) ElectionManagerApp.getInstance().getSelectItemsObject().get("TUPYOGU");
+                setUpSpinner(mSp2, jo2.get(haengjoungdong).toString());
+                break;
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
 }
