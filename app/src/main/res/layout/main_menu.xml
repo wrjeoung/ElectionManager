@@ -18,7 +18,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent">
+       >
 
         <Button
             android:id="@+id/exit"
@@ -32,16 +32,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:background="@android:color/transparent">
+       >
 
-        <Button
+        <ImageView
             android:id="@+id/left"
+            android:src="@drawable/pdfviwer_page_left_selector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="prev" />
 
-        <Button
+        <ImageView
             android:id="@+id/right"
+            android:src="@drawable/pdfviwer_page_right_selector"
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -21,12 +21,15 @@ package com.jsloves.election.activity;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.joanzapata.pdfview.PDFView;
 
@@ -45,18 +48,22 @@ public class PDFViewActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_main);
-        Button bt_l = new Button(this);
-        Button bt_r = new Button(this);
+        ImageView img_bt_l = new ImageView(this);
+        ImageView img_bt_r = new ImageView(this);
         Button bt_e = new Button(this);
 
         setContentView(R.layout.main_menu);
-        bt_l = (Button) findViewById(R.id.left);
-        bt_r = (Button) findViewById(R.id.right);
+        img_bt_l = (ImageView) findViewById(R.id.left);
+        img_bt_r = (ImageView) findViewById(R.id.right);
         bt_e = (Button) findViewById(R.id.exit);
 
+        Drawable dl = img_bt_l.getDrawable();
+        Drawable dr = img_bt_r.getDrawable();
+        dr.setAlpha(100);
+        dl.setAlpha(100);
 
-        bt_l.setOnClickListener(this);
-        bt_r.setOnClickListener(this);
+        img_bt_l.setOnClickListener(this);
+        img_bt_r.setOnClickListener(this);
         bt_e.setOnClickListener(this);
         mStartPageNum = getIntent().getIntExtra("pdfStartPageNum", 1);
         mEndPageNum = getIntent().getIntExtra("pdfEndPageNum", 1);
