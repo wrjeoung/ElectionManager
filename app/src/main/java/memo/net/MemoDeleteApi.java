@@ -1,4 +1,4 @@
-package com.jsloves.election.net;
+package memo.net;
 
 import java.util.HashMap;
 import java.util.Map;

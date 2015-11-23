@@ -1,4 +1,4 @@
-package com.jsloves.election.utils;
+package memo.utils;
 
 import android.content.Context;
 import android.content.Intent;

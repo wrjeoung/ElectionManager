@@ -1,4 +1,4 @@
-package com.jsloves.election.recyclerview;
+package memo.recyclerview;
 
 import android.content.Context;
 import android.content.res.TypedArray;

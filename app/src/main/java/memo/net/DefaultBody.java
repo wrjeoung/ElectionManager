@@ -1,4 +1,4 @@
-package com.jsloves.election.net;
+package memo.net;
 
 import support.io.model.ResponseBody;
 

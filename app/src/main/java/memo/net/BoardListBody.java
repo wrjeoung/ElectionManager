@@ -1,4 +1,6 @@
-package com.jsloves.election.DTO;
+package memo.net;
+
+import com.jsloves.election.DTO.ImageInfoDTO;
 
 import java.io.Serializable;
 import java.util.ArrayList;

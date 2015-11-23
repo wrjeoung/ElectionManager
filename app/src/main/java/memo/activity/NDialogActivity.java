@@ -1,4 +1,4 @@
-package com.jsloves.election.activity;
+package memo.activity;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -21,8 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.jsloves.election.DTO.BoardListBody;
-import com.jsloves.election.utils.Utility;
+import com.jsloves.election.activity.R;
 
 import java.io.File;
 import java.text.ParseException;
@@ -32,6 +31,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import memo.net.BoardListBody;
+import memo.utils.Utility;
 import support.BaseActivity;
 import support.util.Builder;
 import support.util.NToast;
@@ -303,10 +304,6 @@ public class NDialogActivity extends BaseActivity {
         }
 
         mShareName = (TextView) findViewById(R.id.tv_name);
-
-//        // 빈 이미지
-//        for (int i = 0; i < 1; i++)
-//            mImageAdapter.addEntity(i, getDummyData());
     }
 
     @Override

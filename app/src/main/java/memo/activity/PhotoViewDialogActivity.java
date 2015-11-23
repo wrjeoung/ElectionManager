@@ -1,4 +1,4 @@
-package com.jsloves.election.activity;
+package memo.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.jsloves.election.activity.R;
 
 import support.BaseActivity;
 import support.widget.NImageView;

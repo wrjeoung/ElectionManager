@@ -1,6 +1,4 @@
-package com.jsloves.election.net;
-
-import com.jsloves.election.DTO.BoardListBody;
+package memo.net;
 
 import java.util.HashMap;
 import java.util.Map;

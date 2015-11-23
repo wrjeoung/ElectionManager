@@ -1,4 +1,4 @@
-package com.jsloves.election.adapter;
+package memo.adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,16 +12,17 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.jsloves.election.DTO.BoardListBody;
-import com.jsloves.election.activity.BoardActivity.MemoModify;
-import com.jsloves.election.activity.PhotoViewDialogActivity;
+
 import com.jsloves.election.activity.R;
-import com.jsloves.election.recyclerview.RecyclerArrayAdapter;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import memo.activity.BoardActivity;
+import memo.activity.PhotoViewDialogActivity;
+import memo.net.BoardListBody;
+import memo.recyclerview.RecyclerArrayAdapter;
 import support.util.Builder;
 import support.util.ResolutionUtils;
 import support.widget.NImageView;
@@ -39,13 +40,13 @@ public class TimeLineAdapter extends RecyclerArrayAdapter<BoardListBody.BoardDTO
     private Context mContext;
     private ResolutionUtils mResolutionUrils;
     private OnClickListener mClickListener;
-    private MemoModify mModifyListener;
+    private BoardActivity.MemoModify mModifyListener;
 
     public void setOnClickListener(OnClickListener listener){
         mClickListener = listener;
     }
 
-    public TimeLineAdapter(Context context, MemoModify modifyListener) {
+    public TimeLineAdapter(Context context, BoardActivity.MemoModify modifyListener) {
         mContext = context;
         mResolutionUrils = new ResolutionUtils(context);
         mModifyListener = modifyListener;

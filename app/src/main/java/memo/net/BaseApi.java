@@ -1,4 +1,4 @@
-package com.jsloves.election.net;
+package memo.net;
 
 /**
  * Created by Nam on 15. 7. 22..

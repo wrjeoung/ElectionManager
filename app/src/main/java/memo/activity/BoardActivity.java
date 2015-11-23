@@ -1,4 +1,4 @@
-package com.jsloves.election.activity;
+package memo.activity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,18 +14,19 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.jsloves.election.DTO.BoardListBody;
 import com.jsloves.election.DTO.ImageInfoDTO;
-import com.jsloves.election.adapter.TimeLineAdapter;
-import com.jsloves.election.net.DefaultBody;
-import com.jsloves.election.net.MemoDeleteApi;
-import com.jsloves.election.net.MemoListApi;
-import com.jsloves.election.recyclerview.RecyclerViewLoadMore;
+import com.jsloves.election.activity.R;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersTouchListener;
 
 import java.util.ArrayList;
 
+import memo.adapter.TimeLineAdapter;
+import memo.net.BoardListBody;
+import memo.net.DefaultBody;
+import memo.net.MemoDeleteApi;
+import memo.net.MemoListApi;
+import memo.recyclerview.RecyclerViewLoadMore;
 import support.BaseActivity;
 import support.GpsManager;
 import support.io.BaseRequest;
@@ -126,13 +127,15 @@ public class BoardActivity extends BaseActivity {
         imgWrite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Builder(mContext)
+                /*new Builder(mContext)
                         .setPositiveButton("메모작성", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 NDialogActivity.callActivityForResult((Activity) mContext, NDialogActivity.INPUT_TYPE_MEMO, mAdmCd, null, REQUEST_CODE_MEMO);
                             }
                         }).show();
+                 */
+                NDialogActivity.callActivityForResult((Activity) mContext, NDialogActivity.INPUT_TYPE_MEMO, mAdmCd, null, REQUEST_CODE_MEMO);
             }
         });
 
