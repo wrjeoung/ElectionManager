@@ -10,16 +10,27 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.jsloves.election.DTO.ImageInfoDTO;
 import com.jsloves.election.activity.R;
+import com.jsloves.election.application.ElectionManagerApp;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersTouchListener;
 
+import org.json.simple.JSONObject;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 import memo.adapter.TimeLineAdapter;
 import memo.net.BoardListBody;
@@ -38,7 +49,7 @@ import support.util.NToast;
 /**
  * Created by juhyukkim on 2015. 11. 22..
  */
-public class BoardActivity extends BaseActivity {
+public class BoardActivity extends BaseActivity implements AdapterView.OnItemSelectedListener {
     public static int DEFAULT_LIST_COUNT = 20;
     public static int REQUEST_CODE_MEMO = 1010;
     public static int REQUEST_CODE_SMS = 1020;
@@ -54,6 +65,10 @@ public class BoardActivity extends BaseActivity {
     private TimeLineAdapter mTimeListAdapter;
     private LinearLayout mLayoutUserInfo;
     private Button mBtnExpand;
+    private Spinner mSp0;
+    private Spinner mSp1;
+    private Spinner mSp2;
+
     private String mAdmCd;
 
     //private UserDefaultInfoFragment mUserDefaultInfoFragment;
@@ -78,10 +93,31 @@ public class BoardActivity extends BaseActivity {
         mContext = this;
 
         buildComponents();
+        initSpinner();
 
         //setFragment();
 
         //getUserInfo();
+    }
+
+    private void initSpinner() {
+        setUpSpinner(mSp0, ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU").toString());
+        String sigungu = (String) mSp0.getSelectedItem();
+        JSONObject jo1 = (JSONObject) ElectionManagerApp.getInstance().getSelectItemsObject().get("HAENGJOUNGDONG");
+        setUpSpinner(mSp1, jo1.get(sigungu).toString());
+        String haengjoungdong = (String) mSp1.getSelectedItem();
+        JSONObject jo2 = (JSONObject) ElectionManagerApp.getInstance().getSelectItemsObject().get("TUPYOGU");
+        setUpSpinner(mSp2, jo2.get(haengjoungdong).toString());
+    }
+
+    private void setUpSpinner(Spinner spinner, String items) {
+        Type type = new TypeToken<List<String>>() {
+        }.getType();
+        Gson converter = new Gson();
+        List<String> list = converter.fromJson(items, type);
+        ArrayAdapter sp_Adapter = new ArrayAdapter(getApplicationContext(), R.layout.row_spinner_item, list);
+        spinner.setAdapter(sp_Adapter);
+        spinner.setOnItemSelectedListener(this);
     }
 
     private void getMemoList(final String admCd) {
@@ -96,6 +132,10 @@ public class BoardActivity extends BaseActivity {
     }
 
     private void buildComponents() {
+        mSp0 = (Spinner) findViewById(R.id.sp0);
+        mSp1 = (Spinner) findViewById(R.id.sp1);
+        mSp2 = (Spinner) findViewById(R.id.sp2);
+
         mLayoutTop = (LinearLayout) findViewById(R.id.layout_top);
         mLayoutUserInfo = (LinearLayout) findViewById(R.id.layout_userinfo);
         mLayoutUserInfo.setOnClickListener(new View.OnClickListener() {
@@ -152,6 +192,29 @@ public class BoardActivity extends BaseActivity {
                     mIsExpandUserInfo = true;
                 }
                 */
+            }
+        });
+
+        final ImageButton btn_search = (ImageButton) findViewById(R.id.button_search);
+        btn_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String sigungu = (String) mSp0.getSelectedItem();
+                String haengjoungdong = (String) mSp1.getSelectedItem();
+                String tupyoguStr = (String) mSp2.getSelectedItem();
+                String[] array = {sigungu, haengjoungdong, tupyoguStr};
+                String adm_cd = ElectionManagerApp.getInstance().getTupyoguCode(array);
+
+                mAdmCd = adm_cd;
+
+                mPage = 0;
+                mOffset = 0;
+
+                if (mTimeListAdapter != null)
+                    mTimeListAdapter.clear();
+
+                getMemoList(adm_cd);
+                mIsLoadMore = true;
             }
         });
 
@@ -249,7 +312,7 @@ public class BoardActivity extends BaseActivity {
                     newMemo.contents = "";
                 }
 
-                String imgUrl = "http://222.122.149.161:7070/img/memo/" + memo.imgFileList.get(nImgCount).imgUrl;
+                String imgUrl = "http://222.122.149.161:7070/ElectionManager_server/memo_upload/" + memo.imgFileList.get(nImgCount).imgUrl;
                 newMemo.imgShow = imgUrl;
                 newData.add(newMemo);
                 nImgCount++;
@@ -371,6 +434,37 @@ public class BoardActivity extends BaseActivity {
                 headersDecor.invalidateHeaders();
             }
         });
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int i, long l) {
+        final int viewId = parent.getId();
+        // TODO Auto-generated method stub
+        /*
+        if (ignoreUpdate) {
+            if(viewId != R.id.spinner_3) {
+                return;
+            }
+            ignoreUpdate = false;
+        }
+       */
+        switch (viewId) {
+            case R.id.sp0:
+                String sigungu = (String) parent.getSelectedItem();
+                JSONObject jo1 = (JSONObject) ElectionManagerApp.getInstance().getSelectItemsObject().get("HAENGJOUNGDONG");
+                setUpSpinner(mSp1, jo1.get(sigungu).toString());
+                break;
+            case R.id.sp1:
+                String haengjoungdong = (String) parent.getSelectedItem();
+                JSONObject jo2 = (JSONObject) ElectionManagerApp.getInstance().getSelectItemsObject().get("TUPYOGU");
+                setUpSpinner(mSp2, jo2.get(haengjoungdong).toString());
+                break;
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 
     private void deleteItem(final int pos) {

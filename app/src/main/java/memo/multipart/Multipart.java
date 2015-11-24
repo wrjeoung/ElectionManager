@@ -19,13 +19,12 @@ public enum Multipart {
 
     INSTANCE;
 
-    private String TYPE = "Type";
     private String USER_SEQ = "addressSeq";
     private String CUST_NAME = "custName";
     private String CUST_PHONE = "custPhone";
     private String MAIN_ADDRESS = "mainAddress";
     private String SUB_ADDRESS = "subAddress";
-    private String TAG = "tag";
+    private String TAG = "Tag";
     private String IMAGE0 = "Attachment1";
     private String IMAGE1 = "Attachment2";
     private String IMAGE2 = "Attachment3";
@@ -48,24 +47,15 @@ public enum Multipart {
         return multipart;
     }
 
-    public MultipartEntity defaultMultipartBuilderUTF8() {
-        MultipartEntity multipart = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE,null, Charset.forName("UTF-8"));
-        return multipart;
-    }
-
-    public MultipartEntity getMemoAddMultipartBuilder(String type, String memoSeq, String admCd, String tag, String imgYn, String memo, String attachmentPath, String imgUrl) {
-        //MultipartEntity multipart = defaultMultipartBuilder();
-        MultipartEntity multipart = defaultMultipartBuilderUTF8();
+    public MultipartEntity getMemoAddMultipartBuilder(String memoSeq, String admCd, String tag, String imgYn, String memo, String attachmentPath, String imgUrl) {
+        MultipartEntity multipart = defaultMultipartBuilder();
 
         try{
-            if(!TextUtils.isEmpty(type))
-                multipart.addPart(TYPE, new StringBody(URLEncoder.encode(type,HTTP.UTF_8)));
-
             if(!TextUtils.isEmpty(memoSeq))
-                multipart.addPart(MEMO_SEQ, new StringBody(URLEncoder.encode(memoSeq,HTTP.UTF_8)));
+                multipart.addPart(MEMO_SEQ, new StringBody(memoSeq));
 
             if(!TextUtils.isEmpty(admCd))
-                multipart.addPart(ADM_CD, new StringBody(URLEncoder.encode(admCd,HTTP.UTF_8)));
+                multipart.addPart(ADM_CD, new StringBody(admCd));
 
             if(!TextUtils.isEmpty(tag))
                 multipart.addPart(TAG, new StringBody(tag));
@@ -99,7 +89,6 @@ public enum Multipart {
 //            }
 
             Log.e("nam", "------------------------------");
-            Log.e("nam", "type : " + type);
             Log.e("nam", "memoSeq : " + memoSeq);
             Log.e("nam", "admCd : " + admCd);
             Log.e("nam", "tag : " + tag);

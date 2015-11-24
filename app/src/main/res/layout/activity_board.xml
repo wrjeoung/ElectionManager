@@ -16,8 +16,8 @@
             android:layout_height="0dip"
             android:layout_weight="300"
             android:gravity="center"
-            android:orientation="vertical"
             android:visibility="gone"
+            android:orientation="vertical"
             android:weightSum="300">
 
             <FrameLayout
@@ -33,6 +33,13 @@
                 android:layout_weight="50"
                 android:gravity="center" />
         </LinearLayout>
+
+        <include layout="@layout/include_search_edit" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1.0dp"
+            android:background="@color/white" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerview"

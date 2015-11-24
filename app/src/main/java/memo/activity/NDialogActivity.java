@@ -241,6 +241,11 @@ public class NDialogActivity extends BaseActivity implements AdapterView.OnItemS
         btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(mSp1.getSelectedItemPosition() == 0 || mSp2.getSelectedItemPosition() == 0) {
+                    errorNoti(mContext, getString(R.string.not_selected_tupyogu), false);
+                    return;
+                }
+
                 String msg = mInputMsg.getText().toString();
                 if (TextUtils.isEmpty(msg)) {
                     errorNoti(mContext, getString(R.string.input_msg_empty), false);
@@ -261,7 +266,11 @@ public class NDialogActivity extends BaseActivity implements AdapterView.OnItemS
 
                     showLoadingDlg(false);
 
-                    MemoAddApi api = new MemoAddApi(mContext, contents, mAdmCd,tag, attachmentPath,  new MemoAddApi.InsertMemoListener() {
+                    String[] array = {(String)mSp0.getSelectedItem(), (String)mSp1.getSelectedItem(), (String)mSp2.getSelectedItem()};
+                    final String adm_cd = ElectionManagerApp.getInstance().getTupyoguCode(array);
+                    mAdmCd = adm_cd;
+
+                    MemoAddApi api = new MemoAddApi(mContext, contents, adm_cd ,tag, attachmentPath,  new MemoAddApi.InsertMemoListener() {
                         @Override
                         public void onReceiver(MultipartResponse response) {
                             hideLoadingDlg();
@@ -472,7 +481,7 @@ public class NDialogActivity extends BaseActivity implements AdapterView.OnItemS
     public static void callActivityForResult(Activity context, String inputType, String admCd, BoardListBody.BoardDTO memoInfo, int requestCode) {
         Intent intent = new Intent(context, NDialogActivity.class);
         intent.putExtra(PARAM_INPUT_TYPE, inputType);
-        intent.putExtra(PARAM_PHONE_NUMBER, admCd);
+        intent.putExtra(PARAM_ADM_CD, admCd);
         intent.putExtra("MEMOINFO", memoInfo);
 
         context.startActivityForResult(intent, requestCode);

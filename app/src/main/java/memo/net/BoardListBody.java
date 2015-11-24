@@ -28,7 +28,6 @@ public class BoardListBody extends ResponseBody {
         public String memoSeq;         // 메모 Seq
         public String contents;
         public String tag;
-        public String userName;
         public String imgYn;
         public ArrayList<ImageInfoDTO> imgFileList;
 

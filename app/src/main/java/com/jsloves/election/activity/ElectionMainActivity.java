@@ -40,6 +40,8 @@ import org.json.simple.JSONObject;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import memo.activity.BoardActivity;
+
 
 public class ElectionMainActivity extends AppCompatActivity implements CommonValuesManager, HomeMenuOnCLickListner {
 
@@ -210,14 +212,17 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
 
                         break;
                     case 5:
-                        pager.setCurrentItem(position-1);
+                        pager.setCurrentItem(position - 1);
                         mDrawerLayout.closeDrawer(GravityCompat.START);
 
                         break;
 
                     case 6:
-                        pager.setCurrentItem(position-1);
-                        mDrawerLayout.closeDrawer(GravityCompat.START);
+                        //pager.setCurrentItem(position-1);
+                        //mDrawerLayout.closeDrawer(GravityCompat.START);
+
+                        Intent boardIntent = new Intent(ElectionMainActivity.this,BoardActivity.class);
+                        startActivity(boardIntent);
 
                         break;
                 }

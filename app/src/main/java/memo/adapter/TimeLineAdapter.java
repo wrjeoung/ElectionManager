@@ -95,9 +95,10 @@ public class TimeLineAdapter extends RecyclerArrayAdapter<BoardListBody.BoardDTO
             viewHolder.mTvMemo.setVisibility(View.GONE);
         }
 
+        /*
         if(!TextUtils.isEmpty(memoData.userName))
             viewHolder.mTvWriter.setText(memoData.userName);
-
+        */
         if(!TextUtils.isEmpty(memoData.imgShow)) {
             viewHolder.mImgPhoto.setVisibility(View.VISIBLE);
             Log.e("nam", memoData.imgShow);

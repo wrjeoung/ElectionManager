@@ -34,12 +34,12 @@ public class MemoAddApi extends AsyncTask<Void, Void, MultipartResponse> {
         mContext = context;
         mMemoListener = listener;
 
-        mUrl = "http://222.122.149.161:7070/MemoServlet?";
+        mUrl = "http://10.11.1.164:8080/ElectionManager_server/MemoServlet?Type=Add";
+        //mUrl = "http://222.122.149.161:7070/MemoServlet?Type=Add";
         //mUrl = "http://192.168.0.6:8080/ElectionManager_server/MemoServlet?";
         mMemo = memo;
         mAdmCd = admCd;
         mTag = tag;
-
         mAttachmentPath = attachmentPath;
 
         if(attachmentPath.isEmpty())
@@ -52,7 +52,7 @@ public class MemoAddApi extends AsyncTask<Void, Void, MultipartResponse> {
     protected MultipartResponse doInBackground(Void... params) {
         MultipartResponse responseEntry = new MultipartResponse();
         try {
-            MultipartEntity builder = Multipart.INSTANCE.getMemoAddMultipartBuilder("Add","", mAdmCd, mTag, mImgYn, mMemo, mAttachmentPath,  "");
+            MultipartEntity builder = Multipart.INSTANCE.getMemoAddMultipartBuilder("", mAdmCd, mTag, mImgYn, mMemo, mAttachmentPath,  "");
             Log.e("nam", mTag + " " + mImgYn + " " + mMemo);
             responseEntry = RequestMultiApi.requesetMultipartApiCall(mContext, mUrl, builder);
         }
