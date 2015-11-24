@@ -26,15 +26,8 @@
     <string name="population_household">인구 및 가구</string>
     <string name="str_org1">기관정보</string>
     <string name="str_org2">단체정보</string>
+    <string name="sungugu_jihyung_bunsuk">선거구 지형분석</string>
 
-    <string-array name="img_ids">
-        <item>@drawable/guyok</item>
-        <item>@drawable/jungchi</item>
-        <item>@drawable/social</item>
-        <item>@drawable/gighan</item>
-        <item>@drawable/saup</item>
-        <item>@drawable/board</item>
-    </string-array>
     <!--Woori research server.-->
     <string name="server_url">http://222.122.149.161:7070/ElectionManager_server/MobileReq.jsp</string>
     <!--wrjeoung home. -->
@@ -42,12 +35,9 @@
     <!--for starbucks. -->
     <!--<string name="server_url">http://172.30.90.89:8080/ElectionManager_server/MobileReq.jsp</string>-->
 
-
-
-
     <string name="server_url_test">http://222.122.149.174:8080/ElectionManager_server/AddressServlet</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!--Woori research server.-->

@@ -8,8 +8,6 @@ import android.util.Log;
 
 import com.jsloves.election.common.CommonValuesManager;
 import com.jsloves.election.fragment.FragmentTab;
-import com.jsloves.election.fragment.HomeFragment;
-import com.jsloves.election.fragment.OrganIntroFragment;
 import com.jsloves.election.fragment.SampleFragment;
 import com.jsloves.election.fragment.SearchFragment;
 
@@ -32,7 +30,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter implements CommonValu
     public Fragment getItem(int position) {
         Log.d("ViewPagerAdapater", " position : " + position);
         switch (position) {
-            // 상단 메뉴
+            // 상단 메뉴 및 좌측메뉴.
             // Open FragmentTab1.java
             case 0:
                 //return SampleFragment.newInstance(position);
@@ -40,14 +38,14 @@ public class ViewPagerAdapter extends FragmentPagerAdapter implements CommonValu
                 mSearchFragment=SearchFragment.newInstance("aa", "bb");
                 return mSearchFragment;
             case 1:
-                return SampleFragment.newInstance(position);
+                // 기관 정보
+                return FragmentTab.newInstance("aa","bb");
             case 2:
                 return SampleFragment.newInstance(position);
             case 3:
                 //return SampleFragment.newInstance(position);
                 //return OrganIntroFragment.newInstance("aaa", "bbb");
-                return FragmentTab.newInstance("aa","bb");
-
+                return SampleFragment.newInstance(position);
             case 4:
                 return SampleFragment.newInstance(position);
             case 5:
