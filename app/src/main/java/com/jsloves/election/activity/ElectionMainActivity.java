@@ -63,27 +63,22 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
 
     @Override
     public void onCLickLinstnerByHome(int id) {
-        if(pager == null)
+        Log.d(TAG, "onClickListnerByHome id : " + id);
+        if (pager == null)
             return;
 
         switch(id) {
             case R.id.guyeok:
                 pager.setCurrentItem(1);
                 break;
-            case R.id.jungchi:
+            case R.id.gighan:
                 pager.setCurrentItem(2);
                 break;
-            case R.id.social:
+            case R.id.juyo:
                 pager.setCurrentItem(3);
                 break;
-            case R.id.gighan:
-                pager.setCurrentItem(4);
-                break;
-            case R.id.juyo:
-                pager.setCurrentItem(5);
-                break;
             case R.id.board:
-                pager.setCurrentItem(6);
+                pager.setCurrentItem(4);
                 break;
         }
     }
@@ -121,11 +116,9 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         titles[0] = getString(R.string.area_info);
-        titles[1] = getString(R.string.jungchi_hwangyong);
-        titles[2] = getString(R.string.social_hwangyong);
-        titles[3] = getString(R.string.gigwan_info);
-        titles[4] = getString(R.string.jooyo_saup);
-        titles[5] = getString(R.string.board);
+        titles[1] = getString(R.string.gigwan_info);
+        titles[2] = getString(R.string.jooyo_saup);
+        titles[3] = getString(R.string.board);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.navdrawer);
@@ -159,8 +152,6 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
         String[] values = new String[]{
                 getString(R.string.home),
                 getString(R.string.area_info),
-                getString(R.string.jungchi_hwangyong),
-                getString(R.string.social_hwangyong),
                 getString(R.string.gigwan_info),
                 getString(R.string.jooyo_saup),
                 getString(R.string.board)
@@ -181,49 +172,28 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
                         startActivity(intent);
                         break;
                     case 1:
-                        mDrawerList.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
-                        //toolbar.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
-                        slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
-                        pager.setCurrentItem(position-1);
-                        mDrawerLayout.closeDrawer(GravityCompat.START);
-                        break;
-                    case 2:
-                        //mDrawerList.setBackgroundColor(getResources().getColor(R.color.red));
-                        //toolbar.setBackgroundColor(getResources().getColor(R.color.red));
-                        //slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.red));
-                        pager.setCurrentItem(position-1);
-                        mDrawerLayout.closeDrawer(GravityCompat.START);
-
-                        break;
-                    case 3:
                         //mDrawerList.setBackgroundColor(getResources().getColor(R.color.blue));
                         //toolbar.setBackgroundColor(getResources().getColor(R.color.blue));
                         //slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.blue));
                         pager.setCurrentItem(position-1);
                         mDrawerLayout.closeDrawer(GravityCompat.START);
-
                         break;
-                    case 4:
+                    case 2:
                         //mDrawerList.setBackgroundColor(getResources().getColor(R.color.material_blue_grey_800));
                         //toolbar.setBackgroundColor(getResources().getColor(R.color.material_blue_grey_800));
                         //slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.material_blue_grey_800));
                         pager.setCurrentItem(position-1);
                         mDrawerLayout.closeDrawer(GravityCompat.START);
-
                         break;
-                    case 5:
-                        pager.setCurrentItem(position - 1);
+                    case 3:
+                        pager.setCurrentItem(position-1);
                         mDrawerLayout.closeDrawer(GravityCompat.START);
-
                         break;
-
-                    case 6:
+                    case 4:
                         //pager.setCurrentItem(position-1);
                         //mDrawerLayout.closeDrawer(GravityCompat.START);
-
                         Intent boardIntent = new Intent(ElectionMainActivity.this,BoardActivity.class);
                         startActivity(boardIntent);
-
                         break;
                 }
             }
@@ -233,8 +203,8 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
         List<String> sigunguList = convertFromJson(sigungus);
         Log.d(TAG, "expandLog list : " + sigunguList);
 
-        final AdapterRootRightMenu adapter2 = new AdapterRootRightMenu(this,sigunguList,pager);
-        mDrawerMenuRight.setAdapter( adapter2);
+        final AdapterRootRightMenu adapter2 = new AdapterRootRightMenu(this, sigunguList, pager);
+        mDrawerMenuRight.setAdapter(adapter2);
         mDrawerMenuRight.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {

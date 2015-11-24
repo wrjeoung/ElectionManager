@@ -3,12 +3,15 @@ package com.jsloves.election.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -16,6 +19,7 @@ import memo.activity.BoardActivity;
 
 /**
  * Created by wrjeong on 2015. 8. 31..
+ * 구역정보, 기관정보, 주요사업, 게시판, 정보수정이 표시되는 홈화면.
  */
 public class ElectionHomeActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -27,18 +31,19 @@ public class ElectionHomeActivity extends AppCompatActivity implements View.OnCl
         setContentView(R.layout.fragment_home);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        ArrayList<LinearLayout> listLiLayout;
-        listLiLayout = new ArrayList<>();
+        // 한글은 bold 적용이 안되기 때문에 소스상에서 처리.
+        TextView tv = (TextView)findViewById(R.id.title_home);
+        tv.setPaintFlags(tv.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
 
-        listLiLayout.add((LinearLayout) findViewById(R.id.guyeok));
-        listLiLayout.add((LinearLayout) findViewById(R.id.jungchi));
-        listLiLayout.add((LinearLayout) findViewById(R.id.social));
-        listLiLayout.add((LinearLayout) findViewById(R.id.juyo));
-        listLiLayout.add((LinearLayout) findViewById(R.id.board));
-        listLiLayout.add((LinearLayout) findViewById(R.id.gighan));
+        ArrayList<ImageView> arrImageView;
+        arrImageView = new ArrayList<>();
+        arrImageView.add((ImageView) findViewById(R.id.guyeok));
+        arrImageView.add((ImageView) findViewById(R.id.juyo));
+        arrImageView.add((ImageView) findViewById(R.id.board));
+        arrImageView.add((ImageView) findViewById(R.id.gighan));
         findViewById(R.id.modify_myinfo).setOnClickListener(this);
 
-        for (LinearLayout i : listLiLayout) {
+        for (ImageView i : arrImageView) {
             i.setOnClickListener(this);
         }
     }
@@ -77,20 +82,12 @@ public class ElectionHomeActivity extends AppCompatActivity implements View.OnCl
                 intent.putExtra("startPosition", 0);
                 startActivity(intent);
                 break;
-            case R.id.jungchi:
+            case R.id.gighan:
                 intent.putExtra("startPosition", 1);
                 startActivity(intent);
                 break;
-            case R.id.social:
-                intent.putExtra("startPosition", 2);
-                startActivity(intent);
-                break;
-            case R.id.gighan:
-                intent.putExtra("startPosition", 3);
-                startActivity(intent);
-                break;
             case R.id.juyo:
-                intent.putExtra("startPosition", 4);
+                intent.putExtra("startPosition", 2);
                 startActivity(intent);
                 break;
             case R.id.board:
