@@ -27,14 +27,12 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.joanzapata.pdfview.PDFView;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 
 
 public class PDFViewActivity extends Activity implements View.OnClickListener {
@@ -48,14 +46,10 @@ public class PDFViewActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_main);
-        ImageView img_bt_l = new ImageView(this);
-        ImageView img_bt_r = new ImageView(this);
-        Button bt_e = new Button(this);
-
         setContentView(R.layout.main_menu);
-        img_bt_l = (ImageView) findViewById(R.id.left);
-        img_bt_r = (ImageView) findViewById(R.id.right);
-        bt_e = (Button) findViewById(R.id.exit);
+        ImageView img_bt_l = (ImageView) findViewById(R.id.left);
+        ImageView img_bt_r = (ImageView) findViewById(R.id.right);
+        ImageButton bt_e = (ImageButton) findViewById(R.id.title_pdf_cancel);
 
         Drawable dl = img_bt_l.getDrawable();
         Drawable dr = img_bt_r.getDrawable();
@@ -126,7 +120,7 @@ public class PDFViewActivity extends Activity implements View.OnClickListener {
                     pdfView.jumpTo(pdfView.getCurrentPage() + 2);
 
                     break;
-                case R.id.exit:
+                case R.id.title_pdf_cancel:
                     finish();
                     break;
                 default:

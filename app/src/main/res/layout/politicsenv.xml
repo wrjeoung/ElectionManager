@@ -7,8 +7,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/background_corner"
         android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="15dip"
+            android:layout_marginRight="15dip"
+            android:background="#d3d3d3"/>
 
         <LinearLayout
             android:id="@+id/wrapper_tupyogu_name"
@@ -29,15 +35,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:paddingBottom="2dip"
+                android:textColor="#ee7549"
                 android:text="투표구"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:paddingBottom="2dip"
-                android:text="|"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
@@ -46,10 +45,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:paddingBottom="2dip"
+                android:textColor="@color/black"
                 android:text="금천구 독산1동 제1투표구"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
         </LinearLayout>
+
+        <View
+            android:id="@+id/tupyogu_name_gubun"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="15dip"
+            android:layout_marginRight="15dip"
+            android:layout_height="1dp"
+            android:background="#d3d3d3"/>
 
         <LinearLayout
             android:id="@+id/wrapper_tupyogu_addr"
@@ -70,15 +79,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:paddingBottom="2dip"
+                android:textColor="#ee7549"
                 android:text="투표소"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:paddingBottom="2dip"
-                android:text="|"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
@@ -87,10 +89,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:paddingBottom="2dip"
+                android:textColor="@color/black"
                 android:text="금천구 시흥대로 399 시티렉스 701"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
         </LinearLayout>
+
+        <View
+            android:id="@+id/tupyogu_addr_gubun"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="15dip"
+            android:layout_marginRight="15dip"
+            android:layout_height="1dp"
+            android:background="#d3d3d3"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -111,14 +123,7 @@
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:paddingBottom="2dip"
                 android:text="선거인수"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:paddingBottom="2dip"
-                android:text="|"
+                android:textColor="#ee7549"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
@@ -127,10 +132,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:paddingBottom="2dip"
+                android:textColor="@color/black"
                 android:text=""
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_marginLeft="15dip"
+            android:layout_marginRight="15dip"
+            android:layout_height="1dp"
+            android:background="#d3d3d3"/>
+
     </LinearLayout>
 
     <LinearLayout

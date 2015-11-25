@@ -106,9 +106,11 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     // tupyogu_name
     private LinearLayout mWrapper_tupyogu_name;
     private TextView mTupyogu_name;
+    private View mTupyogu_name_gubun;
     // tupyogu_addr
     private LinearLayout mWrapper_tupyogu_addr;
     private TextView mTupyogu_addr;
+    private View mTupyogu_addr_gubun;
     // elector_cnt
     private TextView mElector_cnt;
 
@@ -267,9 +269,11 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     private void initEtcInfo(View view) {
         mWrapper_tupyogu_name = (LinearLayout) view.findViewById(R.id.wrapper_tupyogu_name);
         mTupyogu_name = (TextView) view.findViewById(R.id.tupyogu_name);
+        mTupyogu_name_gubun = (View) view.findViewById(R.id.tupyogu_name_gubun);
 
         mWrapper_tupyogu_addr = (LinearLayout) view.findViewById(R.id.wrapper_tupyogu_addr);
         mTupyogu_addr = (TextView) view.findViewById(R.id.tupyogu_addr);
+        mTupyogu_addr_gubun = (View) view.findViewById(R.id.tupyogu_addr_gubun);
 
         mElector_cnt = (TextView) view.findViewById(R.id.elector_cnt);
     }
@@ -278,10 +282,16 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
         if(visible) {
             mWrapper_tupyogu_name.setVisibility(View.VISIBLE);
+            mTupyogu_name_gubun.setVisibility(View.VISIBLE);
+
             mWrapper_tupyogu_addr.setVisibility(View.VISIBLE);
+            mTupyogu_addr_gubun.setVisibility(View.VISIBLE);
         } else {
             mWrapper_tupyogu_name.setVisibility(View.GONE);
+            mTupyogu_name_gubun.setVisibility(View.GONE);
+
             mWrapper_tupyogu_addr.setVisibility(View.GONE);
+            mTupyogu_addr_gubun.setVisibility(View.GONE);
         }
     }
 

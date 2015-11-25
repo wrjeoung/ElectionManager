@@ -1,9 +1,6 @@
 package com.jsloves.election.fragment;
 
 import android.app.Activity;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -12,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.jsloves.election.activity.R;
 
@@ -26,7 +22,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     private static final String TAG = HomeFragment.class.getSimpleName();
     private static final String ARG_POSITION = "position";
     private static ViewPager mPager;
-    private ArrayList<LinearLayout> mListLiLayout;
+    private ArrayList<ImageView> mArrImageView;
     private HomeMenuOnCLickListner mHomelistner;
     private int mPosition;
 
@@ -45,16 +41,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         Log.d(TAG, "onCreateview mPosition : " + mPosition);
 
         mPosition=getArguments().getInt(ARG_POSITION);
-        mListLiLayout = new ArrayList<>();
+        mArrImageView = new ArrayList<>();
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-        mListLiLayout.add((LinearLayout) rootView.findViewById(R.id.guyeok));
-        mListLiLayout.add((LinearLayout) rootView.findViewById(R.id.jungchi));
-        mListLiLayout.add((LinearLayout) rootView.findViewById(R.id.social));
-        mListLiLayout.add((LinearLayout) rootView.findViewById(R.id.juyo));
-        mListLiLayout.add((LinearLayout) rootView.findViewById(R.id.board));
-        mListLiLayout.add( (LinearLayout)rootView.findViewById(R.id.gighan));
+        mArrImageView.add((ImageView) rootView.findViewById(R.id.guyeok));
+        mArrImageView.add((ImageView) rootView.findViewById(R.id.juyo));
+        mArrImageView.add((ImageView) rootView.findViewById(R.id.board));
+        mArrImageView.add( (ImageView)rootView.findViewById(R.id.gighan));
 
-        for(LinearLayout i:mListLiLayout) {
+        for(ImageView i:mArrImageView) {
             i.setOnClickListener(this);
         }
         return rootView;
