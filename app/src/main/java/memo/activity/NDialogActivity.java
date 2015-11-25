@@ -46,6 +46,7 @@ import java.util.Map;
 import memo.multipart.MultipartResponse;
 import memo.net.BoardListBody;
 import memo.net.MemoAddApi;
+import memo.net.MemoUpdateApi;
 import memo.utils.Utility;
 import support.BaseActivity;
 import support.util.Builder;
@@ -302,13 +303,13 @@ public class NDialogActivity extends BaseActivity implements AdapterView.OnItemS
                     if(!imageUrl.isEmpty() && oldImageUrl.isEmpty() && attachmentPath.isEmpty()) {
                         imageUrl = "";
                     } else if(!imageUrl.isEmpty()){
-                        imageUrl = imageUrl.split("/memo/")[1];
+                        imageUrl = imageUrl.split("/memo_upload/")[1];
                     } else {
                         imageUrl = "";
                     }
 
-                    /* jhkim 추가 예정
-                    MemoUpdateApi api = new MemoUpdateApi(mContext, memoSeq, admCd, mPhoneNumber, contents, tag, attachmentPath, imageUrl, new MemoUpdateApi.InsertMemoListener() {
+
+                    MemoUpdateApi api = new MemoUpdateApi(mContext, memoSeq, admCd, contents, tag, attachmentPath, imageUrl, new MemoUpdateApi.InsertMemoListener() {
                         @Override
                         public void onReceiver(MultipartResponse response) {
                             finish();
@@ -320,7 +321,7 @@ public class NDialogActivity extends BaseActivity implements AdapterView.OnItemS
                     } else {
                         api.execute();
                     }
-                    */
+
 
                 }
             }

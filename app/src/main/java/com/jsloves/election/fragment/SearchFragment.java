@@ -1048,6 +1048,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         Log.d(TAG, "onCreateView");
         mTest.append("Hahahahahahaha");
         View view = inflater.inflate(R.layout.fragment_search, container, false);
+
         initEtcInfo(view);
         initVoteRateSub(view);
         initVoterRatioOfAge(view);
