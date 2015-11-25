@@ -34,9 +34,8 @@ public class MemoAddApi extends AsyncTask<Void, Void, MultipartResponse> {
         mContext = context;
         mMemoListener = listener;
 
-        mUrl = "http://10.11.1.164:8080/ElectionManager_server/MemoServlet?Type=Add";
-        //mUrl = "http://222.122.149.161:7070/MemoServlet?Type=Add";
-        //mUrl = "http://192.168.0.6:8080/ElectionManager_server/MemoServlet?";
+        //mUrl = "http://10.11.1.164:8080/ElectionManager_server/MemoServlet?Type=Add";
+        mUrl = "http://222.122.149.161:7070/ElectionManager_server/MemoServlet?Type=Add";
         mMemo = memo;
         mAdmCd = admCd;
         mTag = tag;

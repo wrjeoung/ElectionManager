@@ -294,6 +294,7 @@ public class BoardActivity extends BaseActivity implements AdapterView.OnItemSel
         ArrayList<BoardListBody.BoardDTO> newData = new ArrayList<BoardListBody.BoardDTO>();
 
         for (BoardListBody.BoardDTO memo : oldData) {
+
             if (memo.imgFileList == null) {
                 newData.add(memo);
             } else {

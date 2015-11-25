@@ -14,10 +14,11 @@ public class BoardListBody extends ResponseBody {
     public ArrayList<BoardDTO> custMemoList;
 
     public static class BoardDTO implements Serializable {
+        public BoardDTO() {}
         public BoardDTO(BoardDTO dto){
             longDate = dto.longDate;
             admCd = dto.admCd;
-            memoSeq = dto.memoSeq;         // 메모 Seq
+            memoSeq = dto.memoSeq;
             contents = dto.contents;
             tag = dto.tag;
             imgYn = dto.imgYn;
@@ -25,7 +26,7 @@ public class BoardListBody extends ResponseBody {
 
         public long longDate;
         public String admCd;
-        public String memoSeq;         // 메모 Seq
+        public String memoSeq;
         public String contents;
         public String tag;
         public String imgYn;

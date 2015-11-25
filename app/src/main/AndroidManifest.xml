@@ -63,6 +63,9 @@
             android:name="memo.activity.NDialogActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DialogActivity" />
-
+        <activity
+            android:name="memo.activity.PhotoViewDialogActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyAppCompatDialogTheme" />
     </application>
 </manifest>
