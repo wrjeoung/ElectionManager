@@ -148,33 +148,52 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="15dip"
         android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/voterate_btn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/detail_selector" />
+            android:layout_height="30dp"
+            android:gravity="center_vertical"
+            android:src="@drawable/detail_selector_1"
+            android:background="@null"/>
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="10dip"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
             android:text="투표율(12총선)" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="35dip"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
             android:layout_marginLeft="10dip"
-            android:text="|" />
-
+            android:textSize="15sp"
+            android:text="- 55.2%" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
             android:layout_marginLeft="10dip"
-            android:text="55.2%(평균 60%)" />
+            android:textSize="15sp"
+            android:text="- 평균 60%" />
     </LinearLayout>
 
     <LinearLayout
