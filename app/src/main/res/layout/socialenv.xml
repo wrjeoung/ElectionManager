@@ -7,7 +7,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/background_corner"
         android:orientation="horizontal">
 
         <ImageView
@@ -22,60 +21,76 @@
             android:id="@+id/social_text1_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
             android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:paddingBottom="2dip"
-            android:text="@string/population_household"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:text="@string/population_household"/>
 
         <TextView
             android:id="@+id/delimeter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:paddingBottom="2dip"
-            android:text="|"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:layout_marginLeft="10dip"
+            android:textColor="#d3d3d3"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:text="|" />
 
         <TextView
             android:id="@+id/social_text1_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:paddingBottom="2dip"
-            android:text="5,500명 / 2,000세대"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:layout_marginLeft="10dip"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:text="5,500명 / 2,000세대" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:gravity="center_vertical"
+        android:layout_marginLeft="15dp"
         android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/person"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/detail_selector" />
+            android:src="@drawable/ico_subtit"
+            android:background="@null" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="10dip"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
             android:text="유권자 연령대 비율" />
     </LinearLayout>
 
     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/social"
+        android:background="@color/tableBgColor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:paddingBottom="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:stretchColumns="*">
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="4dp"
+            android:background="@color/title_bg"/>
 
         <TableRow
             android:id="@+id/wrraper_voteratio_header"
@@ -86,7 +101,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/background_floating_material_dark"
+                android:background="@color/tableTitleColor"
+                android:textColor="@color/black"
                 android:gravity="center"
                 android:text="구분" />
 
@@ -94,7 +110,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                android:background="@color/background_floating_material_dark"
+                android:background="@color/tableTitleColor"
+                android:textColor="@color/black"
                 android:gravity="center"
                 android:text="20대" />
 
@@ -102,7 +119,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                android:background="@color/background_floating_material_dark"
+                android:background="@color/tableTitleColor"
+                android:textColor="@color/black"
                 android:gravity="center"
                 android:text="30대" />
 
@@ -110,7 +128,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                android:background="@color/background_floating_material_dark"
+                android:background="@color/tableTitleColor"
+                android:textColor="@color/black"
                 android:gravity="center"
                 android:text="40대" />
 
@@ -118,7 +137,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                android:background="@color/background_floating_material_dark"
+                android:background="@color/tableTitleColor"
+                android:textColor="@color/black"
                 android:gravity="center"
                 android:text="40-" />
 
@@ -126,7 +146,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                android:background="@color/background_floating_material_dark"
+                android:background="@color/tableTitleColor"
+                android:textColor="@color/black"
                 android:gravity="center"
                 android:text="50+" />
 
@@ -134,7 +155,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                android:background="@color/background_floating_material_dark"
+                android:background="@color/tableTitleColor"
+                android:textColor="@color/black"
                 android:gravity="center"
                 android:text="50" />
 
@@ -142,7 +164,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                android:background="@color/background_floating_material_dark"
+                android:background="@color/tableTitleColor"
+                android:textColor="@color/black"
                 android:gravity="center"
                 android:text="60" />
         </TableRow>
@@ -158,7 +181,8 @@
                 android:id="@+id/sungugu"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/primary_dark_material_light"
+                android:background="@color/white"
+                android:textColor="@color/tableValueTextColor"
                 android:gravity="center"
                 android:text="선거구" />
 
@@ -167,7 +191,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                android:background="@color/primary_dark_material_light"
+                android:background="@color/white"
+                android:textColor="@color/tableValueTextColor"
                 android:gravity="center"
                 android:text="16.0" />
 
@@ -176,7 +201,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                android:background="@color/primary_dark_material_light"
+                android:background="@color/white"
+                android:textColor="@color/tableValueTextColor"
                 android:gravity="center"
                 android:text="18.4" />
 
@@ -185,7 +211,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                android:background="@color/primary_dark_material_light"
+                android:background="@color/white"
+                android:textColor="@color/tableValueTextColor"
                 android:gravity="center"
                 android:text="23.3" />
 
@@ -194,7 +221,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                android:background="@color/primary_dark_material_light"
+                android:background="@color/white"
+                android:textColor="@color/tableValueTextColor"
                 android:gravity="center"
                 android:text="57.7" />
 
@@ -203,7 +231,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                android:background="@color/primary_dark_material_light"
+                android:background="@color/white"
+                android:textColor="@color/tableValueTextColor"
                 android:gravity="center"
                 android:text="42.3" />
 
@@ -212,7 +241,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                android:background="@color/primary_dark_material_light"
+                android:background="@color/white"
+                android:textColor="@color/tableValueTextColor"
                 android:gravity="center"
                 android:text="22.1" />
 
@@ -221,7 +251,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                android:background="@color/primary_dark_material_light"
+                android:background="@color/white"
+                android:textColor="@color/tableValueTextColor"
                 android:gravity="center"
                 android:text="20.1" />
         </TableRow>
@@ -237,7 +268,8 @@
                 android:id="@+id/hangjung"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/primary_dark_material_light"
+                android:background="@color/white"
+                android:textColor="@color/tableValueTextColor"
                 android:gravity="center"
                 android:text="행정동" />
 
@@ -246,7 +278,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                android:background="@color/primary_dark_material_light"
+                android:background="@color/white"
+                android:textColor="@color/tableValueTextColor"
                 android:gravity="center"
                 android:text="16.7" />
 
@@ -255,7 +288,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                android:background="@color/primary_dark_material_light"
+                android:background="@color/white"
+                android:textColor="@color/tableValueTextColor"
                 android:gravity="center"
                 android:text="16.8" />
 
@@ -264,7 +298,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                android:background="@color/primary_dark_material_light"
+                android:background="@color/white"
+                android:textColor="@color/tableValueTextColor"
                 android:gravity="center"
                 android:text="23.9" />
 
@@ -273,7 +308,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                android:background="@color/primary_dark_material_light"
+                android:background="@color/white"
+                android:textColor="@color/tableValueTextColor"
                 android:gravity="center"
                 android:text="57.4" />
 
@@ -282,7 +318,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                android:background="@color/primary_dark_material_light"
+                android:background="@color/white"
+                android:textColor="@color/tableValueTextColor"
                 android:gravity="center"
                 android:text="42.6" />
 
@@ -291,7 +328,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                android:background="@color/primary_dark_material_light"
+                android:background="@color/white"
+                android:textColor="@color/tableValueTextColor"
                 android:gravity="center"
                 android:text="22.6" />
 
@@ -300,7 +338,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                android:background="@color/primary_dark_material_light"
+                android:background="@color/white"
+                android:textColor="@color/tableValueTextColor"
                 android:gravity="center"
                 android:text="20.0" />
         </TableRow>
@@ -316,7 +355,8 @@
                 android:id="@+id/tupyogu"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/primary_dark_material_light"
+                android:background="@color/white"
+                android:textColor="@color/tableValueTextColor"
                 android:gravity="center"
                 android:text="투표구" />
 
@@ -325,7 +365,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                android:background="@color/primary_dark_material_light"
+                android:background="@color/white"
+                android:textColor="@color/tableValueTextColor"
                 android:gravity="center"
                 android:text="14.8" />
 
@@ -334,7 +375,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                android:background="@color/primary_dark_material_light"
+                android:background="@color/white"
+                android:textColor="@color/tableValueTextColor"
                 android:gravity="center"
                 android:text="16.2" />
 
@@ -343,7 +385,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                android:background="@color/primary_dark_material_light"
+                android:background="@color/white"
+                android:textColor="@color/tableValueTextColor"
                 android:gravity="center"
                 android:text="31.4" />
 
@@ -352,7 +395,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                android:background="@color/primary_dark_material_light"
+                android:background="@color/white"
+                android:textColor="@color/tableValueTextColor"
                 android:gravity="center"
                 android:text="62.4" />
 
@@ -361,7 +405,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                android:background="@color/primary_dark_material_light"
+                android:background="@color/white"
+                android:textColor="@color/tableValueTextColor"
                 android:gravity="center"
                 android:text="37.6" />
 
@@ -370,7 +415,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                android:background="@color/primary_dark_material_light"
+                android:background="@color/white"
+                android:textColor="@color/tableValueTextColor"
                 android:gravity="center"
                 android:text="20.8" />
 
@@ -379,7 +425,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                android:background="@color/primary_dark_material_light"
+                android:background="@color/white"
+                android:textColor="@color/tableValueTextColor"
                 android:gravity="center"
                 android:text="16.8" />
         </TableRow>
