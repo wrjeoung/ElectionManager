@@ -135,7 +135,6 @@ public class SsokVolleyRequest extends VolleyRequest {
 //				sendError(error);
 //            }
             data = response;
-
             // return;
         }
 
@@ -178,6 +177,7 @@ public class SsokVolleyRequest extends VolleyRequest {
 //                errorMessage = ", " + e.getMessage();
 //            }
 //        } else {
+
             try {
                 if (api.getResponseBody() != null) {
                     responseBody = gson.fromJson(data, api.getResponseBody());

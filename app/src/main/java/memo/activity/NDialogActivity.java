@@ -73,6 +73,7 @@ public class NDialogActivity extends BaseActivity implements AdapterView.OnItemS
     public final static int REQ_CODE_PICK_GALLERY = 0;
     public final static int REQ_CODE_TAKE_PHOTO = 300;
 
+    private LinearLayout mWrapperSp;
     private Spinner mSp0;
     private Spinner mSp1;
     private Spinner mSp2;
@@ -163,6 +164,7 @@ public class NDialogActivity extends BaseActivity implements AdapterView.OnItemS
     }
 
     private void initMemoInfo() {
+        mWrapperSp.setVisibility(View.GONE);
         mInputMsg.setText(mMemoInfo.contents);
         mInputTag.setText(mMemoInfo.tag);
 
@@ -184,6 +186,7 @@ public class NDialogActivity extends BaseActivity implements AdapterView.OnItemS
     }
 
     private void buildComponents() {
+        mWrapperSp = (LinearLayout) findViewById(R.id.wrapper_sp);
         mSp0 = (Spinner) findViewById(R.id.sp0);
         mSp1 = (Spinner) findViewById(R.id.sp1);
         mSp2 = (Spinner) findViewById(R.id.sp2);
@@ -242,7 +245,7 @@ public class NDialogActivity extends BaseActivity implements AdapterView.OnItemS
         btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mSp1.getSelectedItemPosition() == 0 || mSp2.getSelectedItemPosition() == 0) {
+                if(mInputType.equals(INPUT_TYPE_MEMO) && (mSp1.getSelectedItemPosition() == 0 || mSp2.getSelectedItemPosition() == 0)) {
                     errorNoti(mContext, getString(R.string.not_selected_tupyogu), false);
                     return;
                 }

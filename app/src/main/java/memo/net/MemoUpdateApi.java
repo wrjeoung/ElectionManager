@@ -37,6 +37,7 @@ public class MemoUpdateApi extends AsyncTask<Void, Void, MultipartResponse> {
         mMemoListener = listener;
 
         mUrl = "http://222.122.149.161:7070/ElectionManager_server/MemoServlet?Type=Update";
+        //mUrl = "http://10.11.1.164:8080/ElectionManager_server/MemoServlet?Type=Update";
         mMemo = memo;
         mTag = tag;
         mAdmCd = admCd;
@@ -56,7 +57,7 @@ public class MemoUpdateApi extends AsyncTask<Void, Void, MultipartResponse> {
     protected MultipartResponse doInBackground(Void... params) {
         MultipartResponse responseEntry = new MultipartResponse();
         try {
-            MultipartEntity builder = Multipart.INSTANCE.getMemoAddMultipartBuilder(mMemoSeq, mAdmCd, mTag, mImgYn, mMemo, mAttachmentPath, mImageUrl);
+            MultipartEntity builder = Multipart.INSTANCE.getMemoAddMultipartBuilder(mMemoSeq, "", mTag, mImgYn, mMemo, mAttachmentPath, mImageUrl);
             Log.e("nam", mImageUrl + " /// path : " + mAttachmentPath);
             responseEntry = RequestMultiApi.requesetMultipartApiCall(mContext, mUrl, builder);
         }
