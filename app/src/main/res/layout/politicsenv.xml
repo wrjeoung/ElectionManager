@@ -519,8 +519,10 @@
     </TableLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="15dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -528,31 +530,40 @@
             android:id="@+id/voteratesub_btnM"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/detail_selector"/>
+            android:src="@drawable/detail_selector_1"
+            android:background="@null"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="3dp"
+            android:layout_marginLeft="10dip"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
             android:text="득표율 격차 분석(map)" />
     </LinearLayout>
 
     <LinearLayout
         android:visibility="gone"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/detail_selector"/>
+            android:src="@drawable/detail_selector_1"
+            android:background="@null"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="3dp"
+            android:layout_marginLeft="10dp"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
             android:text="기타 map 분석" />
     </LinearLayout>
 
