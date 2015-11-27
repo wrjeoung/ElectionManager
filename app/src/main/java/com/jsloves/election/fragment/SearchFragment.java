@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.AsyncTask;
@@ -620,31 +621,37 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         mLwrraper_header_population = (LinearLayout) view.findViewById(R.id.wrraper_header_population);
         mLwrraper_age = (LinearLayout) view.findViewById(R.id.wrraper_age);
         mButton_age = (ImageButton) view.findViewById(R.id.button_age);
+        mButton_age.setBackgroundColor(Color.WHITE);
         mTtupyogu_age = (TextView) view.findViewById(R.id.tupyogu_age);
         mTsungugu_age = (TextView) view.findViewById(R.id.sungugu_age);
 
         mLwrraper_wife = (LinearLayout) view.findViewById(R.id.wrraper_wife);
         mButton_wife = (ImageButton) view.findViewById(R.id.button_wife);
+        mButton_wife.setBackgroundColor(Color.WHITE);
         mTtupyogu_wife = (TextView) view.findViewById(R.id.tupyogu_wife);
         mTsungugu_wife = (TextView) view.findViewById(R.id.sungugu_wife);
 
         mLwrraper_univercity = (LinearLayout) view.findViewById(R.id.wrraper_univercity);
         mButton_univercity = (ImageButton) view.findViewById(R.id.button_univercity);
+        mButton_univercity.setBackgroundColor(Color.WHITE);
         mTtupyogu_univercity = (TextView) view.findViewById(R.id.tupyogu_univer);
         mTsungugu_univercity = (TextView) view.findViewById(R.id.sungugu_univer);
 
         mLwrraper_population = (LinearLayout) view.findViewById(R.id.wrraper_population);
         mButton_population = (ImageButton) view.findViewById(R.id.button_population);
+        mButton_population.setBackgroundColor(Color.WHITE);
         mTtupyogu_population = (TextView) view.findViewById(R.id.tupyogu_population);
         mTsungugu_population = (TextView) view.findViewById(R.id.sungugu_population);
 
         mLwrraper_ageing = (LinearLayout) view.findViewById(R.id.wrraper_ageing);
         mButton_ageing = (ImageButton) view.findViewById(R.id.button_ageing);
+        mButton_ageing.setBackgroundColor(Color.WHITE);
         mTtupyogu_ageing = (TextView) view.findViewById(R.id.tupyogu_ageing);
         mTsungugu_ageing = (TextView) view.findViewById(R.id.sungugu_ageing);
 
         mLwrraper_dependency = (LinearLayout) view.findViewById(R.id.wrraper_dependency);
         mButton_dependency = (ImageButton) view.findViewById(R.id.button_dependency);
+        mButton_dependency.setBackgroundColor(Color.WHITE);
         mTtupyogu_dependency = (TextView) view.findViewById(R.id.tupyogu_dependency);
         mTsungugu_dependency = (TextView) view.findViewById(R.id.sungugu_dependency);
     }
@@ -735,31 +742,37 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         mLwrraper_header_familly = (LinearLayout) view.findViewById(R.id.wrraper_header_familly);
         mLwrraper_one_man = (LinearLayout) view.findViewById(R.id.wrraper_one_man);
         mButton_one_man = (ImageButton) view.findViewById(R.id.button_one_man);
+        mButton_one_man.setBackgroundColor(Color.WHITE);
         mTtupyogu_one_man = (TextView) view.findViewById(R.id.tupyogu_one_man);
         mTsungugu_one_man = (TextView) view.findViewById(R.id.sungugu_one_man);
 
         mLwrraper_two_more = (LinearLayout) view.findViewById(R.id.wrraper_two_more);
         mButton_two_more = (ImageButton) view.findViewById(R.id.button_two_more);
+        mButton_two_more.setBackgroundColor(Color.WHITE);
         mTtupyogu_two_more = (TextView) view.findViewById(R.id.tupyogu_two_more);
         mTsungugu_two_more = (TextView) view.findViewById(R.id.sungugu_two_more);
 
         mLwrraper_myhouse = (LinearLayout) view.findViewById(R.id.wrraper_myhouse);
         mButton_myhouse = (ImageButton) view.findViewById(R.id.button_myhouse);
+        mButton_myhouse.setBackgroundColor(Color.WHITE);
         mTtupyogu_myhouse = (TextView) view.findViewById(R.id.tupyogu_myhouse);
         mTsungugu_myhouse = (TextView) view.findViewById(R.id.sungugu_myhouse);
 
         mLwrraper_apt = (LinearLayout) view.findViewById(R.id.wrraper_apt);
         mButton_apt = (ImageButton) view.findViewById(R.id.button_apt);
+        mButton_apt.setBackgroundColor(Color.WHITE);
         mTtupyogu_apt = (TextView) view.findViewById(R.id.tupyogu_apt);
         mTsungugu_apt = (TextView) view.findViewById(R.id.sungugu_apt);
 
         mLwrraper_40m_over = (LinearLayout) view.findViewById(R.id.wrraper_40m_over);
         mButton_40m_over = (ImageButton) view.findViewById(R.id.button_40m_over);
+        mButton_40m_over.setBackgroundColor(Color.WHITE);
         mTtupyogu_40m_over = (TextView) view.findViewById(R.id.tupyogu_40m_over);
         mTsungugu_40m_over = (TextView) view.findViewById(R.id.sungugu_40m_over);
 
         mLwrraper_memberOfHouseHold = (LinearLayout) view.findViewById(R.id.wrraper_memberOfHouseHold);
         mButton_memberOfHouseHold = (ImageButton) view.findViewById(R.id.button_memberOfHouseHold);
+        mButton_memberOfHouseHold.setBackgroundColor(Color.WHITE);
         mTtupyogu_memberOfHouseHold = (TextView) view.findViewById(R.id.tupyogu_memberOfHouseHold);
         mTsungugu_memberOfHouseHold = (TextView) view.findViewById(R.id.sungugu_memberOfHouseHold);
     }

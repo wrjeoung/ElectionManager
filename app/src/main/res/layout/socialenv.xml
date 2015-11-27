@@ -22,6 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dip"
+            android:paddingBottom="3dip"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@color/black"
@@ -32,6 +33,7 @@
             android:id="@+id/delimeter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingBottom="3dip"
             android:layout_marginLeft="10dip"
             android:textColor="#d3d3d3"
             android:textSize="18sp"
@@ -42,6 +44,7 @@
             android:id="@+id/social_text1_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingBottom="3dip"
             android:layout_gravity="center"
             android:layout_marginLeft="10dip"
             android:textColor="@color/black"
@@ -437,7 +440,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:background="@drawable/background_corner"
         android:orientation="horizontal">
 
         <ImageView
@@ -450,11 +452,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:paddingBottom="3dip"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
             android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:paddingBottom="2dip"
-            android:text="인구통계(투표구)"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:text="인구통계(투표구)"/>
 
     </LinearLayout>
 
@@ -464,41 +468,42 @@
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
+        android:layout_marginLeft="47dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/tableBgColor"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingRight="10dp">
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/detail_selector"
-            android:visibility="invisible" />
+        android:layout_marginRight="10dp">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="3dp"
+            android:layout_marginTop="1dp"
             android:layout_weight="2"
-            android:background="@color/background_floating_material_dark"
+            android:background="@color/tableTitleColor"
+            android:textColor="@color/black"
             android:gravity="center"
             android:text="구분" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginTop="1dp"
             android:layout_marginLeft="1dp"
             android:layout_weight="1"
-            android:background="@color/background_floating_material_dark"
+            android:background="@color/tableTitleColor"
+            android:textColor="@color/black"
             android:gravity="center"
             android:text="투표구" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginTop="1dp"
             android:layout_marginLeft="1dp"
             android:layout_weight="1"
-            android:background="@color/background_floating_material_dark"
+            android:background="@color/tableTitleColor"
+            android:textColor="@color/black"
             android:gravity="center"
             android:text="선거구" />
 
@@ -509,23 +514,24 @@
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
+        android:background="@color/tableBgColor"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingRight="10dp">
+        android:layout_marginRight="10dp">
 
         <ImageButton
             android:id="@+id/button_age"
-            android:layout_width="wrap_content"
+            android:layout_width="47dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/detail_selector" />
+            android:src="@drawable/detail_selector_1"/>
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="3dp"
             android:layout_weight="2"
-            android:background="@color/primary_dark_material_light"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:textColor="@color/tableValueTextColor"
             android:gravity="center"
             android:text="평균나이(세)" />
 
@@ -533,9 +539,11 @@
             android:id="@+id/tupyogu_age"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginTop="1dp"
             android:layout_marginLeft="1dp"
             android:layout_weight="1"
-            android:background="@color/primary_dark_material_light"
+            android:background="@color/white"
+            android:textColor="@color/tableValueTextColor"
             android:gravity="center"
             android:text="16.0" />
 
@@ -543,9 +551,11 @@
             android:id="@+id/sungugu_age"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginTop="1dp"
             android:layout_marginLeft="1dp"
             android:layout_weight="1"
-            android:background="@color/primary_dark_material_light"
+            android:background="@color/white"
+            android:textColor="@color/tableValueTextColor"
             android:gravity="center"
             android:text="18.4" />
 
@@ -556,23 +566,24 @@
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
+        android:background="@color/tableBgColor"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingRight="10dp">
+        android:layout_marginRight="10dp">
 
         <ImageButton
             android:id="@+id/button_wife"
-            android:layout_width="wrap_content"
+            android:layout_width="47dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/detail_selector" />
+            android:src="@drawable/detail_selector_1" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="3dp"
+            android:layout_marginTop="1dp"
             android:layout_weight="2"
-            android:background="@color/primary_dark_material_light"
+            android:background="@color/white"
+            android:textColor="@color/tableValueTextColor"
             android:gravity="center"
             android:text="배우자 있음(%)" />
 
@@ -580,9 +591,11 @@
             android:id="@+id/tupyogu_wife"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginTop="1dp"
             android:layout_marginLeft="1dp"
             android:layout_weight="1"
-            android:background="@color/primary_dark_material_light"
+            android:background="@color/white"
+            android:textColor="@color/tableValueTextColor"
             android:gravity="center"
             android:text="16.7" />
 
@@ -590,9 +603,11 @@
             android:id="@+id/sungugu_wife"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginTop="1dp"
             android:layout_marginLeft="1dp"
             android:layout_weight="1"
-            android:background="@color/primary_dark_material_light"
+            android:background="@color/white"
+            android:textColor="@color/tableValueTextColor"
             android:gravity="center"
             android:text="16.8" />
 
@@ -603,23 +618,24 @@
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
+        android:background="@color/tableBgColor"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingRight="10dp">
+        android:layout_marginRight="10dp">
 
         <ImageButton
             android:id="@+id/button_univercity"
-            android:layout_width="wrap_content"
+            android:layout_width="47dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/detail_selector" />
+            android:src="@drawable/detail_selector_1" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="3dp"
+            android:layout_marginTop="1dp"
             android:layout_weight="2"
-            android:background="@color/primary_dark_material_light"
+            android:background="@color/white"
+            android:textColor="@color/tableValueTextColor"
             android:gravity="center"
             android:text="대학교 이상(%)" />
 
@@ -627,9 +643,11 @@
             android:id="@+id/tupyogu_univer"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginTop="1dp"
             android:layout_marginLeft="1dp"
             android:layout_weight="1"
-            android:background="@color/primary_dark_material_light"
+            android:background="@color/white"
+            android:textColor="@color/tableValueTextColor"
             android:gravity="center"
             android:text="14.8" />
 
@@ -637,9 +655,11 @@
             android:id="@+id/sungugu_univer"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginTop="1dp"
             android:layout_marginLeft="1dp"
             android:layout_weight="1"
-            android:background="@color/primary_dark_material_light"
+            android:background="@color/white"
+            android:textColor="@color/tableValueTextColor"
             android:gravity="center"
             android:text="16.2" />
 
@@ -650,23 +670,24 @@
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
+        android:background="@color/tableBgColor"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingRight="10dp">
+        android:layout_marginRight="10dp">
 
         <ImageButton
             android:id="@+id/button_population"
-            android:layout_width="wrap_content"
+            android:layout_width="47dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/detail_selector" />
+            android:src="@drawable/detail_selector_1" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="3dp"
+            android:layout_marginTop="1dp"
             android:layout_weight="2"
-            android:background="@color/primary_dark_material_light"
+            android:background="@color/white"
+            android:textColor="@color/tableValueTextColor"
             android:gravity="center"
             android:text="인구밀도" />
 
@@ -674,9 +695,11 @@
             android:id="@+id/tupyogu_population"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginTop="1dp"
             android:layout_marginLeft="1dp"
             android:layout_weight="1"
-            android:background="@color/primary_dark_material_light"
+            android:background="@color/white"
+            android:textColor="@color/tableValueTextColor"
             android:gravity="center"
             android:text="34.8" />
 
@@ -684,9 +707,11 @@
             android:id="@+id/sungugu_population"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginTop="1dp"
             android:layout_marginLeft="1dp"
             android:layout_weight="1"
-            android:background="@color/primary_dark_material_light"
+            android:background="@color/white"
+            android:textColor="@color/tableValueTextColor"
             android:gravity="center"
             android:text="35.0" />
 
@@ -697,23 +722,24 @@
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
+        android:background="@color/tableBgColor"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingRight="10dp">
+        android:layout_marginRight="10dp">
 
         <ImageButton
             android:id="@+id/button_ageing"
-            android:layout_width="wrap_content"
+            android:layout_width="47dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/detail_selector" />
+            android:src="@drawable/detail_selector_1" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="3dp"
+            android:layout_marginTop="1dp"
             android:layout_weight="2"
-            android:background="@color/primary_dark_material_light"
+            android:background="@color/white"
+            android:textColor="@color/tableValueTextColor"
             android:gravity="center"
             android:text="노령화지수" />
 
@@ -721,9 +747,11 @@
             android:id="@+id/tupyogu_ageing"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginTop="1dp"
             android:layout_marginLeft="1dp"
             android:layout_weight="1"
-            android:background="@color/primary_dark_material_light"
+            android:background="@color/white"
+            android:textColor="@color/tableValueTextColor"
             android:gravity="center"
             android:text="40.0" />
 
@@ -731,9 +759,11 @@
             android:id="@+id/sungugu_ageing"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginTop="1dp"
             android:layout_marginLeft="1dp"
             android:layout_weight="1"
-            android:background="@color/primary_dark_material_light"
+            android:background="@color/white"
+            android:textColor="@color/tableValueTextColor"
             android:gravity="center"
             android:text="42.0" />
 
@@ -744,23 +774,25 @@
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
+        android:background="@color/tableBgColor"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingRight="10dp">
+        android:layout_marginRight="10dp">
 
         <ImageButton
             android:id="@+id/button_dependency"
-            android:layout_width="wrap_content"
+            android:layout_width="47dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/detail_selector" />
+            android:src="@drawable/detail_selector_1" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="3dp"
+            android:layout_marginBottom="1dp"
+            android:layout_marginTop="1dp"
             android:layout_weight="2"
-            android:background="@color/primary_dark_material_light"
+            android:background="@color/white"
+            android:textColor="@color/tableValueTextColor"
             android:gravity="center"
             android:text="유년부양비" />
 
@@ -768,9 +800,12 @@
             android:id="@+id/tupyogu_dependency"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginBottom="1dp"
+            android:layout_marginTop="1dp"
             android:layout_marginLeft="1dp"
             android:layout_weight="1"
-            android:background="@color/primary_dark_material_light"
+            android:background="@color/white"
+            android:textColor="@color/tableValueTextColor"
             android:gravity="center"
             android:text="35.2" />
 
@@ -778,9 +813,12 @@
             android:id="@+id/sungugu_dependency"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginBottom="1dp"
+            android:layout_marginTop="1dp"
             android:layout_marginLeft="1dp"
             android:layout_weight="1"
-            android:background="@color/primary_dark_material_light"
+            android:background="@color/white"
+            android:textColor="@color/tableValueTextColor"
             android:gravity="center"
             android:text="38.3" />
 
@@ -790,7 +828,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:background="@drawable/background_corner"
         android:orientation="vertical"
         android:paddingBottom="2dp">
 
@@ -810,17 +847,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:paddingBottom="2dip"
-                android:text="가구통계(투표구)"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:layout_marginLeft="10dip"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:paddingBottom="3dip"
+                android:text="가구통계(투표구)"/>
         </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="55dp"
-            android:text="1인 가구, 2세대 이상, 자가, 아파트, 40m이상"/>
+            android:layout_marginLeft="50dp"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:text="- 1인 가구, 2세대 이상, 자가, 아파트, 40m이상"/>
 
     </LinearLayout>
 
@@ -830,41 +871,42 @@
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
+        android:layout_marginLeft="47dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/tableBgColor"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingRight="10dp">
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/detail_selector"
-            android:visibility="invisible" />
+        android:layout_marginRight="10dp">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="3dp"
+            android:layout_marginTop="1dp"
             android:layout_weight="2"
-            android:background="@color/background_floating_material_dark"
+            android:background="@color/tableTitleColor"
+            android:textColor="@color/black"
             android:gravity="center"
             android:text="구분" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginTop="1dp"
             android:layout_marginLeft="1dp"
             android:layout_weight="1"
-            android:background="@color/background_floating_material_dark"
+            android:background="@color/tableTitleColor"
+            android:textColor="@color/black"
             android:gravity="center"
             android:text="투표구" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginTop="1dp"
             android:layout_marginLeft="1dp"
             android:layout_weight="1"
-            android:background="@color/background_floating_material_dark"
+            android:background="@color/tableTitleColor"
+            android:textColor="@color/black"
             android:gravity="center"
             android:text="선거구" />
 
@@ -875,23 +917,24 @@
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
+        android:background="@color/tableBgColor"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingRight="10dp">
+        android:layout_marginRight="10dp">
 
         <ImageButton
             android:id="@+id/button_one_man"
-            android:layout_width="wrap_content"
+            android:layout_width="47dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/detail_selector" />
+            android:src="@drawable/detail_selector_1" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="3dp"
+            android:layout_marginTop="1dp"
             android:layout_weight="2"
-            android:background="@color/primary_dark_material_light"
+            android:background="@color/white"
+            android:textColor="@color/tableValueTextColor"
             android:gravity="center"
             android:text="1인가구" />
 
@@ -899,9 +942,11 @@
             android:id="@+id/tupyogu_one_man"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginTop="1dp"
             android:layout_marginLeft="1dp"
             android:layout_weight="1"
-            android:background="@color/primary_dark_material_light"
+            android:background="@color/white"
+            android:textColor="@color/tableValueTextColor"
             android:gravity="center"
             android:text="16.0" />
 
@@ -909,9 +954,11 @@
             android:id="@+id/sungugu_one_man"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginTop="1dp"
             android:layout_marginLeft="1dp"
             android:layout_weight="1"
-            android:background="@color/primary_dark_material_light"
+            android:background="@color/white"
+            android:textColor="@color/tableValueTextColor"
             android:gravity="center"
             android:text="18.4" />
 
@@ -922,23 +969,24 @@
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
+        android:background="@color/tableBgColor"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingRight="10dp">
+        android:layout_marginRight="10dp">
 
         <ImageButton
             android:id="@+id/button_two_more"
-            android:layout_width="wrap_content"
+            android:layout_width="47dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/detail_selector" />
+            android:src="@drawable/detail_selector_1" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="3dp"
             android:layout_weight="2"
-            android:background="@color/primary_dark_material_light"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:textColor="@color/tableValueTextColor"
             android:gravity="center"
             android:text="2세대이상" />
 
@@ -946,9 +994,11 @@
             android:id="@+id/tupyogu_two_more"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginTop="1dp"
             android:layout_marginLeft="1dp"
             android:layout_weight="1"
-            android:background="@color/primary_dark_material_light"
+            android:background="@color/white"
+            android:textColor="@color/tableValueTextColor"
             android:gravity="center"
             android:text="16.0" />
 
@@ -956,9 +1006,11 @@
             android:id="@+id/sungugu_two_more"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginTop="1dp"
             android:layout_marginLeft="1dp"
             android:layout_weight="1"
-            android:background="@color/primary_dark_material_light"
+            android:background="@color/white"
+            android:textColor="@color/tableValueTextColor"
             android:gravity="center"
             android:text="18.4" />
 
@@ -969,23 +1021,24 @@
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
+        android:background="@color/tableBgColor"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingRight="10dp">
+        android:layout_marginRight="10dp">
 
         <ImageButton
             android:id="@+id/button_myhouse"
-            android:layout_width="wrap_content"
+            android:layout_width="47dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/detail_selector" />
+            android:src="@drawable/detail_selector_1" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="3dp"
             android:layout_weight="2"
-            android:background="@color/primary_dark_material_light"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:textColor="@color/tableValueTextColor"
             android:gravity="center"
             android:text="자가비율" />
 
@@ -993,9 +1046,11 @@
             android:id="@+id/tupyogu_myhouse"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginTop="1dp"
             android:layout_marginLeft="1dp"
             android:layout_weight="1"
-            android:background="@color/primary_dark_material_light"
+            android:background="@color/white"
+            android:textColor="@color/tableValueTextColor"
             android:gravity="center"
             android:text="16.0" />
 
@@ -1003,9 +1058,11 @@
             android:id="@+id/sungugu_myhouse"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginTop="1dp"
             android:layout_marginLeft="1dp"
             android:layout_weight="1"
-            android:background="@color/primary_dark_material_light"
+            android:background="@color/white"
+            android:textColor="@color/tableValueTextColor"
             android:gravity="center"
             android:text="18.4" />
 
@@ -1016,23 +1073,24 @@
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
+        android:background="@color/tableBgColor"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingRight="10dp">
+        android:layout_marginRight="10dp">
 
         <ImageButton
             android:id="@+id/button_apt"
-            android:layout_width="wrap_content"
+            android:layout_width="47dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/detail_selector" />
+            android:src="@drawable/detail_selector_1" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="3dp"
             android:layout_weight="2"
-            android:background="@color/primary_dark_material_light"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:textColor="@color/tableValueTextColor"
             android:gravity="center"
             android:text="아파트비율" />
 
@@ -1040,9 +1098,11 @@
             android:id="@+id/tupyogu_apt"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginTop="1dp"
             android:layout_marginLeft="1dp"
             android:layout_weight="1"
-            android:background="@color/primary_dark_material_light"
+            android:background="@color/white"
+            android:textColor="@color/tableValueTextColor"
             android:gravity="center"
             android:text="16.0" />
 
@@ -1050,9 +1110,11 @@
             android:id="@+id/sungugu_apt"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginTop="1dp"
             android:layout_marginLeft="1dp"
             android:layout_weight="1"
-            android:background="@color/primary_dark_material_light"
+            android:background="@color/white"
+            android:textColor="@color/tableValueTextColor"
             android:gravity="center"
             android:text="18.4" />
 
@@ -1063,23 +1125,24 @@
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
+        android:background="@color/tableBgColor"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingRight="10dp">
+        android:layout_marginRight="10dp">
 
         <ImageButton
             android:id="@+id/button_40m_over"
-            android:layout_width="wrap_content"
+            android:layout_width="47dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/detail_selector" />
+            android:src="@drawable/detail_selector_1" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="3dp"
             android:layout_weight="2"
-            android:background="@color/primary_dark_material_light"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:textColor="@color/tableValueTextColor"
             android:gravity="center"
             android:text="40m" />
 
@@ -1087,9 +1150,11 @@
             android:id="@+id/tupyogu_40m_over"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginTop="1dp"
             android:layout_marginLeft="1dp"
             android:layout_weight="1"
-            android:background="@color/primary_dark_material_light"
+            android:background="@color/white"
+            android:textColor="@color/tableValueTextColor"
             android:gravity="center"
             android:text="16.0" />
 
@@ -1097,9 +1162,11 @@
             android:id="@+id/sungugu_40m_over"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginTop="1dp"
             android:layout_marginLeft="1dp"
             android:layout_weight="1"
-            android:background="@color/primary_dark_material_light"
+            android:background="@color/white"
+            android:textColor="@color/tableValueTextColor"
             android:gravity="center"
             android:text="18.4" />
 
@@ -1110,23 +1177,25 @@
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
+        android:background="@color/tableBgColor"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingRight="10dp">
+        android:layout_marginRight="10dp">
 
         <ImageButton
             android:id="@+id/button_memberOfHouseHold"
-            android:layout_width="wrap_content"
+            android:layout_width="47dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/detail_selector" />
+            android:src="@drawable/detail_selector_1" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="3dp"
+            android:layout_marginBottom="1dp"
+            android:layout_marginTop="1dp"
             android:layout_weight="2"
-            android:background="@color/primary_dark_material_light"
+            android:background="@color/white"
+            android:textColor="@color/tableValueTextColor"
             android:gravity="center"
             android:text="평균가구원" />
 
@@ -1134,9 +1203,12 @@
             android:id="@+id/tupyogu_memberOfHouseHold"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginBottom="1dp"
+            android:layout_marginTop="1dp"
             android:layout_marginLeft="1dp"
             android:layout_weight="1"
-            android:background="@color/primary_dark_material_light"
+            android:background="@color/white"
+            android:textColor="@color/tableValueTextColor"
             android:gravity="center"
             android:text="45.2" />
 
@@ -1144,9 +1216,12 @@
             android:id="@+id/sungugu_memberOfHouseHold"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginBottom="1dp"
+            android:layout_marginTop="1dp"
             android:layout_marginLeft="1dp"
             android:layout_weight="1"
-            android:background="@color/primary_dark_material_light"
+            android:background="@color/white"
+            android:textColor="@color/tableValueTextColor"
             android:gravity="center"
             android:text="44.3" />
 
