@@ -8,7 +8,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="@dimen/title_bar_height"
         android:background="@color/title_bg"
         android:orientation="horizontal">
 
@@ -19,6 +19,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:text="@string/sungugu_jihyung_bunsuk"
+            android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"/>
     </RelativeLayout>

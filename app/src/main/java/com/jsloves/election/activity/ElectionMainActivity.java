@@ -18,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -135,6 +136,12 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
         mFragmentManager=getSupportFragmentManager();
         mVpageAdapter = new ViewPagerAdapter(mFragmentManager, titles, pager);
         pager.setAdapter(mVpageAdapter);
+        pager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                return false;
+            }
+        });
 
         int startPosition = (int)getIntent().getExtras().get("startPosition");
         pager.setCurrentItem(startPosition);

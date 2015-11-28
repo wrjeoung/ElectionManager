@@ -8,20 +8,20 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,13 +33,11 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.w3c.dom.Text;
 
 public class JoinActivity extends AppCompatActivity implements AsyncListener<Integer, String> {
 
     public static final String ASYNC = "async";
     private ProgressDialog dialog;
-    private Toolbar toolbar;
 
     public static final String TAG = JoinActivity.class.getSimpleName();
     private EditText user_id = null;
@@ -47,8 +45,8 @@ public class JoinActivity extends AppCompatActivity implements AsyncListener<Int
     private EditText name = null;
     private EditText password_conf = null;
     private EditText d_id = null;
-    private Button login_but;
-    private Button idcheck_but;
+    private ImageView login_but;
+    private ImageView idcheck_but;
     private String id_check = "FAILED";
     private String imei = null;
     private String imsi = null;
@@ -77,7 +75,7 @@ public class JoinActivity extends AppCompatActivity implements AsyncListener<Int
         WifiInfo mWifiInfo = mWifiManager.getConnectionInfo();
         mac = mWifiInfo.getMacAddress();
 
-        setContentView(R.layout.join);
+        setContentView(R.layout.sign_up);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         user_id = (EditText) findViewById(R.id.login);
@@ -87,8 +85,8 @@ public class JoinActivity extends AppCompatActivity implements AsyncListener<Int
         d_id = (EditText) findViewById(R.id.d_id);
         d_id.setText(mac);
         d_id.setFocusableInTouchMode(false);
-        login_but = (Button) findViewById(R.id.loginbutton);
-        idcheck_but = (Button) findViewById(R.id.idcheck);
+        login_but = (ImageView) findViewById(R.id.loginbutton);
+        idcheck_but = (ImageView) findViewById(R.id.idcheck);
 
         System.out.println("imei:"+imei);
         System.out.println("imsi:"+ imsi);
@@ -126,15 +124,20 @@ public class JoinActivity extends AppCompatActivity implements AsyncListener<Int
             mCh_no_que_pass.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    Log.d(TAG,"onCheckedChanged isChecked : "+isChecked);
+                    Log.d(TAG, "onCheckedChanged isChecked : " + isChecked);
                     SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
                     SharedPreferences.Editor editor = pref.edit();
-                    editor.putBoolean("no_question_pass",isChecked);
+                    editor.putBoolean("no_question_pass", isChecked);
                     editor.commit();
                 }
             });
 
-            login_but.setText("비밀번호 수정");
+            if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                login_but.setImageDrawable(getResources().getDrawable(R.drawable.sign_up_modify_info_selector,this.getTheme()));
+            } else {
+                login_but.setImageDrawable(getResources().getDrawable(R.drawable.sign_up_modify_info_selector));
+            }
+
             login_but.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {

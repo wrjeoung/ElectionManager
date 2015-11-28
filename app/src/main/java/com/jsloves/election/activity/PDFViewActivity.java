@@ -46,7 +46,7 @@ public class PDFViewActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_main);
-        setContentView(R.layout.main_menu);
+        setContentView(R.layout.pdf_view);
         ImageView img_bt_l = (ImageView) findViewById(R.id.left);
         ImageView img_bt_r = (ImageView) findViewById(R.id.right);
         ImageButton bt_e = (ImageButton) findViewById(R.id.title_pdf_cancel);
