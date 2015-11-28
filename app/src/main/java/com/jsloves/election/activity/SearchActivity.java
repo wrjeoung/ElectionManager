@@ -89,21 +89,6 @@ public class SearchActivity extends AppCompatActivity implements AsyncListener<I
 
 
 
-        // Spinner
-        /*Spinner spinner_1 = (Spinner)findViewById(R.id.spinner_1);
-        ArrayAdapter sp1_Adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,list1);
-        sp1_Adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_1.setAdapter(sp1_Adapter);
-
-        Spinner spinner_2 = (Spinner)findViewById(R.id.spinner_2);
-        ArrayAdapter sp2_Adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,list2);
-        sp2_Adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_2.setAdapter(sp2_Adapter);
-
-        Spinner spinner_3 = (Spinner)findViewById(R.id.spinner_3);
-        ArrayAdapter sp3_Adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,list3);
-        sp2_Adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_3.setAdapter(sp3_Adapter);*/
 
     }
 

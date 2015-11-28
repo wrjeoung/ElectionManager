@@ -1312,8 +1312,8 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         }.getType();
         Gson converter = new Gson();
         List<String> list = converter.fromJson(items, type);
-        ArrayAdapter sp_Adapter = new ArrayAdapter(getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, list);
-        sp_Adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter sp_Adapter = new ArrayAdapter(getActivity().getApplicationContext(), R.layout.spinner_item, list);
+        sp_Adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         spinner.setAdapter(sp_Adapter);
         //sp_Adapter.notifyDataSetChanged();
         spinner.setOnItemSelectedListener(SearchFragment.this);

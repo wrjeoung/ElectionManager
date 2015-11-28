@@ -9,6 +9,7 @@ public class AsyncFragment extends PrimesFragment {
     private static final String TAG = AsyncFragment.class.getSimpleName();
     @Override
     protected String doInBackground2(Object... args) {
+
         Log.d(TAG, "doInBackground2");
         Bundle bundle = (Bundle)args[0];
         String url = bundle.getString("URL");

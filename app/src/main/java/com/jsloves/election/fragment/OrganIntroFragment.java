@@ -274,8 +274,8 @@ public class OrganIntroFragment extends Fragment implements OnItemSelectedListen
         Type type = new TypeToken<List<String>>(){}.getType();
         Gson converter = new Gson();
         List<String> list =  converter.fromJson(items.toString(), type);
-        ArrayAdapter sp_Adapter = new ArrayAdapter(getActivity().getApplicationContext(),android.R.layout.simple_spinner_item,list);
-        sp_Adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter sp_Adapter = new ArrayAdapter(getActivity().getApplicationContext(),R.layout.spinner_item,list);
+        sp_Adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         spinner.setAdapter(sp_Adapter);
         spinner.setOnItemSelectedListener(OrganIntroFragment.this);
     }
