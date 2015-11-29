@@ -130,6 +130,7 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
             mActionbar = getSupportActionBar();
             setActionBarTitle(getSigunguTextFromAdm_cd(ElectionManagerApp.getInstance().getDefaultAdm_Cd()));
             toolbar.setNavigationIcon(R.drawable.ic_ab_drawer);
+            toolbar.setTitleTextColor(Color.WHITE);
         }
         pager = (ViewPager) findViewById(R.id.viewpager);
         slidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);

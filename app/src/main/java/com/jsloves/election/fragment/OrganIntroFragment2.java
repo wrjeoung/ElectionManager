@@ -81,7 +81,6 @@ public class OrganIntroFragment2 extends Fragment implements AdapterView.OnItemS
 
     private Spinner sp7;
     private Spinner sp8;
-    private Spinner sp9;
 
     private View view = null;
 
@@ -143,7 +142,6 @@ public class OrganIntroFragment2 extends Fragment implements AdapterView.OnItemS
 
         sp7 = (Spinner) view.findViewById(R.id.spinner_7);
         sp8 = (Spinner) view.findViewById(R.id.spinner_8);
-        sp9 = (Spinner) view.findViewById(R.id.spinner_9);
 
         Log.d("lcy", ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU").toString());
 
@@ -200,7 +198,7 @@ public class OrganIntroFragment2 extends Fragment implements AdapterView.OnItemS
 
                 String sigungu = (String) sp7.getSelectedItem();
                 String haengjoungdong = (String) sp8.getSelectedItem();
-                String tupyoguStr = (String) sp9.getSelectedItem();
+                String tupyoguStr = "전체";
                 String[] array = {sigungu, haengjoungdong, tupyoguStr};
                 String adm_cd = ElectionManagerApp.getInstance().getTupyoguCode(array);
                 json1.put("ADM_CD", adm_cd);
@@ -419,11 +417,6 @@ public class OrganIntroFragment2 extends Fragment implements AdapterView.OnItemS
                 }
                 JSONObject jo1 = (JSONObject)ElectionManagerApp.getInstance().getSelectItemsObject().get("HAENGJOUNGDONG");
                 setUpSpinner(sp8, jo1.get(sigungu).toString());
-                break;
-            case R.id.spinner_8:
-                String haengjoungdong = (String) parent.getSelectedItem();
-                JSONObject jo2 = (JSONObject) ElectionManagerApp.getInstance().getSelectItemsObject().get("TUPYOGU");
-                setUpSpinner(sp9, jo2.get(haengjoungdong).toString());
                 break;
         }
 

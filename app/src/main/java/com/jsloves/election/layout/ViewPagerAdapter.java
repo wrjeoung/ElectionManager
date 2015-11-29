@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 
 import com.jsloves.election.common.CommonValuesManager;
+import com.jsloves.election.fragment.BusinessListFragment;
 import com.jsloves.election.fragment.FragmentTab;
 import com.jsloves.election.fragment.SampleFragment;
 import com.jsloves.election.fragment.SearchFragment;
@@ -41,7 +42,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter implements CommonValu
                 // 기관 정보
                 return FragmentTab.newInstance("aa","bb");
             case 2:
-                return SampleFragment.newInstance(position);
+                return BusinessListFragment.newInstance();
             case 3:
                 //return SampleFragment.newInstance(position);
                 //return OrganIntroFragment.newInstance("aaa", "bbb");

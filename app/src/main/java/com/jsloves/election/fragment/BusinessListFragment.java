@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -24,6 +23,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.jsloves.election.DTO.BusinessKindDTO;
 import com.jsloves.election.DTO.OrganDAO;
 import com.jsloves.election.activity.ElectionMainActivity;
 import com.jsloves.election.activity.R;
@@ -43,18 +43,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link OrganIntroFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Created by juhyukkim on 2015. 11. 29..
  */
-public class OrganIntroFragment extends Fragment implements OnItemSelectedListener{
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-
-    public static final String TAG = OrganIntroFragment.class.getSimpleName();
+public class BusinessListFragment extends Fragment implements AdapterView.OnItemSelectedListener  {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -77,14 +68,16 @@ public class OrganIntroFragment extends Fragment implements OnItemSelectedListen
     public static final String ASYNC = "async";
 
     private ArrayList<DataClass> mCareList = null;
+    private ArrayList<BusinessKindDTO> mBKList = null;
     private ListView mListView = null;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    private Spinner sp4;
-    private Spinner sp5;
+    private Spinner spHidden;
+    private Spinner sp1;
+    private Spinner sp2;
 
     private View view = null;
 
@@ -101,10 +94,10 @@ public class OrganIntroFragment extends Fragment implements OnItemSelectedListen
      */
     // TODO: Rename and change types and number of parameters
 
-    public static OrganIntroFragment newInstance(String param1, String param2) {
+    public static BusinessListFragment newInstance(String param1, String param2) {
         System.out.println("param1:"+param1);
         System.out.println("param2:"+param2);
-        OrganIntroFragment fragment = new OrganIntroFragment();
+        BusinessListFragment fragment = new BusinessListFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -112,50 +105,48 @@ public class OrganIntroFragment extends Fragment implements OnItemSelectedListen
         return fragment;
     }
 
-    public OrganIntroFragment(){
-        Log.d("lcy", "OrganIntroFragment");
+    public static BusinessListFragment newInstance() {
+        BusinessListFragment fragment = new BusinessListFragment();
+        return fragment;
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("lcy", "onCreate");
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
         ignoreUpdate = false;
-        //JSONObject json1 = new JSONObject();
-        //json1.put("TYPE", "SELECTORGAN1");
-
-        //excuteTask("http://192.168.0.2:8080/ElectionManager_server/MobileReq.jsp", json1.toString());
-        //excuteTask(getString(R.string.server_url), json1.toString());
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("lcy", "onResume");
+    }
 
+    private void initSpinner() {
+        setUpSpinner(spHidden, ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU").toString());
+        String sigungu = (String) spHidden.getSelectedItem();
+        JSONObject jo1 = (JSONObject)ElectionManagerApp.getInstance().getSelectItemsObject().get("HAENGJOUNGDONG");
+        setUpSpinner(sp2, jo1.get(sigungu).toString());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d("lcy", "onCreateView");
 
-        view = inflater.inflate(R.layout.fragment_organ_intro, container, false);
+        view = inflater.inflate(R.layout.fragment_business_list, container, false);
         setLayout();
 
-        sp4 = (Spinner) view.findViewById(R.id.spinner_4);
-        sp5 = (Spinner) view.findViewById(R.id.spinner_5);
+        spHidden = (Spinner) view.findViewById(R.id.sp_hidden);
+        sp1 = (Spinner) view.findViewById(R.id.sp1);
+        sp2 = (Spinner) view.findViewById(R.id.sp2);
 
-        Log.d("lcy", ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU").toString());
-        setUpSpinner(sp4, ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU").toString());
 
-        // ArrayAdapter 연결
-//        mListView.setAdapter(new CustomArrayAdapter(this, R.layout.intro_list, mCareList));
+        initSpinner();
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -206,8 +197,8 @@ public class OrganIntroFragment extends Fragment implements OnItemSelectedListen
                 json1.put("TYPE", "SEARCHORGAN");
                 json1.put("ORGAN_GB", organ_gb);
 
-                String sigungu = (String) sp4.getSelectedItem();
-                String haengjoungdong = (String) sp5.getSelectedItem();
+                String sigungu = (String) spHidden.getSelectedItem();
+                String haengjoungdong = (String) sp1.getSelectedItem();
                 String tupyoguStr = "전체";
                 String[] array = {sigungu, haengjoungdong, tupyoguStr};
                 String adm_cd = ElectionManagerApp.getInstance().getTupyoguCode(array);
@@ -220,8 +211,15 @@ public class OrganIntroFragment extends Fragment implements OnItemSelectedListen
             }
         });
 
-        // Inflate the layout for this fragment
+        requestBKInfo();
         return view;
+    }
+
+    private void requestBKInfo() {
+        JSONObject json = new JSONObject();
+        json.put("TYPE", "BUSINESSKIND");
+        //excuteTask(getString(R.string.server_url), json.toString());
+        excuteTask("http://192.168.0.40:8080/ElectionManager_server/MobileReq.jsp", json.toString());
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -235,19 +233,17 @@ public class OrganIntroFragment extends Fragment implements OnItemSelectedListen
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Log.d("lcy", "onAttach");
-        mActivity =  activity;
         /**try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }**/
+         mListener = (OnFragmentInteractionListener) activity;
+         } catch (ClassCastException e) {
+         throw new ClassCastException(activity.toString()
+         + " must implement OnFragmentInteractionListener");
+         }**/
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        Log.d("lcy", "onDetach");
         mListener = null;
         mActivity = null;
     }
@@ -268,14 +264,14 @@ public class OrganIntroFragment extends Fragment implements OnItemSelectedListen
     }
 
     private void setUpSpinner(Spinner spinner,String items) {
-        Log.d("lcy", "items = " + items);
+        Log.d("kjh", "items = " + items);
         Type type = new TypeToken<List<String>>(){}.getType();
         Gson converter = new Gson();
         List<String> list =  converter.fromJson(items.toString(), type);
         ArrayAdapter sp_Adapter = new ArrayAdapter(getActivity().getApplicationContext(),R.layout.spinner_item,list);
         sp_Adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         spinner.setAdapter(sp_Adapter);
-        spinner.setOnItemSelectedListener(OrganIntroFragment.this);
+        spinner.setOnItemSelectedListener(BusinessListFragment.this);
     }
 
     private void setLayout(){
@@ -326,7 +322,23 @@ public class OrganIntroFragment extends Fragment implements OnItemSelectedListen
                 String sType = (String) re.get("TYPE");
                 Log.d("lcy","sType:"+sType);
 
-                if(sType.equals("SELECTORGAN1")) {
+
+
+                if(sType.equals("BUSINESSKIND")) {
+                    mBKList = new ArrayList<BusinessKindDTO>();
+
+                    Gson gson = new Gson();
+                    JSONArray bkList = (JSONArray) re.get("BKINFO");
+
+                    for(int i = 0; i<bkList.size();i++) {
+                        BusinessKindDTO dto = gson.fromJson((String) bkList.get(i), BusinessKindDTO.class);
+                        System.out.println("bkcode = "+dto.bkCode);
+                    }
+
+
+                }
+
+                else if(sType.equals("SELECTORGAN1")) {
                     Log.d("lcy", "SELECTORGAN1");
 
                     ignoreUpdate = true;
@@ -406,7 +418,7 @@ public class OrganIntroFragment extends Fragment implements OnItemSelectedListen
     public void onItemSelected(AdapterView<?> parent, View view, int position,
                                long id) {
 
-        Log.d("lcy", "onItemSelected:"+ignoreUpdate);
+        Log.d("kjh", "business__ onItemSelected:"+ignoreUpdate);
         // TODO Auto-generated method stub
         if(ignoreUpdate) {
             ignoreUpdate = false;
@@ -414,27 +426,24 @@ public class OrganIntroFragment extends Fragment implements OnItemSelectedListen
         }
 
         switch (parent.getId()) {
-            case R.id.spinner_4:
+            case R.id.sp_hidden:
                 String sigungu = (String)parent.getSelectedItem();
                 String title = ((ElectionMainActivity) mActivity).getActionBarTitle();
                 if(!sigungu.equals(title)) {
                     JSONArray jArray = (JSONArray)ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU");
                     int index = ElectionManagerApp.getIndex(jArray,title);
-                    sp4.setSelection(index,true);
+                    spHidden.setSelection(index,true);
                     break;
                 }
                 JSONObject jo1 = (JSONObject)ElectionManagerApp.getInstance().getSelectItemsObject().get("HAENGJOUNGDONG");
-                setUpSpinner(sp5, jo1.get(sigungu).toString());
+                setUpSpinner(sp2, jo1.get(sigungu).toString());
                 break;
         }
-
-        if(sp4.getVisibility() != View.GONE)
-            sp4.setVisibility(View.GONE);
-
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
 }

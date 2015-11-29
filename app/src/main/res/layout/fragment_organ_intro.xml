@@ -14,7 +14,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
             android:background="#94CCBD"
             android:orientation="horizontal" >
             <Spinner
@@ -26,11 +25,7 @@
                 android:id="@+id/spinner_5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
-            <Spinner
-                android:id="@+id/spinner_6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
                 android:layout_weight="1" />
             <Button
                 android:layout_width="wrap_content"
