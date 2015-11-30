@@ -19,6 +19,7 @@ public class PhoneInfo {
         mMgr = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
     }
 
+    /* 싱글톤 디자인 패턴 */
     public static PhoneInfo getInstance(Context context) {
         if( phoneInfo == null) {
             synchronized (PhoneInfo.class) {

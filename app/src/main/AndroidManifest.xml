@@ -41,8 +41,6 @@
         <activity
             android:name="com.jsloves.election.activity.Profile"
             android:label="@string/app_name" />
-        <activity
-            android:name="com.jsloves.election.activity.SearchActivity"/>
         <activity android:name="com.jsloves.election.activity.JoinActivity"
             android:label="@string/app_name" />
         <activity android:name=".ElectionMainActivity"

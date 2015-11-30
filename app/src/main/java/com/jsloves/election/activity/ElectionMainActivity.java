@@ -43,7 +43,7 @@ import java.util.List;
 
 import memo.activity.BoardActivity;
 
-
+/* fragment 의 메인이 되는 화면. */
 public class ElectionMainActivity extends AppCompatActivity implements CommonValuesManager, HomeMenuOnCLickListner {
 
     private static final String TAG = ElectionMainActivity.class.getSimpleName();
@@ -61,6 +61,12 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
     private FragmentManager mFragmentManager;
     private ViewPagerAdapter mVpageAdapter;
     private ActionBar mActionbar;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG,"onResum@@@@@");
+    }
 
     @Override
     public void onCLickLinstnerByHome(int id) {

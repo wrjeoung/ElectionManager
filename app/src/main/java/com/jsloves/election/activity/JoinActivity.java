@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.jsloves.election.fragment.AsyncFragment;
 import com.jsloves.election.fragment.AsyncListener;
+import com.jsloves.election.util.NetworkConnection;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -61,6 +62,7 @@ public class JoinActivity extends AppCompatActivity implements AsyncListener<Int
     private TextView mTv_pass_conf;
     private TextView mTv_mac_add;
     private CheckBox mCh_no_que_pass;
+    private NetworkConnection mNetConn;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,6 +72,8 @@ public class JoinActivity extends AppCompatActivity implements AsyncListener<Int
         imei = telephonyManager.getDeviceId();
         imsi = telephonyManager.getSubscriberId();
         phoneNumber = telephonyManager.getLine1Number();
+
+        mNetConn = NetworkConnection.getInstance(this);
 
         WifiManager mWifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
         WifiInfo mWifiInfo = mWifiManager.getConnectionInfo();
@@ -155,11 +159,8 @@ public class JoinActivity extends AppCompatActivity implements AsyncListener<Int
                         jo.put("TYPE","MODIFYPASS");
                         jo.put("PASS",pass);
                         jo.put("MACADD",mac);
-                        setUp(getString(R.string.server_url), jo.toString());
-
+                        network_join(getString(R.string.server_url), jo.toString());
                     }
-
-
                 }
             });
         }
@@ -187,7 +188,7 @@ public class JoinActivity extends AppCompatActivity implements AsyncListener<Int
                             }
 
                             System.out.println("[IDCHECK] before http call");
-                            setUp(getString(R.string.server_url), jo1.toString());
+                            network_join(getString(R.string.server_url), jo1.toString());
                             System.out.println("[IDCHECK] after http call");
 
                         } catch (Exception e) {
@@ -246,7 +247,7 @@ public class JoinActivity extends AppCompatActivity implements AsyncListener<Int
                             }
 
                             System.out.println("[JOIN] before http call");
-                            setUp(getString(R.string.server_url), jo1.toString());
+                            network_join(getString(R.string.server_url), jo1.toString());
                             System.out.println("[JOIN] after http call");
 
                         } catch (Exception e) {
@@ -258,20 +259,26 @@ public class JoinActivity extends AppCompatActivity implements AsyncListener<Int
         }
     }
 
-    private void setUp(String url,String params) {
-        AsyncFragment async = (AsyncFragment)
-                getSupportFragmentManager().findFragmentByTag(ASYNC);
+    private void network_join(String url,String params) {
+        if (mNetConn != null && mNetConn.isNetworkAvailible()) {
+            AsyncFragment async = (AsyncFragment)
+                    getSupportFragmentManager().findFragmentByTag(ASYNC);
 
-        if (async == null) {
-            async = new AsyncFragment();
-            Bundle bundle = new Bundle();
-            bundle.putString("URL",url);
-            bundle.putString("PARAMS",params);
-            async.setArguments(bundle);
-            FragmentTransaction transaction =
-                    getSupportFragmentManager().beginTransaction();
-            transaction.add(async, ASYNC);
-            transaction.commit();
+            if (async == null) {
+                async = new AsyncFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("URL", url);
+                bundle.putString("PARAMS", params);
+                async.setArguments(bundle);
+                FragmentTransaction transaction =
+                        getSupportFragmentManager().beginTransaction();
+                transaction.add(async, ASYNC);
+                transaction.commit();
+            }
+        } else {
+            Toast toast = Toast.makeText(this,"네트워크 상태가 불안정 합니다.\r\n다시 접속해주세요",Toast.LENGTH_LONG);
+            toast.show();
+            finish();
         }
     }
 

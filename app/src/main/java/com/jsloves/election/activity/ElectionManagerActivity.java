@@ -22,10 +22,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jsloves.election.application.ElectionManagerApp;
 import com.jsloves.election.fragment.AsyncFragment;
 import com.jsloves.election.fragment.AsyncListener;
+import com.jsloves.election.util.NetworkConnection;
 import com.jsloves.election.util.PhoneInfo;
 
 import org.json.simple.JSONObject;
@@ -42,6 +44,9 @@ import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ *  Lock 비밀번호 입력 화면.
+ */
 public class ElectionManagerActivity extends AppCompatActivity
         implements AsyncListener<Integer, String>
         , com.jsloves.election.view.KeyPadLayout.KeyPadListener {
@@ -65,6 +70,8 @@ public class ElectionManagerActivity extends AppCompatActivity
     private String mSaveFolder = "/sdcard";
     private String mServerFileURL = null;
 
+    private NetworkConnection mNetConn;
+
     private boolean isCheckPassWord() {
         return lockPassword.equals(mPwd);
     }
@@ -75,7 +82,7 @@ public class ElectionManagerActivity extends AppCompatActivity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         PhoneInfo phoneInfo = PhoneInfo.getInstance(this);
-
+        mNetConn = NetworkConnection.getInstance(this);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         Log.d("JS", "폰번호 : " + phoneInfo.getPhoneNumber() + " IMEI : " + phoneInfo.getImei() + " MacAddress : " + phoneInfo.getMacAddress());
@@ -91,7 +98,7 @@ public class ElectionManagerActivity extends AppCompatActivity
         json.put("TYPE", "CHECK_MACADDRESS");
         json.put("IMEI", phoneInfo.getMacAddress());
         json.put("MD5SUM",md5chekSum);
-        setUp(getString(R.string.server_url), json.toString());
+        network_join(getString(R.string.server_url), json.toString());
 
         r = new Runnable() {
             @Override
@@ -111,7 +118,7 @@ public class ElectionManagerActivity extends AppCompatActivity
                         JSONObject json = new JSONObject();
                         json.put("TYPE", "SELECTITEMS");
                         json.put("ADM_CD", ElectionManagerApp.getInstance().getDefaultAdm_Cd());
-                        setUp(getString(R.string.server_url), json.toString());
+                        network_join(getString(R.string.server_url), json.toString());
                     } else {
                         setContentView(R.layout.layout_lock_screen_activity);
                         initView();
@@ -198,23 +205,6 @@ public class ElectionManagerActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
 
-    }
-
-    private void setUp(String url, String params) {
-        AsyncFragment async = (AsyncFragment)
-                getSupportFragmentManager().findFragmentByTag(ASYNC);
-
-        if (async == null) {
-            async = new AsyncFragment();
-            Bundle bundle = new Bundle();
-            bundle.putString("URL", url);
-            bundle.putString("PARAMS", params);
-            async.setArguments(bundle);
-            FragmentTransaction transaction =
-                    getSupportFragmentManager().beginTransaction();
-            transaction.add(async, ASYNC);
-            transaction.commit();
-        }
     }
 
     private class AsyncTaskForFileDownLoad extends AsyncTask {
@@ -389,7 +379,7 @@ public class ElectionManagerActivity extends AppCompatActivity
                     //json.put("TYPE", "SELECTITEMS2");
                     json.put("TYPE", "SELECTITEMS");
                     json.put("ADM_CD", ElectionManagerApp.getInstance().getDefaultAdm_Cd());
-                    setUp(getString(R.string.server_url), json.toString());
+                    network_join(getString(R.string.server_url), json.toString());
                 } else {
                     Vibrator vr = (Vibrator) getSystemService(VIBRATOR_SERVICE);
                     vr.vibrate(700);
@@ -404,6 +394,29 @@ public class ElectionManagerActivity extends AppCompatActivity
             }
         }
         setPinImage();
+    }
+
+    private void network_join(String url,String params) {
+        if (mNetConn != null && mNetConn.isNetworkAvailible()) {
+            AsyncFragment async = (AsyncFragment)
+                    getSupportFragmentManager().findFragmentByTag(ASYNC);
+
+            if (async == null) {
+                async = new AsyncFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("URL", url);
+                bundle.putString("PARAMS", params);
+                async.setArguments(bundle);
+                FragmentTransaction transaction =
+                        getSupportFragmentManager().beginTransaction();
+                transaction.add(async, ASYNC);
+                transaction.commit();
+            }
+        } else {
+            Toast toast = Toast.makeText(this,"네트워크 상태가 불안정 합니다.\r\n다시 접속해주세요",Toast.LENGTH_LONG);
+            toast.show();
+            finish();
+        }
     }
 
     private void initView() {
