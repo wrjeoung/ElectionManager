@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -24,9 +25,11 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jsloves.election.DTO.BusinessKindDTO;
+import com.jsloves.election.DTO.BusinessListDTO;
 import com.jsloves.election.DTO.OrganDAO;
 import com.jsloves.election.activity.ElectionMainActivity;
 import com.jsloves.election.activity.R;
+import com.jsloves.election.adapter.BusinessListAdapter;
 import com.jsloves.election.application.ElectionManagerApp;
 import com.jsloves.election.layout.CustomBaseAdapter;
 import com.jsloves.election.layout.DataClass;
@@ -69,12 +72,15 @@ public class BusinessListFragment extends Fragment implements AdapterView.OnItem
 
     private ArrayList<DataClass> mCareList = null;
     private ArrayList<BusinessKindDTO> mBKList = null;
+    private ArrayList<String> mBKNameList = null;
+    private ArrayList<BusinessListDTO> mBusinessList = null;
     private ListView mListView = null;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
+    private EditText editSearch;
     private Spinner spHidden;
     private Spinner sp1;
     private Spinner sp2;
@@ -128,6 +134,7 @@ public class BusinessListFragment extends Fragment implements AdapterView.OnItem
     }
 
     private void initSpinner() {
+        setUpSpinner(sp1,mBKNameList.toString());
         setUpSpinner(spHidden, ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU").toString());
         String sigungu = (String) spHidden.getSelectedItem();
         JSONObject jo1 = (JSONObject)ElectionManagerApp.getInstance().getSelectItemsObject().get("HAENGJOUNGDONG");
@@ -141,43 +148,30 @@ public class BusinessListFragment extends Fragment implements AdapterView.OnItem
         view = inflater.inflate(R.layout.fragment_business_list, container, false);
         setLayout();
 
+        editSearch = (EditText) view.findViewById(R.id.edit_search);
         spHidden = (Spinner) view.findViewById(R.id.sp_hidden);
         sp1 = (Spinner) view.findViewById(R.id.sp1);
         sp2 = (Spinner) view.findViewById(R.id.sp2);
-
-
-        initSpinner();
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View view, int position,
                                     long arg3) {
 
-                Toast.makeText(
-                        getActivity().getApplicationContext(),
-                        "ITEM CLICK = " + position,
-                        Toast.LENGTH_SHORT
-                ).show();
-
-
-                TextView tv_seq = null;
-
-                tv_seq = (TextView) view.findViewById(R.id.tv_seq);
+                TextView tv_seq = (TextView) view.findViewById(R.id.tv1);
                 System.out.println("tv_seq:" + tv_seq.getText());
                 String str_seq = tv_seq.getText().toString();
 
                 FragmentManager fragmentManager = getFragmentManager();
 
-                OrganIntroDetailFragment frament = new OrganIntroDetailFragment();
+                BusinessDetailFragment frament = new BusinessDetailFragment();
                 frament.onDestroyView();
                 Bundle bundle = new Bundle();
-                bundle.putString("organ_tap", "organ1");
-                bundle.putString("organ_seq", str_seq);
-                bundle.putString("organ_gb", organ_gb);
+                bundle.putString("business_seq",str_seq);
                 frament.setArguments(bundle);
 
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.organ_intro1, frament);// Activity 레이아웃의 View ID
+                fragmentTransaction.replace(R.id.business_list, frament);// Activity 레이아웃의 View ID
                 fragmentTransaction.commit();
 
             }
@@ -187,26 +181,12 @@ public class BusinessListFragment extends Fragment implements AdapterView.OnItem
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(
-                        getActivity().getApplicationContext(),
-                        "검색 버튼 클릭",
-                        Toast.LENGTH_SHORT
-                ).show();
-
-                JSONObject json1 = new JSONObject();
-                json1.put("TYPE", "SEARCHORGAN");
-                json1.put("ORGAN_GB", organ_gb);
-
-                String sigungu = (String) spHidden.getSelectedItem();
-                String haengjoungdong = (String) sp1.getSelectedItem();
+                String title = editSearch.getText().toString();
+                String kindName = (String)sp1.getSelectedItem();
+                String sigungu = (String)spHidden.getSelectedItem();
+                String haengjoungdong = (String)sp2.getSelectedItem();
                 String tupyoguStr = "전체";
-                String[] array = {sigungu, haengjoungdong, tupyoguStr};
-                String adm_cd = ElectionManagerApp.getInstance().getTupyoguCode(array);
-                json1.put("ADM_CD", adm_cd);
-                Log.d("lcy", adm_cd);
-
-                //excuteTask("http://192.168.42.189:8080/ElectionManager_server/MobileReq.jsp", json1.toString());
-                excuteTask(getString(R.string.server_url), json1.toString());
+                requestBusinessList(title,getKindCode(kindName),sigungu,haengjoungdong,tupyoguStr);
 
             }
         });
@@ -215,11 +195,33 @@ public class BusinessListFragment extends Fragment implements AdapterView.OnItem
         return view;
     }
 
+    private String getKindCode(String kindName) {
+        for(int i = 0; i<mBKList.size(); i++) {
+            if(kindName.equals(mBKList.get(i).bkName)) {
+                return mBKList.get(i).bkCode;
+            }
+        }
+        return "";
+    }
+
     private void requestBKInfo() {
-        JSONObject json = new JSONObject();
-        json.put("TYPE", "BUSINESSKIND");
-        //excuteTask(getString(R.string.server_url), json.toString());
-        excuteTask("http://192.168.0.40:8080/ElectionManager_server/MobileReq.jsp", json.toString());
+        JSONObject json1 = new JSONObject();
+        json1.put("TYPE", "BUSINESSKIND");
+        excuteTask(getString(R.string.server_url), json1.toString());
+        //excuteTask("http://10.11.1.164:8080/ElectionManager_server/MobileReq.jsp", json1.toString());
+    }
+
+    private void requestBusinessList(String title,String kindCode, String sigungu, String haengjoungdong, String tupyoguStr) {
+        JSONObject json1 = new JSONObject();
+        json1.put("TYPE", "BUSINESSLIST");
+        json1.put("TITLE", title);
+        json1.put("KIND", kindCode);
+
+        String[] array = {sigungu, haengjoungdong, tupyoguStr};
+        String adm_cd = ElectionManagerApp.getInstance().getTupyoguCode(array);
+        json1.put("ADM_CD", adm_cd);
+        excuteTask(getString(R.string.server_url), json1.toString());
+        //excuteTask("http://10.11.1.164:8080/ElectionManager_server/MobileReq.jsp", json1.toString());
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -232,7 +234,6 @@ public class BusinessListFragment extends Fragment implements AdapterView.OnItem
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.d("lcy", "onAttach");
         /**try {
          mListener = (OnFragmentInteractionListener) activity;
          } catch (ClassCastException e) {
@@ -264,7 +265,6 @@ public class BusinessListFragment extends Fragment implements AdapterView.OnItem
     }
 
     private void setUpSpinner(Spinner spinner,String items) {
-        Log.d("kjh", "items = " + items);
         Type type = new TypeToken<List<String>>(){}.getType();
         Gson converter = new Gson();
         List<String> list =  converter.fromJson(items.toString(), type);
@@ -279,7 +279,6 @@ public class BusinessListFragment extends Fragment implements AdapterView.OnItem
     }
 
     public void cancel() {
-        Log.d("lcy", "cancel");
         maTask.cancel(false);
     }
 
@@ -287,7 +286,6 @@ public class BusinessListFragment extends Fragment implements AdapterView.OnItem
 
         @Override
         protected void onPreExecute() {
-            Log.d("lcy", "onPreExecute");
             if (dialog == null) {
                 prepareProgressDialog();
             }
@@ -296,7 +294,6 @@ public class BusinessListFragment extends Fragment implements AdapterView.OnItem
 
         @Override
         protected String doInBackground(Object... args) {
-            Log.d("lcy", "doInBackground");
             Bundle bundle = (Bundle)args[0];
             String url = bundle.getString("URL");
             String params = bundle.getString("PARAMS");
@@ -305,13 +302,10 @@ public class BusinessListFragment extends Fragment implements AdapterView.OnItem
 
         @Override
         protected void onProgressUpdate(Integer... values) {
-            Log.d("lcy", "onProgressUpdate");
         }
 
         @Override
         protected void onPostExecute(String resultData) {
-            Log.d("lcy", "onPostExecute:" + resultData);
-
             String result = "";
             JSONObject re = null;
             JSONParser par = new JSONParser();
@@ -320,53 +314,32 @@ public class BusinessListFragment extends Fragment implements AdapterView.OnItem
             try{
                 re = (JSONObject) par.parse(resultData.toString());
                 String sType = (String) re.get("TYPE");
-                Log.d("lcy","sType:"+sType);
-
-
+                Log.d("kjh","sType:"+sType);
 
                 if(sType.equals("BUSINESSKIND")) {
                     mBKList = new ArrayList<BusinessKindDTO>();
+                    mBKNameList = new ArrayList<String>();
 
                     Gson gson = new Gson();
                     JSONArray bkList = (JSONArray) re.get("BKINFO");
 
                     for(int i = 0; i<bkList.size();i++) {
                         BusinessKindDTO dto = gson.fromJson((String) bkList.get(i), BusinessKindDTO.class);
-                        System.out.println("bkcode = "+dto.bkCode);
+                        mBKList.add(dto);
+                        mBKNameList.add(dto.bkName);
                     }
+                    initSpinner();
+                }else if(sType.equals("BUSINESSLIST")) {
+                    mBusinessList = new ArrayList<BusinessListDTO>();
+                    JSONArray businessList = (JSONArray) re.get("BUSINESSLIST");
+                    Gson gson = new Gson();
 
-
-                }
-
-                else if(sType.equals("SELECTORGAN1")) {
-                    Log.d("lcy", "SELECTORGAN1");
-
-                    ignoreUpdate = true;
-
-                }else {
-                    if (sType.equals("SEARCHORGAN")) {
-                        Log.d("lcy", "SEARCHORGAN");
-
-                        mCareList = new ArrayList<DataClass>();
-                        String adm_cd = (String) re.get("ADM_CD");
-                        JSONArray organlist = (JSONArray) re.get("ORGANLIST");
-                        System.out.println("organlist:" + organlist.size());
-
-                        Gson gson = new Gson();
-
-                        OrganDAO obj = new OrganDAO();
-
-                        for (int i = 0; i < organlist.size(); i++) {
-                            obj = gson.fromJson((String) organlist.get(i), OrganDAO.class);
-                            Log.d("lcy","getOrgan_Seq():" + obj.getOrgan_Seq() + ", getHaengtext():"+obj.getHaengtext() + ", getOrgan_Name(),:"+obj.getOrgan_Name());
-                            mCareList.add(new DataClass(obj.getOrgan_Seq(), obj.getHaengtext(), obj.getOrgan_Name()));
-                        }
-
-                        //mCareList.add(new DataClass(adm_cd, organ_name));
-                        mListView.setAdapter(new CustomBaseAdapter(getActivity().getApplicationContext(), mCareList));
+                    for(int i = 0; i<businessList.size();i++) {
+                        BusinessListDTO dto = gson.fromJson((String) businessList.get(i), BusinessListDTO.class);
+                        mBusinessList.add(dto);
                     }
+                    mListView.setAdapter(new BusinessListAdapter(getActivity().getApplicationContext(), mBusinessList));
                 }
-
             }catch (ParseException e) {
                 e.printStackTrace();
             } catch (Exception e){
@@ -379,14 +352,12 @@ public class BusinessListFragment extends Fragment implements AdapterView.OnItem
 
         @Override
         protected void onCancelled(String result) {
-            Log.d("lcy", "onCancelled");
             cleanUp();
         }
 
     }
 
     private void excuteTask(String url,String params) {
-        Log.d("lcy", "excuteTask");
         Bundle bundle = new Bundle();
         bundle.putString("URL",url);
         bundle.putString("PARAMS", params);
@@ -395,7 +366,6 @@ public class BusinessListFragment extends Fragment implements AdapterView.OnItem
     }
 
     private void prepareProgressDialog() {
-        Log.d("lcy", "prepareProgressDialog");
         dialog = new ProgressDialog(getActivity());
         dialog.setMessage("Please wait...");
         dialog.setCancelable(true);
@@ -418,7 +388,6 @@ public class BusinessListFragment extends Fragment implements AdapterView.OnItem
     public void onItemSelected(AdapterView<?> parent, View view, int position,
                                long id) {
 
-        Log.d("kjh", "business__ onItemSelected:"+ignoreUpdate);
         // TODO Auto-generated method stub
         if(ignoreUpdate) {
             ignoreUpdate = false;

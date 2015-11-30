@@ -72,7 +72,6 @@ public class BusinessDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("lcy", "onCreate OrganIntroDetailFragment");
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -82,13 +81,9 @@ public class BusinessDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        Log.d("lcy", "onCreateView OrganIntroDetailFragment");
+        String business_seq = getArguments().getString("business_seq");
 
-        final String organ_tap = getArguments().getString("organ_tap");
-        String organ_seq = getArguments().getString("organ_seq");
-        String organ_gb = getArguments().getString("organ_gb");
-        Log.d("lcy","organ_tap:"+organ_tap + ", organ_seq:" + organ_seq + ",organ_gb:"+ organ_gb);
+        Log.d("kjh"," business_seq:" + business_seq);
 
         view = inflater.inflate(R.layout.fragment_business_detail, container, false);
 
@@ -118,46 +113,27 @@ public class BusinessDetailFragment extends Fragment {
         myWebview.setWebChromeClient(new WebChromeClient() {
             @Override
             public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
-                Log.d("lcy", consoleMessage.message() + '\n' + consoleMessage.messageLevel() + '\n' + consoleMessage.sourceId());
+                Log.d("kjh", consoleMessage.message() + '\n' + consoleMessage.messageLevel() + '\n' + consoleMessage.sourceId());
                 return super.onConsoleMessage(consoleMessage);
             }
         });
 
-        //myWebview.loadUrl("http://222.122.149.161:7070/ElectionManager_server/OrganIntroDetail.jsp?organ_seq="+organ_seq);
-        //myWebview.loadUrl("http://192.168.42.189:8080/ElectionManager_server/OrganIntroDetail.jsp?organ_seq="+organ_seq);
-        Log.d("lcy", "call WebView before");
-        myWebview.loadUrl("http://222.122.149.161:7070/ElectionManager_server/OrganIntroDetail.jsp?organ_seq=" + organ_seq + "&organ_gb="+organ_gb);
-        //myWebview.loadUrl("http://192.168.42.189:8080/ElectionManager_server/OrganIntroDetail.jsp?organ_seq=" + organ_seq + "&organ_gb="+organ_gb);
-        Log.d("lcy", "call WebView after");
+        myWebview.loadUrl("http://222.122.149.161:7070/ElectionManager_server/BusinessInfoDetail.jsp?bn_seq=" + business_seq);
+        //myWebview.loadUrl("http://10.11.1.164:8080/ElectionManager_server/BusinessInfoDetail.jsp?bn_seq=" + business_seq);
 
         final Button btn_back = (Button)view.findViewById(R.id.button_back);
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("lcy","Button btn_back onClick");
-
-                if(organ_tap.equals("organ1")) {
-
-                    OrganIntroFragment frament = new OrganIntroFragment();
+                    BusinessListFragment frament = new BusinessListFragment();
                     frament.onDestroyView();
                     Bundle bundle = new Bundle();
                     frament.setArguments(bundle);
 
                     FragmentManager fragmentManager = getFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.organ_detail, frament);// Activity 레이아웃의 View ID
+                    fragmentTransaction.replace(R.id.business_detail, frament);// Activity 레이아웃의 View ID
                     fragmentTransaction.commit();
-                }else if(organ_tap.equals("organ2")){
-                    OrganIntroFragment2 frament = new OrganIntroFragment2();
-                    frament.onDestroyView();
-                    Bundle bundle = new Bundle();
-                    frament.setArguments(bundle);
-
-                    FragmentManager fragmentManager = getFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.organ_detail, frament);// Activity 레이아웃의 View ID
-                    fragmentTransaction.commit();
-                }
             }
         });
 
