@@ -104,6 +104,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
     // politics enviroment of AreaInfo.
     // Etc
+    private TextView mSocial_text1_value;
     // tupyogu_name
     private LinearLayout mWrapper_tupyogu_name;
     private TextView mTupyogu_name;
@@ -304,6 +305,8 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
         for (int i = 0; i < data.size(); i++) {
             EtcDAO ed = gs.fromJson((String) data.get(i), EtcDAO.class);
+            final int popuplation = ed.getPopulation();
+            final int family = ed.getFamily();
             final String tupyogu_addr = ed.getTupyogu_addr();
             final String tupyogu_name = ed.getTupyogu_name();
             final String elector_cnt = String.valueOf(ed.getElector_cnt());
@@ -313,6 +316,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 mTupyogu_name.setText(tupyogu_name);
                 mTupyogu_addr.setText(tupyogu_addr);
             }
+            mSocial_text1_value.setText(get_Number(String.valueOf(popuplation)+"명 / ")+ get_Number(String.valueOf(family))+"세대");
             mElector_cnt.setText(get_Number(elector_cnt)+"명");
             setVisivilityEtcInfo(isTupyoguVisible);
         }
@@ -418,6 +422,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
 
     private void initVoterRatioOfAge(View view) {
+        mSocial_text1_value = (TextView) view.findViewById(R.id.social_text1_value);
         mWrraper_voteratio_header = (TableRow) view.findViewById(R.id.wrraper_voteratio_header);
         mWrraper_sungugu = (TableRow) view.findViewById(R.id.wrraper_sungugu);
         mSungugu_20th = (TextView) view.findViewById(R.id.sungugu_20th);
@@ -1003,6 +1008,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         jo.put("COY", 0.0);
         Log.d(TAG, "showMap jo : " + jo);
 
+        //excuteTask(getString(R.string.server_url), jo.toString());
         excuteTask(getString(R.string.server_url), jo.toString());
         //excuteTask("http://192.168.0.8:8080/ElectionManager_server/MobileReq.jsp", jo.toString());
         /*myWebview.loadUrl("javascript:drawMap('" + jo.toString() + "')");
