@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.jsloves.election.util.NetworkStatus;
+
 import java.util.ArrayList;
 
 import memo.activity.BoardActivity;
@@ -23,12 +25,14 @@ import memo.activity.BoardActivity;
 public class ElectionHomeActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = ElectionHomeActivity.class.getSimpleName();
-
+    private NetworkStatus mNetConn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_home);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        mNetConn = new NetworkStatus(this);
 
         // 한글은 bold 적용이 안되기 때문에 소스상에서 처리.
         TextView tv = (TextView)findViewById(R.id.title_home);
@@ -76,27 +80,49 @@ public class ElectionHomeActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View v) {
         Intent intent = new Intent(ElectionHomeActivity.this, ElectionMainActivity.class);
         Log.d(TAG,"onClick() v.getId() : "+v.getId());
+
+
         switch (v.getId()) {
             case R.id.guyeok:
-                intent.putExtra("startPosition", 0);
-                startActivity(intent);
+                if (mNetConn!=null && mNetConn.isNetworkAvailible()) {
+                    intent.putExtra("startPosition", 0);
+                    startActivity(intent);
+                } else {
+                    mNetConn.networkErrPopup();
+                }
                 break;
             case R.id.gighan:
-                intent.putExtra("startPosition", 1);
-                startActivity(intent);
+                if (mNetConn!=null && mNetConn.isNetworkAvailible()) {
+                    intent.putExtra("startPosition", 1);
+                    startActivity(intent);
+                } else {
+                    mNetConn.networkErrPopup();
+                }
                 break;
             case R.id.juyo:
-                intent.putExtra("startPosition", 2);
-                startActivity(intent);
+                if (mNetConn!=null && mNetConn.isNetworkAvailible()) {
+                    intent.putExtra("startPosition", 2);
+                    startActivity(intent);
+                } else {
+                    mNetConn.networkErrPopup();
+                }
                 break;
             case R.id.board:
-                intent = new Intent(ElectionHomeActivity.this,BoardActivity.class);
-                startActivity(intent);
+                if (mNetConn!=null && mNetConn.isNetworkAvailible()) {
+                    intent = new Intent(ElectionHomeActivity.this, BoardActivity.class);
+                    startActivity(intent);
+                } else {
+                    mNetConn.networkErrPopup();
+                }
                 break;
             case R.id.modify_myinfo:
-                intent = new Intent(ElectionHomeActivity.this,JoinActivity.class);
-                intent.putExtra("whereFrom","modify_myinfo");
-                startActivity(intent);
+                if (mNetConn!=null && mNetConn.isNetworkAvailible()) {
+                    intent = new Intent(ElectionHomeActivity.this, JoinActivity.class);
+                    intent.putExtra("whereFrom", "modify_myinfo");
+                    startActivity(intent);
+                } else {
+                    mNetConn.networkErrPopup();
+                }
             default:
                 Log.e(TAG, "no selected item");
                 break;

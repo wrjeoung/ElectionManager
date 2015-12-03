@@ -27,7 +27,7 @@ import android.widget.Toast;
 import com.jsloves.election.application.ElectionManagerApp;
 import com.jsloves.election.fragment.AsyncFragment;
 import com.jsloves.election.fragment.AsyncListener;
-import com.jsloves.election.util.NetworkConnection;
+import com.jsloves.election.util.NetworkStatus;
 import com.jsloves.election.util.PhoneInfo;
 
 import org.json.simple.JSONObject;
@@ -70,7 +70,7 @@ public class ElectionManagerActivity extends AppCompatActivity
     private String mSaveFolder = "/sdcard";
     private String mServerFileURL = null;
 
-    private NetworkConnection mNetConn;
+    private NetworkStatus mNetConn;
 
     private boolean isCheckPassWord() {
         return lockPassword.equals(mPwd);
@@ -82,7 +82,7 @@ public class ElectionManagerActivity extends AppCompatActivity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         PhoneInfo phoneInfo = PhoneInfo.getInstance(this);
-        mNetConn = NetworkConnection.getInstance(this);
+        mNetConn = new NetworkStatus(this);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         Log.d("JS", "폰번호 : " + phoneInfo.getPhoneNumber() + " IMEI : " + phoneInfo.getImei() + " MacAddress : " + phoneInfo.getMacAddress());
@@ -413,9 +413,7 @@ public class ElectionManagerActivity extends AppCompatActivity
                 transaction.commit();
             }
         } else {
-            Toast toast = Toast.makeText(this,"네트워크 상태가 불안정 합니다.\r\n다시 접속해주세요",Toast.LENGTH_LONG);
-            toast.show();
-            finish();
+            mNetConn.networkErrPopup();
         }
     }
 

@@ -28,7 +28,7 @@ import android.widget.Toast;
 
 import com.jsloves.election.fragment.AsyncFragment;
 import com.jsloves.election.fragment.AsyncListener;
-import com.jsloves.election.util.NetworkConnection;
+import com.jsloves.election.util.NetworkStatus;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -62,7 +62,7 @@ public class JoinActivity extends AppCompatActivity implements AsyncListener<Int
     private TextView mTv_pass_conf;
     private TextView mTv_mac_add;
     private CheckBox mCh_no_que_pass;
-    private NetworkConnection mNetConn;
+    private NetworkStatus mNetConn;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,7 +73,7 @@ public class JoinActivity extends AppCompatActivity implements AsyncListener<Int
         imsi = telephonyManager.getSubscriberId();
         phoneNumber = telephonyManager.getLine1Number();
 
-        mNetConn = NetworkConnection.getInstance(this);
+        mNetConn = new NetworkStatus(this);
 
         WifiManager mWifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
         WifiInfo mWifiInfo = mWifiManager.getConnectionInfo();
@@ -276,9 +276,7 @@ public class JoinActivity extends AppCompatActivity implements AsyncListener<Int
                 transaction.commit();
             }
         } else {
-            Toast toast = Toast.makeText(this,"네트워크 상태가 불안정 합니다.\r\n다시 접속해주세요",Toast.LENGTH_LONG);
-            toast.show();
-            finish();
+            mNetConn.networkErrPopup();
         }
     }
 

@@ -1,19 +1,18 @@
 package com.jsloves.election.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.widget.Toast;
 
 /**
  * Created by wooram.jeong on 2015-11-30.
  */
-public class NetworkConnection {
-    private volatile static NetworkConnection mNwCheck;
+public class NetworkStatus {
     private Context mContext;
-    private final String ASYNC = "async";
 
-
-    private NetworkConnection(Context context) {
+    public NetworkStatus(Context context) {
             mContext = context;
     }
 
@@ -28,14 +27,15 @@ public class NetworkConnection {
         }
     }
 
-    public static NetworkConnection getInstance(Context context) {
-        if (mNwCheck == null) {
-            synchronized (NetworkConnection.class) {
-                if (mNwCheck == null) {
-                    mNwCheck = new NetworkConnection(context);
-                }
+    public void networkErrPopup() {
+        try {
+            if(mContext!=null && mContext instanceof Activity) {
+                Toast toast = Toast.makeText(mContext,"네트워크 상태가 불안정 합니다.\r\n다시 접속해주세요",Toast.LENGTH_LONG);
+                toast.show();
+                ((Activity)mContext).finish();
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return mNwCheck;
     }
 }

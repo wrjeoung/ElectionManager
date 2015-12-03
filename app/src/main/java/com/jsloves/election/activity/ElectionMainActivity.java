@@ -34,6 +34,7 @@ import com.jsloves.election.common.CommonValuesManager;
 import com.jsloves.election.fragment.HomeMenuOnCLickListner;
 import com.jsloves.election.layout.SlidingTabLayout;
 import com.jsloves.election.layout.ViewPagerAdapter;
+import com.jsloves.election.util.NetworkStatus;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -61,11 +62,15 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
     private FragmentManager mFragmentManager;
     private ViewPagerAdapter mVpageAdapter;
     private ActionBar mActionbar;
+    private NetworkStatus mNetConn;
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(TAG,"onResum@@@@@");
+        if (mNetConn!=null && !mNetConn.isNetworkAvailible()) {
+            Log.e(TAG,"onResume network error!!!");
+            mNetConn.networkErrPopup();
+        }
     }
 
     @Override
@@ -119,6 +124,7 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+        mNetConn = new NetworkStatus(this);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 

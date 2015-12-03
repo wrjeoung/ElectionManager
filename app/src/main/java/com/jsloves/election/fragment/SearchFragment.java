@@ -52,6 +52,7 @@ import com.jsloves.election.util.GeoPoint;
 import com.jsloves.election.util.GeoTrans;
 import com.jsloves.election.util.GpsInfo;
 import com.jsloves.election.util.HttpConnection;
+import com.jsloves.election.util.NetworkStatus;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -75,6 +76,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     public static final String TAG = SearchFragment.class.getSimpleName();
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private NetworkStatus mNetStatus;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -594,13 +596,6 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
             return true;
         }
-
-        @JavascriptInterface
-        public void funcCallSearchByJSParam(final String adm_cd) {
-            Log.d(TAG, "funcCallSearchByJSParam() >>>>>>>>>>> :" + adm_cd);
-            mAdm_cd = adm_cd;
-            showMap(mAdm_cd);
-        }
     }
 
     private class PdfViewOnclickListner implements View.OnClickListener {
@@ -944,6 +939,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mNetStatus = new NetworkStatus(getActivity());
         Log.d(TAG, "onCreate");
         setRetainInstance(true);
         ignoreUpdate = false;
@@ -963,7 +959,11 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             Log.d(TAG, "shouldOverrideUrlLoading url : " + url);
-            view.loadUrl(url);
+            if (mNetStatus!=null && mNetStatus.isNetworkAvailible()) {
+                mNetStatus.networkErrPopup();
+            } else {
+                view.loadUrl(url);
+            }
             return true;
         }
 
@@ -1017,29 +1017,6 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         */
     }
 
-    private void showMap(String adm_cd, double cox, double coy) {
-        //tupyogu = tupyogu.replace("제","");
-        //tupyogu = tupyogu.replace("투표구","");
-        Log.d(TAG, "showMap mTest : " + mTest);
-        JSONObject jo = new JSONObject();
-        //jo.put("TYPE","GEODATA_TEST");
-        jo.put("TYPE","TEST");
-        jo.put("ADM_CD", adm_cd);
-        jo.put("COX", cox);
-        jo.put("COY", coy);
-        Log.d(TAG, "showMap jo : " + jo);
-
-
-        excuteTask(getString(R.string.server_url), jo.toString());
-        //excuteTask("http://192.168.25.4:8080/ElectionManager_server/MobileReq.jsp", jo.toString());
-        /*
-        myWebview.loadUrl("javascript:drawMap('" + jo.toString() + "')");
-        if(myWebview.getVisibility()!= View.VISIBLE)
-            myWebview.setVisibility(View.VISIBLE);
-            */
-    }
-
-
     public void tupyoguClickByRightMenu(String sigungu, String hanjungdong, String tupyogu) {
         Log.d(TAG, "tupyoguClickByRightMenu sigungu : " + sigungu + "  hanjungdong : " + hanjungdong + "   tupyogu : " + tupyogu);
         if (isAllLevelClick(sigungu, hanjungdong, tupyogu)) {
@@ -1049,7 +1026,11 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
             String[] array = {mSigungu, mHangjungdong, mTupyogu};
             final String adm_cd = ElectionManagerApp.getInstance().getTupyoguCode(array);
             mAdm_cd = adm_cd;
-            showMap(mAdm_cd);
+            if(mNetStatus!=null && mNetStatus.isNetworkAvailible()) {
+                showMap(mAdm_cd);
+            } else {
+                mNetStatus.networkErrPopup();
+            }
             /*mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -1106,6 +1087,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         //myWebview.setVisibility(View.GONE);
         mPageLoadFinished = false;
         mMapdata = null;
+
         myWebview.loadUrl(getString(R.string.mapView_url));
         myWebview.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -1139,7 +1121,11 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
 
                 Log.d(TAG, "tupyoguStr = " + tupyoguStr + " ,adm_cd = " + adm_cd);
-                showMap(adm_cd);
+                if(mNetStatus!=null && mNetStatus.isNetworkAvailible()) {
+                    showMap(adm_cd);
+                } else {
+                    mNetStatus.networkErrPopup();
+                }
             }
         });
         PdfViewOnclickListner pdfOnCLick = new PdfViewOnclickListner();
@@ -1191,7 +1177,11 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                         //Toast.makeText(getActivity().getApplicationContext(), "당신의 위치 - \n위도: " + latitude + "\n경도: " + longitude+ "\n변환X: " + out_pt.getX()+ "\n변환Y: " + out_pt.getY(), Toast.LENGTH_SHORT).show();
 
                         // 구역이동 Spiner Value Setting
-                        setAreaFieldValue(addr, out_pt);
+                        if(mNetStatus!=null && mNetStatus.isNetworkAvailible()) {
+                            setAreaFieldValue(addr, out_pt);
+                        } else {
+                            mNetStatus.networkErrPopup();
+                        }
                     }
                 } else {
                     // GPS 를 사용할수 없으므로
@@ -1201,7 +1191,11 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
             }
         });
         mAdm_cd = ElectionManagerApp.getInstance().getDefaultAdm_Cd();
-        showMap(mAdm_cd);
+        if(mNetStatus!=null && mNetStatus.isNetworkAvailible()) {
+            showMap(mAdm_cd);
+        } else {
+            mNetStatus.networkErrPopup();
+        }
         return view;
     }
 
