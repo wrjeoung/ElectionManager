@@ -56,7 +56,8 @@ public class ElectionManagerActivity extends AppCompatActivity
     private TextView mTvPass;
     public static final String ASYNC = "async";
     private ProgressDialog mDialog;
-    private boolean mIsImeiExist = false;
+    private boolean mIsExistMacAdd = false;
+    private String mClasscd;
     private Handler mHandler = new Handler();
     private String mPwd = "";
     private String lockPassword = "";
@@ -76,7 +77,7 @@ public class ElectionManagerActivity extends AppCompatActivity
         return lockPassword.equals(mPwd);
     }
 
-    private Runnable r, mMainCallrunnable = null;
+    private Runnable mSignUpAndLockScreen, mMainCallrunnable = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -100,7 +101,7 @@ public class ElectionManagerActivity extends AppCompatActivity
         json.put("MD5SUM",md5chekSum);
         network_join(getString(R.string.server_url), json.toString());
 
-        r = new Runnable() {
+        mSignUpAndLockScreen = new Runnable() {
             @Override
             public boolean equals(Object o) {
                 return super.equals(o);
@@ -108,20 +109,28 @@ public class ElectionManagerActivity extends AppCompatActivity
 
             @Override
             public void run() {
-                Log.d(TAG,"exist imei : "+mIsImeiExist);
-                if (mIsImeiExist) {
+                Log.d(TAG,"exist macAdd : "+mIsExistMacAdd);
+                Log.d(TAG,"mClasscd : "+mClasscd);
+
+                if (mIsExistMacAdd) {
                     SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
                     Boolean no_question_pass = pref.getBoolean("no_question_pass",false);
                     Log.d(TAG,"no_question_pass : "+no_question_pass);
 
-                    if(no_question_pass ) {
-                        JSONObject json = new JSONObject();
-                        json.put("TYPE", "SELECTITEMS");
-                        json.put("ADM_CD", ElectionManagerApp.getInstance().getDefaultAdm_Cd());
-                        network_join(getString(R.string.server_url), json.toString());
+                    if(isAuthorizedUser()) {
+                        if (no_question_pass) {
+                            JSONObject json = new JSONObject();
+                            json.put("TYPE", "SELECTITEMS");
+                            json.put("ADM_CD", ElectionManagerApp.getInstance().getDefaultAdm_Cd());
+                            network_join(getString(R.string.server_url), json.toString());
+                        } else {
+                            setContentView(R.layout.layout_lock_screen_activity);
+                            initView();
+                        }
                     } else {
-                        setContentView(R.layout.layout_lock_screen_activity);
-                        initView();
+                        Toast toast = Toast.makeText(getApplicationContext(),"관리자의 승인이 필요합니다.\r\n승인 완료 후 접속해주세요",Toast.LENGTH_LONG);
+                        toast.show();
+                        finish();
                     }
 
                 } else {
@@ -141,6 +150,13 @@ public class ElectionManagerActivity extends AppCompatActivity
                 finish();
             }
         };
+    }
+    // ZZZ 는 승인되지 않은 초기 사용자 코드.
+    private boolean isAuthorizedUser() {
+        if(mClasscd!=null && !mClasscd.equals("ZZZ"))
+            return true;
+        else
+            return false;
     }
 
     private String md5CheckSum()
@@ -330,12 +346,14 @@ public class ElectionManagerActivity extends AppCompatActivity
             Log.d(TAG,"onPostExecute re2 : "+re);
 
             if (type.equals("CHECK_MACADDRESS")) {
-                mIsImeiExist = (Boolean) re.get("RESULT");
+                mIsExistMacAdd = (Boolean) re.get("RESULT");
                 mPwd = (String) re.get("PWD");
                 Log.d(TAG,"pdfpath : "+(String) re.get("PDFPATH"));
                 mServerFileURL = (String) re.get("PDFPATH");
                 ElectionManagerApp.getInstance().setDefaultAdm_Cd((String) re.get("ADM_CD"));
-                mHandler.postDelayed(r,500);
+                mClasscd = (String)re.get("CLASSCD");
+                mHandler.postDelayed(mSignUpAndLockScreen, 500);
+
             } else if (type.equals("SELECTITEMS2")) {
                 ElectionManagerApp.getInstance().setSelectItems(((JSONObject) re.get("SELECTITEMS2")).toString());
                 mHandler.post(mMainCallrunnable);
