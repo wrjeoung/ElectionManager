@@ -178,8 +178,8 @@ public class AdapterRootRightMenu extends BaseExpandableListAdapter {
                 ((ElectionMainActivity)mContext).getmDrawerLayout().closeDrawer(GravityCompat.END);
                 if(!((ElectionMainActivity)mContext).getActionBarTitle().equals(selectedSg)) {
                     ((ElectionMainActivity)mContext).setActionBarTitle(selectedSg);
-                    ((ElectionMainActivity) mContext).getmVpageAdapter().notifyDataSetChanged();
                 }
+                ((ElectionMainActivity) mContext).getmVpageAdapter().notifyDataSetChanged();
                 mPager.setCurrentItem(0);
                 return false;
             }
