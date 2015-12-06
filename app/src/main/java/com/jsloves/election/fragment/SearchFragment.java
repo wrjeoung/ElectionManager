@@ -20,7 +20,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.ConsoleMessage;
-import android.webkit.JavascriptInterface;
 import android.webkit.JsResult;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
@@ -45,6 +44,7 @@ import com.jsloves.election.DTO.FamilyDAO;
 import com.jsloves.election.DTO.PdfDAO;
 import com.jsloves.election.DTO.StatsDAO;
 import com.jsloves.election.DTO.VoteDAO;
+import com.jsloves.election.activity.ElectionMainActivity;
 import com.jsloves.election.activity.PDFViewActivity;
 import com.jsloves.election.activity.R;
 import com.jsloves.election.application.ElectionManagerApp;
@@ -996,21 +996,20 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         }
     }
 
-    private void showMap(String adm_cd) {
+    private void areaSearch(String adm_cd) {
         //tupyogu = tupyogu.replace("제","");
         //tupyogu = tupyogu.replace("투표구","");
-        Log.d(TAG, "showMap mTest : " + mTest);
+        Log.d(TAG, "areaSearch mTest : " + mTest);
         JSONObject jo = new JSONObject();
         //jo.put("TYPE","GEODATA_TEST");
-        jo.put("TYPE","TEST");
+        jo.put("TYPE","AREA_SEARCH");
         jo.put("ADM_CD", adm_cd);
         jo.put("COX", 0.0);
         jo.put("COY", 0.0);
-        Log.d(TAG, "showMap jo : " + jo);
+        Log.d(TAG, "areaSearch jo : " + jo);
 
         //excuteTask(getString(R.string.server_url), jo.toString());
         excuteTask(getString(R.string.server_url), jo.toString());
-        //excuteTask("http://192.168.0.8:8080/ElectionManager_server/MobileReq.jsp", jo.toString());
         /*myWebview.loadUrl("javascript:drawMap('" + jo.toString() + "')");
         if(myWebview.getVisibility()!= View.VISIBLE)
             myWebview.setVisibility(View.VISIBLE);
@@ -1027,10 +1026,18 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
             final String adm_cd = ElectionManagerApp.getInstance().getTupyoguCode(array);
             mAdm_cd = adm_cd;
             if(mNetStatus!=null && mNetStatus.isNetworkAvailible()) {
-                showMap(mAdm_cd);
+                areaSearch(mAdm_cd);
             } else {
                 mNetStatus.networkErrPopup();
             }
+
+            final String currentTitle = ((ElectionMainActivity)getActivity()).getActionBarTitle();
+            if(!currentTitle.equals(mSigungu)) {
+                String[] array2 = {mSigungu, "전체", "전체"};
+                final String adm_cd2 = ElectionManagerApp.getInstance().getTupyoguCode(array2);
+                ElectionManagerApp.getInstance().setDefaultAdm_Cd(adm_cd2);
+            }
+
             /*mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -1122,7 +1129,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
                 Log.d(TAG, "tupyoguStr = " + tupyoguStr + " ,adm_cd = " + adm_cd);
                 if(mNetStatus!=null && mNetStatus.isNetworkAvailible()) {
-                    showMap(adm_cd);
+                    areaSearch(adm_cd);
                 } else {
                     mNetStatus.networkErrPopup();
                 }
@@ -1192,7 +1199,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         });
         mAdm_cd = ElectionManagerApp.getInstance().getDefaultAdm_Cd();
         if(mNetStatus!=null && mNetStatus.isNetworkAvailible()) {
-            showMap(mAdm_cd);
+            areaSearch(mAdm_cd);
         } else {
             mNetStatus.networkErrPopup();
         }
@@ -1430,7 +1437,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                         Log.d(TAG, "매칭 데이터 없음");
                         Toast.makeText(getActivity().getApplicationContext(), "현재 위치에 맞는 정보가 없습니다.", Toast.LENGTH_SHORT).show();
                     }
-                } else if (sType.equals("TEST")) {
+                } else if (sType.equals("AREA_SEARCH")) {
 
                     JSONArray alElectDao = new JSONArray();
                     JSONArray alVoteDao = new JSONArray();
