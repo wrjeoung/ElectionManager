@@ -18,10 +18,12 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
+import android.widget.Toast;
 
-import com.jsloves.election.activity.ElectionMainActivity;
 import com.jsloves.election.activity.R;
-import com.jsloves.election.common.OnBackPressedListener;
+
+import org.json.simple.JSONObject;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,7 +33,7 @@ import com.jsloves.election.common.OnBackPressedListener;
  * Use the {@link OrganIntroDetailFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class OrganIntroDetailFragment extends Fragment implements OnBackPressedListener {
+public class OrganIntroDetailFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -47,8 +49,6 @@ public class OrganIntroDetailFragment extends Fragment implements OnBackPressedL
     private WebView myWebview;
 
     private OnFragmentInteractionListener mListener;
-
-    private String mOrgan_tap;
 
     /**
      * Use this factory method to create a new instance of
@@ -88,16 +88,10 @@ public class OrganIntroDetailFragment extends Fragment implements OnBackPressedL
         // Inflate the layout for this fragment
         Log.d("lcy", "onCreateView OrganIntroDetailFragment");
 
-        ElectionMainActivity ema;
-        ema = (ElectionMainActivity)getActivity();
-        if(ema != null) {
-            ema.setBackKeyListnerbyFragment(this);
-        }
-
-        mOrgan_tap = getArguments().getString("organ_tap");
+        final String organ_tap = getArguments().getString("organ_tap");
         String organ_seq = getArguments().getString("organ_seq");
         String organ_gb = getArguments().getString("organ_gb");
-        Log.d("lcy","mOrgan_tap:"+mOrgan_tap + ", organ_seq:" + organ_seq + ",organ_gb:"+ organ_gb);
+        Log.d("lcy","organ_tap:"+organ_tap + ", organ_seq:" + organ_seq + ",organ_gb:"+ organ_gb);
 
         view = inflater.inflate(R.layout.fragment_organ_intro_detail, container, false);
 
@@ -135,14 +129,43 @@ public class OrganIntroDetailFragment extends Fragment implements OnBackPressedL
         //myWebview.loadUrl("http://222.122.149.161:7070/ElectionManager_server/OrganIntroDetail.jsp?organ_seq="+organ_seq);
         //myWebview.loadUrl("http://192.168.42.189:8080/ElectionManager_server/OrganIntroDetail.jsp?organ_seq="+organ_seq);
         Log.d("lcy", "call WebView before");
-        myWebview.loadUrl("http://222.122.149.161:7070/ElectionManager_server/OrganIntroDetail.jsp?organ_seq=" + organ_seq + "&organ_gb=" + organ_gb);
+        myWebview.loadUrl("http://222.122.149.161:7070/ElectionManager_server/OrganIntroDetail.jsp?organ_seq=" + organ_seq + "&organ_gb="+organ_gb);
         //myWebview.loadUrl("http://192.168.42.189:8080/ElectionManager_server/OrganIntroDetail.jsp?organ_seq=" + organ_seq + "&organ_gb="+organ_gb);
         Log.d("lcy", "call WebView after");
 
+        final Button btn_back = (Button)view.findViewById(R.id.button_back);
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("lcy","Button btn_back onClick");
+
+                if(organ_tap.equals("organ1")) {
+
+                    OrganIntroFragment frament = new OrganIntroFragment();
+                    frament.onDestroyView();
+                    Bundle bundle = new Bundle();
+                    frament.setArguments(bundle);
+
+                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.organ_detail, frament);// Activity 레이아웃의 View ID
+                    fragmentTransaction.commit();
+                }else if(organ_tap.equals("organ2")){
+                    OrganIntroFragment2 frament = new OrganIntroFragment2();
+                    frament.onDestroyView();
+                    Bundle bundle = new Bundle();
+                    frament.setArguments(bundle);
+
+                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.organ_detail, frament);// Activity 레이아웃의 View ID
+                    fragmentTransaction.commit();
+                }
+            }
+        });
+
         return view;
     }
-
-
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -168,32 +191,6 @@ public class OrganIntroDetailFragment extends Fragment implements OnBackPressedL
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    @Override
-    public void onBackPressed() {
-        if(mOrgan_tap.equals("organ1")) {
-
-            OrganIntroFragment frament = new OrganIntroFragment();
-            frament.onDestroyView();
-            Bundle bundle = new Bundle();
-            frament.setArguments(bundle);
-
-            FragmentManager fragmentManager = getFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.organ_detail, frament);// Activity 레이아웃의 View ID
-            fragmentTransaction.commit();
-        }else if(mOrgan_tap.equals("organ2")){
-            OrganIntroFragment2 frament = new OrganIntroFragment2();
-            frament.onDestroyView();
-            Bundle bundle = new Bundle();
-            frament.setArguments(bundle);
-
-            FragmentManager fragmentManager = getFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.organ_detail, frament);// Activity 레이아웃의 View ID
-            fragmentTransaction.commit();
-        }
     }
 
     /**

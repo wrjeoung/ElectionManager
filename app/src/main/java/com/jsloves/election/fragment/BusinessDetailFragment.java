@@ -18,10 +18,9 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 
-import com.jsloves.election.activity.ElectionMainActivity;
 import com.jsloves.election.activity.R;
-import com.jsloves.election.common.OnBackPressedListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,7 +30,7 @@ import com.jsloves.election.common.OnBackPressedListener;
  * Use the {@link BusinessDetailFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BusinessDetailFragment extends Fragment implements OnBackPressedListener {
+public class BusinessDetailFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -86,12 +85,6 @@ public class BusinessDetailFragment extends Fragment implements OnBackPressedLis
 
         Log.d("kjh"," business_seq:" + business_seq);
 
-        ElectionMainActivity ema;
-        ema = (ElectionMainActivity)getActivity();
-        if(ema != null) {
-            ema.setBackKeyListnerbyFragment(this);
-        }
-
         view = inflater.inflate(R.layout.fragment_business_detail, container, false);
 
         myWebview = (WebView) view.findViewById(
@@ -127,6 +120,23 @@ public class BusinessDetailFragment extends Fragment implements OnBackPressedLis
 
         myWebview.loadUrl("http://222.122.149.161:7070/ElectionManager_server/BusinessInfoDetail.jsp?bn_seq=" + business_seq);
         //myWebview.loadUrl("http://10.11.1.164:8080/ElectionManager_server/BusinessInfoDetail.jsp?bn_seq=" + business_seq);
+
+        final Button btn_back = (Button)view.findViewById(R.id.button_back);
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    BusinessListFragment frament = new BusinessListFragment();
+                    frament.onDestroyView();
+                    Bundle bundle = new Bundle();
+                    frament.setArguments(bundle);
+
+                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.business_detail, frament);// Activity 레이아웃의 View ID
+                    fragmentTransaction.commit();
+            }
+        });
+
         return view;
     }
 
@@ -154,19 +164,6 @@ public class BusinessDetailFragment extends Fragment implements OnBackPressedLis
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    @Override
-    public void onBackPressed() {
-        BusinessListFragment frament = new BusinessListFragment();
-        frament.onDestroyView();
-        Bundle bundle = new Bundle();
-        frament.setArguments(bundle);
-
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.business_detail, frament);// Activity 레이아웃의 View ID
-        fragmentTransaction.commit();
     }
 
     /**
