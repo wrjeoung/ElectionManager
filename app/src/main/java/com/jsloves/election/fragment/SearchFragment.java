@@ -20,6 +20,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.ConsoleMessage;
+import android.webkit.JavascriptInterface;
 import android.webkit.JsResult;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
@@ -595,6 +596,13 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
             result.cancel();
 
             return true;
+        }
+
+        @JavascriptInterface
+        public void funcCallSearchByJSParam(final String adm_cd) {
+            Log.d(TAG, "funcCallSearchByJSParam() >>>>>>>>>>> :" + adm_cd);
+            mAdm_cd = adm_cd;
+            areaSearch(mAdm_cd);
         }
     }
 
