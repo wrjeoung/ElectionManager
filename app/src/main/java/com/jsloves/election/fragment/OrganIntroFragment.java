@@ -140,6 +140,23 @@ public class OrganIntroFragment extends Fragment implements OnItemSelectedListen
 
     }
 
+    private void initSpinner(String admCd) {
+        String sigunguCode = admCd.substring(0,5);
+
+        JSONObject joCode1 = (JSONObject)ElectionManagerApp.getInstance().getSelectItemsCodeObject();
+
+        JSONObject joText1 = (JSONObject)ElectionManagerApp.getInstance().getSelectItemsObject();
+        JSONObject joText2 = (JSONObject)joText1.get("HAENGJOUNGDONG");
+
+        int sigunguIndex = ElectionManagerApp.getIndex((JSONArray) joCode1.get("SIGUNGU"), sigunguCode);
+
+        String sigunguText = (String)((JSONArray)joText1.get("SIGUNGU")).get(sigunguIndex);
+
+        setUpSpinner(sp4, ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU").toString());
+        sp4.setSelection(sigunguIndex);
+        setUpSpinner(sp5, joText2.get(sigunguText).toString());
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -152,8 +169,7 @@ public class OrganIntroFragment extends Fragment implements OnItemSelectedListen
         sp5 = (Spinner) view.findViewById(R.id.spinner_5);
 
         Log.d("lcy", ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU").toString());
-        setUpSpinner(sp4, ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU").toString());
-
+        initSpinner(ElectionManagerApp.getInstance().getDefaultAdm_Cd());
         // ArrayAdapter 연결
 //        mListView.setAdapter(new CustomArrayAdapter(this, R.layout.intro_list, mCareList));
 
@@ -427,10 +443,6 @@ public class OrganIntroFragment extends Fragment implements OnItemSelectedListen
                 setUpSpinner(sp5, jo1.get(sigungu).toString());
                 break;
         }
-
-        if(sp4.getVisibility() != View.GONE)
-            sp4.setVisibility(View.GONE);
-
     }
 
     @Override

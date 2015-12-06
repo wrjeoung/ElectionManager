@@ -20,18 +20,15 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jsloves.election.DTO.BusinessKindDTO;
 import com.jsloves.election.DTO.BusinessListDTO;
-import com.jsloves.election.DTO.OrganDAO;
 import com.jsloves.election.activity.ElectionMainActivity;
 import com.jsloves.election.activity.R;
 import com.jsloves.election.adapter.BusinessListAdapter;
 import com.jsloves.election.application.ElectionManagerApp;
-import com.jsloves.election.layout.CustomBaseAdapter;
 import com.jsloves.election.layout.DataClass;
 import com.jsloves.election.util.HttpConnection;
 
@@ -133,18 +130,27 @@ public class BusinessListFragment extends Fragment implements AdapterView.OnItem
         super.onResume();
     }
 
-    private void initSpinner() {
+    private void initSpinner(String admCd) {
+        String sigunguCode = admCd.substring(0,5);
+
+        JSONObject joCode1 = (JSONObject)ElectionManagerApp.getInstance().getSelectItemsCodeObject();
+
+        JSONObject joText1 = (JSONObject)ElectionManagerApp.getInstance().getSelectItemsObject();
+        JSONObject joText2 = (JSONObject)joText1.get("HAENGJOUNGDONG");
+
+        int sigunguIndex = ElectionManagerApp.getIndex((JSONArray) joCode1.get("SIGUNGU"), sigunguCode);
+
+        String sigunguText = (String)((JSONArray)joText1.get("SIGUNGU")).get(sigunguIndex);
+
         setUpSpinner(sp1,mBKNameList.toString());
         setUpSpinner(spHidden, ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU").toString());
-        String sigungu = (String) spHidden.getSelectedItem();
-        JSONObject jo1 = (JSONObject)ElectionManagerApp.getInstance().getSelectItemsObject().get("HAENGJOUNGDONG");
-        setUpSpinner(sp2, jo1.get(sigungu).toString());
+        spHidden.setSelection(sigunguIndex);
+        setUpSpinner(sp2, joText2.get(sigunguText).toString());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         view = inflater.inflate(R.layout.fragment_business_list, container, false);
         setLayout();
 
@@ -208,7 +214,7 @@ public class BusinessListFragment extends Fragment implements AdapterView.OnItem
         JSONObject json1 = new JSONObject();
         json1.put("TYPE", "BUSINESSKIND");
         excuteTask(getString(R.string.server_url), json1.toString());
-        //excuteTask("http://10.11.1.164:8080/ElectionManager_server/MobileReq.jsp", json1.toString());
+        //excuteTask("http://192.168.0.6:8080/ElectionManager_server/MobileReq.jsp", json1.toString());
     }
 
     private void requestBusinessList(String title,String kindCode, String sigungu, String haengjoungdong, String tupyoguStr) {
@@ -221,7 +227,7 @@ public class BusinessListFragment extends Fragment implements AdapterView.OnItem
         String adm_cd = ElectionManagerApp.getInstance().getTupyoguCode(array);
         json1.put("ADM_CD", adm_cd);
         excuteTask(getString(R.string.server_url), json1.toString());
-        //excuteTask("http://10.11.1.164:8080/ElectionManager_server/MobileReq.jsp", json1.toString());
+        //excuteTask("http://192.168.0.6:8080/ElectionManager_server/MobileReq.jsp", json1.toString());
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -328,7 +334,7 @@ public class BusinessListFragment extends Fragment implements AdapterView.OnItem
                         mBKList.add(dto);
                         mBKNameList.add(dto.bkName);
                     }
-                    initSpinner();
+                    initSpinner(ElectionManagerApp.getInstance().getDefaultAdm_Cd());
                 }else if(sType.equals("BUSINESSLIST")) {
                     mBusinessList = new ArrayList<BusinessListDTO>();
                     JSONArray businessList = (JSONArray) re.get("BUSINESSLIST");
