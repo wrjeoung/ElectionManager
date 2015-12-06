@@ -31,6 +31,7 @@ import com.google.gson.reflect.TypeToken;
 import com.jsloves.election.adapter.AdapterRootRightMenu;
 import com.jsloves.election.application.ElectionManagerApp;
 import com.jsloves.election.common.CommonValuesManager;
+import com.jsloves.election.common.OnBackPressedListener;
 import com.jsloves.election.fragment.HomeMenuOnCLickListner;
 import com.jsloves.election.layout.SlidingTabLayout;
 import com.jsloves.election.layout.ViewPagerAdapter;
@@ -63,6 +64,11 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
     private ViewPagerAdapter mVpageAdapter;
     private ActionBar mActionbar;
     private NetworkStatus mNetConn;
+    private OnBackPressedListener mOnBackPressedListner;
+
+    public void setBackKeyListnerbyFragment(OnBackPressedListener obpl) {
+        mOnBackPressedListner = obpl;
+    }
 
     @Override
     protected void onResume() {
@@ -117,7 +123,12 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
     @Override
     public void onBackPressed() {
         Log.d(TAG,"onBackPressed");
-        super.onBackPressed();
+        if(mOnBackPressedListner!=null) {
+            mOnBackPressedListner.onBackPressed();
+            mOnBackPressedListner=null;
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override
