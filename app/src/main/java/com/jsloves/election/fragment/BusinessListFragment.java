@@ -213,8 +213,8 @@ public class BusinessListFragment extends Fragment implements AdapterView.OnItem
     private void requestBKInfo() {
         JSONObject json1 = new JSONObject();
         json1.put("TYPE", "BUSINESSKIND");
-        //excuteTask(getString(R.string.server_url), json1.toString());
-        excuteTask("http://192.168.0.6:8080/ElectionManager_server/MobileReq.jsp", json1.toString());
+        excuteTask(getString(R.string.server_url), json1.toString());
+        //excuteTask("http://192.168.0.6:8080/ElectionManager_server/MobileReq.jsp", json1.toString());
     }
 
     private void requestBusinessList(String title,String kindCode, String sigungu, String haengjoungdong, String tupyoguStr) {
@@ -226,8 +226,8 @@ public class BusinessListFragment extends Fragment implements AdapterView.OnItem
         String[] array = {sigungu, haengjoungdong, tupyoguStr};
         String adm_cd = ElectionManagerApp.getInstance().getTupyoguCode(array);
         json1.put("ADM_CD", adm_cd);
-        //excuteTask(getString(R.string.server_url), json1.toString());
-        excuteTask("http://192.168.0.6:8080/ElectionManager_server/MobileReq.jsp", json1.toString());
+        excuteTask(getString(R.string.server_url), json1.toString());
+        //excuteTask("http://192.168.0.6:8080/ElectionManager_server/MobileReq.jsp", json1.toString());
     }
 
     // TODO: Rename method, update argument and hook method into UI event
