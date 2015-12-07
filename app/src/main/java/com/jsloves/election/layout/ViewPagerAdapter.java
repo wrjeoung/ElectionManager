@@ -76,9 +76,9 @@ public class ViewPagerAdapter extends FragmentPagerAdapter implements CommonValu
     public int getItemPosition(Object item) {
         Fragment fragment = (Fragment) item;
 
-        /*if (ischanged()) {
+        if (fragment instanceof SearchFragment) {
             return POSITION_UNCHANGED;
-        } else*/ {
+        } else {
             // after this, onCreateView() of Fragment is called.
             return POSITION_NONE;   // notifyDataSetChanged
         }
