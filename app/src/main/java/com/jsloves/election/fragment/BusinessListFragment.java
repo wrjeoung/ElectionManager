@@ -17,6 +17,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -176,14 +178,16 @@ public class BusinessListFragment extends Fragment implements AdapterView.OnItem
                 bundle.putString("business_seq",str_seq);
                 frament.setArguments(bundle);
 
+                sp1.setEnabled(false);
+                sp2.setEnabled(false);
+
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.business_list, frament);// Activity 레이아웃의 View ID
                 fragmentTransaction.commit();
-
             }
         });
 
-        final Button btn_search = (Button)view.findViewById(R.id.button_search);
+        final ImageButton btn_search = (ImageButton)view.findViewById(R.id.button_search);
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

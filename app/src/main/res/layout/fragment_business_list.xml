@@ -61,13 +61,15 @@
                     android:textColor="@color/black"
                     android:textColorHint="@color/grey"
                     android:textSize="20.0sp" />
-                <Button
-                    android:layout_width="wrap_content"
-                    android:text="@string/search"
-                    android:layout_height="wrap_content"
+
+                <ImageButton
+                    android:id="@+id/button_search"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/search_button_selector"
                     android:layout_marginLeft="15dp"
-                    android:layout_weight="1"
-                    android:id="@+id/button_search" />
+                    android:background="@null"/>
             </LinearLayout>
         </LinearLayout>
 

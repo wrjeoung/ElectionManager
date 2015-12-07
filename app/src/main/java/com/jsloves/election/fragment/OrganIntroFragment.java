@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -85,6 +86,7 @@ public class OrganIntroFragment extends Fragment implements OnItemSelectedListen
 
     private Spinner sp4;
     private Spinner sp5;
+    private ImageButton btnSearch;
 
     private View view = null;
 
@@ -201,6 +203,9 @@ public class OrganIntroFragment extends Fragment implements OnItemSelectedListen
                 bundle.putString("organ_gb", organ_gb);
                 frament.setArguments(bundle);
 
+                sp5.setEnabled(false);
+                btnSearch.setEnabled(false);
+
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.organ_intro1, frament);// Activity 레이아웃의 View ID
                 fragmentTransaction.commit();
@@ -208,8 +213,8 @@ public class OrganIntroFragment extends Fragment implements OnItemSelectedListen
             }
         });
 
-        final Button btn_search = (Button)view.findViewById(R.id.button_search);
-        btn_search.setOnClickListener(new View.OnClickListener() {
+        btnSearch = (ImageButton)view.findViewById(R.id.button_search);
+        btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(
