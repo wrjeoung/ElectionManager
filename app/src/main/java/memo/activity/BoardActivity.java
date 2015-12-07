@@ -26,6 +26,7 @@ import com.jsloves.election.application.ElectionManagerApp;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersTouchListener;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.lang.reflect.Type;
@@ -93,21 +94,35 @@ public class BoardActivity extends BaseActivity implements AdapterView.OnItemSel
         mContext = this;
 
         buildComponents();
-        initSpinner();
+        initSpinner(ElectionManagerApp.getInstance().getDefaultAdm_Cd());
 
         //setFragment();
 
         //getUserInfo();
     }
 
-    private void initSpinner() {
+    private void initSpinner(String admCd) {
+        String haengCode = admCd.split("-")[0];
+        String sigunguCode = admCd.substring(0,5);
+
+        JSONObject joCode1 = (JSONObject)ElectionManagerApp.getInstance().getSelectItemsCodeObject();
+        JSONObject joCode2 = (JSONObject)joCode1.get("HAENGJOUNGDONG");
+        JSONObject joCode3 = (JSONObject)joCode1.get("TUPYOGU");
+
+        JSONObject joText1 = (JSONObject)ElectionManagerApp.getInstance().getSelectItemsObject();
+        JSONObject joText2 = (JSONObject)joText1.get("HAENGJOUNGDONG");
+        JSONObject joText3 = (JSONObject)joText1.get("TUPYOGU");
+
+        int sigunguIndex = ElectionManagerApp.getIndex((JSONArray) joCode1.get("SIGUNGU"), sigunguCode);
+        int haengIndex = ElectionManagerApp.getIndex((JSONArray) joCode2.get(sigunguCode), haengCode);
+
+        String sigunguText = (String)((JSONArray)joText1.get("SIGUNGU")).get(sigunguIndex);
+        String haengText = (String)((JSONArray)(joText2.get(sigunguText))).get(haengIndex);
+
         setUpSpinner(mSp0, ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU").toString());
-        String sigungu = (String) mSp0.getSelectedItem();
-        JSONObject jo1 = (JSONObject) ElectionManagerApp.getInstance().getSelectItemsObject().get("HAENGJOUNGDONG");
-        setUpSpinner(mSp1, jo1.get(sigungu).toString());
-        String haengjoungdong = (String) mSp1.getSelectedItem();
-        JSONObject jo2 = (JSONObject) ElectionManagerApp.getInstance().getSelectItemsObject().get("TUPYOGU");
-        setUpSpinner(mSp2, jo2.get(haengjoungdong).toString());
+        mSp0.setSelection(sigunguIndex);
+        setUpSpinner(mSp1, joText2.get(sigunguText).toString());
+        setUpSpinner(mSp2, joText3.get(haengText).toString());
     }
 
     private void setUpSpinner(Spinner spinner, String items) {
