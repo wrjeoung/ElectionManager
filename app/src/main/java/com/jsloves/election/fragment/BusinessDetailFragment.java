@@ -22,6 +22,7 @@ import android.webkit.WebViewClient;
 import com.jsloves.election.activity.ElectionMainActivity;
 import com.jsloves.election.activity.R;
 import com.jsloves.election.common.OnBackPressedListener;
+import com.jsloves.election.util.NetworkStatus;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,6 +48,8 @@ public class BusinessDetailFragment extends Fragment implements OnBackPressedLis
     private WebView myWebview;
 
     private OnFragmentInteractionListener mListener;
+
+    private NetworkStatus mNetConn;
 
     /**
      * Use this factory method to create a new instance of
@@ -94,38 +97,44 @@ public class BusinessDetailFragment extends Fragment implements OnBackPressedLis
 
         view = inflater.inflate(R.layout.fragment_business_detail, container, false);
 
-        myWebview = (WebView) view.findViewById(
-                R.id.businss_webView);
-        myWebview.setWebViewClient(new MainWebViewClient());
-        myWebview.setHorizontalScrollBarEnabled(true);
-        myWebview.setVerticalScrollBarEnabled(true);
-        WebSettings webSettings = myWebview.getSettings();
-        webSettings.setDefaultTextEncodingName("UTF-8");
-        webSettings.setJavaScriptEnabled(true);
-        webSettings.setDomStorageEnabled(true);
-        webSettings.setLoadWithOverviewMode(true);
-        webSettings.setUseWideViewPort(true);
-        webSettings.setSupportZoom(false);
-        webSettings.setBuiltInZoomControls(false);
-        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
-        webSettings.setAllowFileAccess(true);
-        webSettings.setUseWideViewPort(false);
-        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
-            webSettings.setAllowFileAccessFromFileURLs(true);
-            webSettings.setAllowUniversalAccessFromFileURLs(true);
-        }
-        webSettings.setAllowContentAccess(true);
-        webSettings.setSaveFormData(true);
+        mNetConn = new NetworkStatus(getActivity());
 
-        myWebview.setWebChromeClient(new WebChromeClient() {
-            @Override
-            public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
-                Log.d("kjh", consoleMessage.message() + '\n' + consoleMessage.messageLevel() + '\n' + consoleMessage.sourceId());
-                return super.onConsoleMessage(consoleMessage);
+        if(mNetConn!=null && mNetConn.isNetworkAvailible()) {
+            myWebview = (WebView) view.findViewById(
+                    R.id.businss_webView);
+            myWebview.setWebViewClient(new MainWebViewClient());
+            myWebview.setHorizontalScrollBarEnabled(true);
+            myWebview.setVerticalScrollBarEnabled(true);
+            WebSettings webSettings = myWebview.getSettings();
+            webSettings.setDefaultTextEncodingName("UTF-8");
+            webSettings.setJavaScriptEnabled(true);
+            webSettings.setDomStorageEnabled(true);
+            webSettings.setLoadWithOverviewMode(true);
+            webSettings.setUseWideViewPort(true);
+            webSettings.setSupportZoom(false);
+            webSettings.setBuiltInZoomControls(false);
+            webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
+            webSettings.setAllowFileAccess(true);
+            webSettings.setUseWideViewPort(false);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                webSettings.setAllowFileAccessFromFileURLs(true);
+                webSettings.setAllowUniversalAccessFromFileURLs(true);
             }
-        });
+            webSettings.setAllowContentAccess(true);
+            webSettings.setSaveFormData(true);
 
-        myWebview.loadUrl("http://222.122.149.161:7070/ElectionManager_server/BusinessInfoDetail.jsp?bn_seq=" + business_seq);
+            myWebview.setWebChromeClient(new WebChromeClient() {
+                @Override
+                public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+                    Log.d("kjh", consoleMessage.message() + '\n' + consoleMessage.messageLevel() + '\n' + consoleMessage.sourceId());
+                    return super.onConsoleMessage(consoleMessage);
+                }
+            });
+
+            myWebview.loadUrl("http://222.122.149.161:7070/ElectionManager_server/BusinessInfoDetail.jsp?bn_seq=" + business_seq);
+        } else {
+            mNetConn.networkErrPopup();
+        }
         //myWebview.loadUrl("http://10.11.1.164:8080/ElectionManager_server/BusinessInfoDetail.jsp?bn_seq=" + business_seq);
         return view;
     }

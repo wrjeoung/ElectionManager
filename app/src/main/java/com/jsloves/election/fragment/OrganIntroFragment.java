@@ -32,6 +32,7 @@ import com.jsloves.election.application.ElectionManagerApp;
 import com.jsloves.election.layout.CustomBaseAdapter;
 import com.jsloves.election.layout.DataClass;
 import com.jsloves.election.util.HttpConnection;
+import com.jsloves.election.util.NetworkStatus;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -92,6 +93,8 @@ public class OrganIntroFragment extends Fragment implements OnItemSelectedListen
 
     private OnFragmentInteractionListener mListener;
     private Activity mActivity;
+
+    private NetworkStatus mNetConn;
 
     /**
      * Use this factory method to create a new instance of
@@ -166,6 +169,7 @@ public class OrganIntroFragment extends Fragment implements OnItemSelectedListen
 
         view = inflater.inflate(R.layout.fragment_organ_intro, container, false);
         setLayout();
+        mNetConn = new NetworkStatus(getActivity());
 
         sp4 = (Spinner) view.findViewById(R.id.spinner_4);
         sp5 = (Spinner) view.findViewById(R.id.spinner_5);
@@ -180,36 +184,39 @@ public class OrganIntroFragment extends Fragment implements OnItemSelectedListen
             public void onItemClick(AdapterView<?> arg0, View view, int position,
                                     long arg3) {
 
-                Toast.makeText(
-                        getActivity().getApplicationContext(),
-                        "ITEM CLICK = " + position,
-                        Toast.LENGTH_SHORT
-                ).show();
+                if (mNetConn != null && mNetConn.isNetworkAvailible()) {
+                    Toast.makeText(
+                            getActivity().getApplicationContext(),
+                            "ITEM CLICK = " + position,
+                            Toast.LENGTH_SHORT
+                    ).show();
 
 
-                TextView tv_seq = null;
+                    TextView tv_seq = null;
 
-                tv_seq = (TextView) view.findViewById(R.id.tv_seq);
-                System.out.println("tv_seq:" + tv_seq.getText());
-                String str_seq = tv_seq.getText().toString();
+                    tv_seq = (TextView) view.findViewById(R.id.tv_seq);
+                    System.out.println("tv_seq:" + tv_seq.getText());
+                    String str_seq = tv_seq.getText().toString();
 
-                FragmentManager fragmentManager = getFragmentManager();
+                    FragmentManager fragmentManager = getFragmentManager();
 
-                OrganIntroDetailFragment frament = new OrganIntroDetailFragment();
-                frament.onDestroyView();
-                Bundle bundle = new Bundle();
-                bundle.putString("organ_tap", "organ1");
-                bundle.putString("organ_seq", str_seq);
-                bundle.putString("organ_gb", organ_gb);
-                frament.setArguments(bundle);
+                    OrganIntroDetailFragment frament = new OrganIntroDetailFragment();
+                    frament.onDestroyView();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("organ_tap", "organ1");
+                    bundle.putString("organ_seq", str_seq);
+                    bundle.putString("organ_gb", organ_gb);
+                    frament.setArguments(bundle);
 
-                sp5.setEnabled(false);
-                btnSearch.setEnabled(false);
+                    sp5.setEnabled(false);
+                    btnSearch.setEnabled(false);
 
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.organ_intro1, frament);// Activity 레이아웃의 View ID
-                fragmentTransaction.commit();
-
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.organ_intro1, frament);// Activity 레이아웃의 View ID
+                    fragmentTransaction.commit();
+                } else {
+                    mNetConn.networkErrPopup();
+                }
             }
         });
 
@@ -217,26 +224,30 @@ public class OrganIntroFragment extends Fragment implements OnItemSelectedListen
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(
-                        getActivity().getApplicationContext(),
-                        "검색 버튼 클릭",
-                        Toast.LENGTH_SHORT
-                ).show();
+                if(mNetConn!=null && mNetConn.isNetworkAvailible()) {
+                    Toast.makeText(
+                            getActivity().getApplicationContext(),
+                            "검색 버튼 클릭",
+                            Toast.LENGTH_SHORT
+                    ).show();
 
-                JSONObject json1 = new JSONObject();
-                json1.put("TYPE", "SEARCHORGAN");
-                json1.put("ORGAN_GB", organ_gb);
+                    JSONObject json1 = new JSONObject();
+                    json1.put("TYPE", "SEARCHORGAN");
+                    json1.put("ORGAN_GB", organ_gb);
 
-                String sigungu = (String) sp4.getSelectedItem();
-                String haengjoungdong = (String) sp5.getSelectedItem();
-                String tupyoguStr = "전체";
-                String[] array = {sigungu, haengjoungdong, tupyoguStr};
-                String adm_cd = ElectionManagerApp.getInstance().getTupyoguCode(array);
-                json1.put("ADM_CD", adm_cd);
-                Log.d("lcy", adm_cd);
+                    String sigungu = (String) sp4.getSelectedItem();
+                    String haengjoungdong = (String) sp5.getSelectedItem();
+                    String tupyoguStr = "전체";
+                    String[] array = {sigungu, haengjoungdong, tupyoguStr};
+                    String adm_cd = ElectionManagerApp.getInstance().getTupyoguCode(array);
+                    json1.put("ADM_CD", adm_cd);
+                    Log.d("lcy", adm_cd);
 
-                //excuteTask("http://192.168.42.189:8080/ElectionManager_server/MobileReq.jsp", json1.toString());
-                excuteTask(getString(R.string.server_url), json1.toString());
+                    //excuteTask("http://192.168.42.189:8080/ElectionManager_server/MobileReq.jsp", json1.toString());
+                    excuteTask(getString(R.string.server_url), json1.toString());
+                } else {
+                    mNetConn.networkErrPopup();
+                }
 
             }
         });

@@ -195,37 +195,41 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                // 좌측 메뉴
-                switch (position) {
-                    case 0:
-                        Intent intent = new Intent(ElectionMainActivity.this,ElectionHomeActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                        break;
-                    case 1:
-                        //mDrawerList.setBackgroundColor(getResources().getColor(R.color.blue));
-                        //toolbar.setBackgroundColor(getResources().getColor(R.color.blue));
-                        //slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.blue));
-                        pager.setCurrentItem(position-1);
-                        mDrawerLayout.closeDrawer(GravityCompat.START);
-                        break;
-                    case 2:
-                        //mDrawerList.setBackgroundColor(getResources().getColor(R.color.material_blue_grey_800));
-                        //toolbar.setBackgroundColor(getResources().getColor(R.color.material_blue_grey_800));
-                        //slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.material_blue_grey_800));
-                        pager.setCurrentItem(position-1);
-                        mDrawerLayout.closeDrawer(GravityCompat.START);
-                        break;
-                    case 3:
-                        pager.setCurrentItem(position-1);
-                        mDrawerLayout.closeDrawer(GravityCompat.START);
-                        break;
-                    case 4:
-                        //pager.setCurrentItem(position-1);
-                        //mDrawerLayout.closeDrawer(GravityCompat.START);
-                        Intent boardIntent = new Intent(ElectionMainActivity.this,BoardActivity.class);
-                        startActivity(boardIntent);
-                        break;
+                if(mNetConn!=null && mNetConn.isNetworkAvailible()) {
+                    // 좌측 메뉴
+                    switch (position) {
+                        case 0: // 홈
+                            Intent intent = new Intent(ElectionMainActivity.this, ElectionHomeActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                            break;
+                        case 1: // 구역정보
+                            //mDrawerList.setBackgroundColor(getResources().getColor(R.color.blue));
+                            //toolbar.setBackgroundColor(getResources().getColor(R.color.blue));
+                            //slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.blue));
+                            pager.setCurrentItem(position - 1);
+                            mDrawerLayout.closeDrawer(GravityCompat.START);
+                            break;
+                        case 2: // 기관정보
+                            //mDrawerList.setBackgroundColor(getResources().getColor(R.color.material_blue_grey_800));
+                            //toolbar.setBackgroundColor(getResources().getColor(R.color.material_blue_grey_800));
+                            //slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.material_blue_grey_800));
+                            pager.setCurrentItem(position - 1);
+                            mDrawerLayout.closeDrawer(GravityCompat.START);
+                            break;
+                        case 3: // 주요사업
+                            pager.setCurrentItem(position - 1);
+                            mDrawerLayout.closeDrawer(GravityCompat.START);
+                            break;
+                        case 4: // 게시판
+                            //pager.setCurrentItem(position-1);
+                            //mDrawerLayout.closeDrawer(GravityCompat.START);
+                            Intent boardIntent = new Intent(ElectionMainActivity.this, BoardActivity.class);
+                            startActivity(boardIntent);
+                            break;
+                    }
+                } else {
+                    mNetConn.networkErrPopup();
                 }
             }
         });
@@ -239,15 +243,18 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
         mDrawerMenuRight.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-
-                parent.getChildAt(groupPosition).findViewById(R.id.indicator).setSelected(mToggle = !mToggle);
-                String sigungu = ((TextView) v.findViewById(R.id.tv_name)).getText().toString();
-                adapter2.setSelectedSg(sigungu);
-                JSONObject jo1 = (JSONObject) ElectionManagerApp.getInstance().getSelectItemsObject().get("HAENGJOUNGDONG");
-                String hangjungdongs = jo1.get(sigungu).toString();
-                List<String> hangjungdongList = convertFromJson(hangjungdongs);
-                adapter2.setmHangjungdong(hangjungdongList);
-
+                Log.d(TAG,"onGroupClick ringht menu 1depth");
+                if(mNetConn!=null && mNetConn.isNetworkAvailible()) {
+                    parent.getChildAt(groupPosition).findViewById(R.id.indicator).setSelected(mToggle = !mToggle);
+                    String sigungu = ((TextView) v.findViewById(R.id.tv_name)).getText().toString();
+                    adapter2.setSelectedSg(sigungu);
+                    JSONObject jo1 = (JSONObject) ElectionManagerApp.getInstance().getSelectItemsObject().get("HAENGJOUNGDONG");
+                    String hangjungdongs = jo1.get(sigungu).toString();
+                    List<String> hangjungdongList = convertFromJson(hangjungdongs);
+                    adapter2.setmHangjungdong(hangjungdongList);
+                } else {
+                    mNetConn.networkErrPopup();
+                }
                 return false;
             }
         });

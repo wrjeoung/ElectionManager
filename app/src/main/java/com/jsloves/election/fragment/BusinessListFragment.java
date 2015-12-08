@@ -33,6 +33,7 @@ import com.jsloves.election.adapter.BusinessListAdapter;
 import com.jsloves.election.application.ElectionManagerApp;
 import com.jsloves.election.layout.DataClass;
 import com.jsloves.election.util.HttpConnection;
+import com.jsloves.election.util.NetworkStatus;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -88,6 +89,8 @@ public class BusinessListFragment extends Fragment implements AdapterView.OnItem
 
     private OnFragmentInteractionListener mListener;
     private Activity mActivity;
+
+    private NetworkStatus mNetConn;
 
     /**
      * Use this factory method to create a new instance of
@@ -161,29 +164,34 @@ public class BusinessListFragment extends Fragment implements AdapterView.OnItem
         sp1 = (Spinner) view.findViewById(R.id.sp1);
         sp2 = (Spinner) view.findViewById(R.id.sp2);
 
+        mNetConn = new NetworkStatus(getActivity());
+
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View view, int position,
                                     long arg3) {
+                if(mNetConn!=null && mNetConn.isNetworkAvailible()) {
+                    TextView tv_seq = (TextView) view.findViewById(R.id.tv1);
+                    System.out.println("tv_seq:" + tv_seq.getText());
+                    String str_seq = tv_seq.getText().toString();
 
-                TextView tv_seq = (TextView) view.findViewById(R.id.tv1);
-                System.out.println("tv_seq:" + tv_seq.getText());
-                String str_seq = tv_seq.getText().toString();
+                    FragmentManager fragmentManager = getFragmentManager();
 
-                FragmentManager fragmentManager = getFragmentManager();
+                    BusinessDetailFragment frament = new BusinessDetailFragment();
+                    frament.onDestroyView();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("business_seq", str_seq);
+                    frament.setArguments(bundle);
 
-                BusinessDetailFragment frament = new BusinessDetailFragment();
-                frament.onDestroyView();
-                Bundle bundle = new Bundle();
-                bundle.putString("business_seq",str_seq);
-                frament.setArguments(bundle);
+                    sp1.setEnabled(false);
+                    sp2.setEnabled(false);
 
-                sp1.setEnabled(false);
-                sp2.setEnabled(false);
-
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.business_list, frament);// Activity 레이아웃의 View ID
-                fragmentTransaction.commit();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.business_list, frament);// Activity 레이아웃의 View ID
+                    fragmentTransaction.commit();
+                } else {
+                    mNetConn.networkErrPopup();
+                }
             }
         });
 
@@ -191,17 +199,25 @@ public class BusinessListFragment extends Fragment implements AdapterView.OnItem
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String title = editSearch.getText().toString();
-                String kindName = (String)sp1.getSelectedItem();
-                String sigungu = (String)spHidden.getSelectedItem();
-                String haengjoungdong = (String)sp2.getSelectedItem();
-                String tupyoguStr = "전체";
-                requestBusinessList(title,getKindCode(kindName),sigungu,haengjoungdong,tupyoguStr);
 
+                if(mNetConn!=null && mNetConn.isNetworkAvailible()) {
+                    String title = editSearch.getText().toString();
+                    String kindName = (String) sp1.getSelectedItem();
+                    String sigungu = (String) spHidden.getSelectedItem();
+                    String haengjoungdong = (String) sp2.getSelectedItem();
+                    String tupyoguStr = "전체";
+                    requestBusinessList(title, getKindCode(kindName), sigungu, haengjoungdong, tupyoguStr);
+                } else {
+                    mNetConn.networkErrPopup();
+                }
             }
         });
 
-        requestBKInfo();
+        if(mNetConn.isNetworkAvailible()) {
+            requestBKInfo();
+        } else {
+            mNetConn.networkErrPopup();
+        }
         return view;
     }
 

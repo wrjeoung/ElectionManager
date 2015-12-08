@@ -3,6 +3,7 @@ package com.jsloves.election.adapter;
 import android.content.Context;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.google.gson.reflect.TypeToken;
 import com.jsloves.election.activity.ElectionMainActivity;
 import com.jsloves.election.activity.R;
 import com.jsloves.election.application.ElectionManagerApp;
+import com.jsloves.election.util.NetworkStatus;
 
 import org.json.simple.JSONObject;
 
@@ -26,7 +28,7 @@ import java.util.List;
  * Created by wrjeong on 2015. 8. 14..
  */
 public class AdapterRootRightMenu extends BaseExpandableListAdapter {
-
+    private static final String TAG = AdapterRootRightMenu.class.getSimpleName();
     private List<String> mSigungu;
     private List<String> mHangjungdong;
     private List<String> mTuPyogu;
@@ -37,6 +39,7 @@ public class AdapterRootRightMenu extends BaseExpandableListAdapter {
     private boolean mToggle = false;
     private int mLastExpandedPosition = -1;
     private ViewPager mPager;
+    private NetworkStatus mNetConn;
 
     public AdapterRootRightMenu(Context context, List<String> list, ViewPager pager) {
         //super(context, resource, objects);
@@ -44,6 +47,7 @@ public class AdapterRootRightMenu extends BaseExpandableListAdapter {
         this.mContext = context;
         this.mSigungu = list;
         this.mPager = pager;
+        mNetConn = new NetworkStatus(this.mContext);
     }
 
     public void setSelectedSg(String selectedSg) {
@@ -124,29 +128,34 @@ public class AdapterRootRightMenu extends BaseExpandableListAdapter {
         SecondLevelexplv.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                ViewHolder holder = new ViewHolder();
-                if (v == null) {
+                Log.d(TAG,"onGroupClick ringht menu 2depth");
+                if(mNetConn!=null && mNetConn.isNetworkAvailible()) {
+                    ViewHolder holder = new ViewHolder();
+                    if (v == null) {
 
-                    LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                    v = inflater.inflate(R.layout.second_level_item, null);
-                    holder.tv2 = (TextView) v.findViewById(R.id.tv_name2);
-                    holder.iv2 = (ImageView) v.findViewById(R.id.indicator2);
-                    v.setTag(holder);
+                        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        v = inflater.inflate(R.layout.second_level_item, null);
+                        holder.tv2 = (TextView) v.findViewById(R.id.tv_name2);
+                        holder.iv2 = (ImageView) v.findViewById(R.id.indicator2);
+                        v.setTag(holder);
+                    } else {
+                        holder = (ViewHolder) v.getTag();
+                    }
+
+                    holder.iv2.setSelected(mToggle = !mToggle);
+                    String hangjungdong = holder.tv2.getText().toString();
+                    setSelectedHd(hangjungdong);
+
+                    JSONObject jo = (JSONObject) ElectionManagerApp.getInstance().getSelectItemsObject().get("TUPYOGU");
+                    String tupyogus = jo.get(hangjungdong).toString();
+                    Type type = new TypeToken<List<String>>() {
+                    }.getType();
+                    Gson converter = new Gson();
+                    List<String> tupyogulist = converter.fromJson(tupyogus, type);
+                    mTuPyogu = tupyogulist;
                 } else {
-                    holder = (ViewHolder) v.getTag();
+                    mNetConn.networkErrPopup();
                 }
-
-                holder.iv2.setSelected(mToggle = !mToggle);
-                String hangjungdong = holder.tv2.getText().toString();
-                setSelectedHd(hangjungdong);
-
-                JSONObject jo = (JSONObject) ElectionManagerApp.getInstance().getSelectItemsObject().get("TUPYOGU");
-                String tupyogus = jo.get(hangjungdong).toString();
-                Type type = new TypeToken<List<String>>() {
-                }.getType();
-                Gson converter = new Gson();
-                List<String> tupyogulist = converter.fromJson(tupyogus, type);
-                mTuPyogu = tupyogulist;
                 return false;
             }
         });
@@ -154,6 +163,7 @@ public class AdapterRootRightMenu extends BaseExpandableListAdapter {
         SecondLevelexplv.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                Log.d(TAG,"onGroupClick ringht menu 3depth");
 //                ViewHolder holder = new ViewHolder();
 //                if (v == null) {
 //                    LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -166,21 +176,24 @@ public class AdapterRootRightMenu extends BaseExpandableListAdapter {
 //
 //                String tupyogu = holder.tv3.getText().toString();
 //                Toast.makeText(mContext.getApplicationContext(),"selected tupyogu : "+tupyogu,Toast.LENGTH_SHORT).show();
+                if(mNetConn!=null && mNetConn.isNetworkAvailible()) {
+                    TextView tv = (TextView) v.findViewById(R.id.tv_name3);
+                    String tupyogu = tv.getText().toString();
+                    setSelectedTg(tupyogu);
 
-                TextView tv = (TextView)v.findViewById(R.id.tv_name3);
-                String tupyogu = tv.getText().toString();
-                setSelectedTg(tupyogu);
+                    //[수정] 왜 getItem(0)으로 얻어오는 SearchFragment는 myWebview멤버가 null 일까?? 생성한 SearchFragment 객체가 아닌듯한데!?...
+                    //((SearchFragment)mViewPagerAdapter.getItem(0)).tupyoguClickByRightMenu(selectedSg, selectedHd, selectedTg);
 
-                //[수정] 왜 getItem(0)으로 얻어오는 SearchFragment는 myWebview멤버가 null 일까?? 생성한 SearchFragment 객체가 아닌듯한데!?...
-                //((SearchFragment)mViewPagerAdapter.getItem(0)).tupyoguClickByRightMenu(selectedSg, selectedHd, selectedTg);
-
-                ((ElectionMainActivity)mContext).getmVpageAdapter().getmSearchFragment().tupyoguClickByRightMenu(selectedSg, selectedHd, selectedTg);
-                ((ElectionMainActivity)mContext).getmDrawerLayout().closeDrawer(GravityCompat.END);
-                if(!((ElectionMainActivity)mContext).getActionBarTitle().equals(selectedSg)) {
-                    ((ElectionMainActivity)mContext).setActionBarTitle(selectedSg);
-                    ((ElectionMainActivity) mContext).getmVpageAdapter().notifyDataSetChanged();
+                    ((ElectionMainActivity) mContext).getmVpageAdapter().getmSearchFragment().tupyoguClickByRightMenu(selectedSg, selectedHd, selectedTg);
+                    ((ElectionMainActivity) mContext).getmDrawerLayout().closeDrawer(GravityCompat.END);
+                    if (!((ElectionMainActivity) mContext).getActionBarTitle().equals(selectedSg)) {
+                        ((ElectionMainActivity) mContext).setActionBarTitle(selectedSg);
+                        ((ElectionMainActivity) mContext).getmVpageAdapter().notifyDataSetChanged();
+                    }
+                    mPager.setCurrentItem(0);
+                } else {
+                    mNetConn.networkErrPopup();
                 }
-                mPager.setCurrentItem(0);
                 return false;
             }
         });

@@ -614,14 +614,18 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 return;
             }
 
-            Intent intent = new Intent(getActivity(), PDFViewActivity.class);
-            String[] pages = v.getTag().toString().split(";");
+            if(mNetStatus!=null && mNetStatus.isNetworkAvailible()) {
+                Intent intent = new Intent(getActivity(), PDFViewActivity.class);
+                String[] pages = v.getTag().toString().split(";");
 
-            int startPageNum = Integer.parseInt(pages[0]);
-            int endPageNum = pages.length > 1 ? Integer.parseInt(pages[pages.length-1]) : startPageNum;
-            intent.putExtra("pdfStartPageNum",startPageNum);
-            intent.putExtra("pdfEndPageNum",endPageNum);
-            startActivity(intent);
+                int startPageNum = Integer.parseInt(pages[0]);
+                int endPageNum = pages.length > 1 ? Integer.parseInt(pages[pages.length-1]) : startPageNum;
+                intent.putExtra("pdfStartPageNum",startPageNum);
+                intent.putExtra("pdfEndPageNum",endPageNum);
+                startActivity(intent);
+            } else {
+                mNetStatus.networkErrPopup();
+            }
         }
     }
 
@@ -1112,7 +1116,11 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 switch (action) {
                     case MotionEvent.ACTION_DOWN:
                         // Disallow ScrollView to intercept touch events.
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        if(mNetStatus!=null && mNetStatus.isNetworkAvailible()) {
+                            v.getParent().requestDisallowInterceptTouchEvent(true);
+                        } else {
+                            mNetStatus.networkErrPopup();
+                        }
                         break;
 
                     case MotionEvent.ACTION_UP:
@@ -1174,25 +1182,26 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 // GPS 사용유무 가져오기
                 if (gps.isGetLocation()) {
                     if (gps.getLocation() != null) {
-                        // 위도
-                        double latitude = gps.getLatitude();
-                        // 경도
-                        double longitude = gps.getLongitude();
-
-                        //latitude = 37.5204504; longitude = 126.9149769;
-                        //latitude = 37.4691758; longitude = 126.8978739;
-                        GeoPoint in_pt = new GeoPoint(longitude, latitude);
-                        GeoPoint out_pt = GeoTrans.convert(GeoTrans.GEO, GeoTrans.UTMK, in_pt);
-                        String setText = "위도 : " + String.valueOf(latitude) + " 경도 : " + String.valueOf(longitude);
-                        Log.d(TAG, " result : " + setText);
-                        String addr = gps.getAddress(latitude, longitude);
-                        Log.d(TAG, "addr : " + addr);
-                        String convert = "변환X: " + out_pt.getX() + " ,변환Y: " + out_pt.getY();
-                        Log.d(TAG, "convert : " + convert);
-                        //Toast.makeText(getActivity().getApplicationContext(), "당신의 위치 - \n위도: " + latitude + "\n경도: " + longitude+ "\n변환X: " + out_pt.getX()+ "\n변환Y: " + out_pt.getY(), Toast.LENGTH_SHORT).show();
-
-                        // 구역이동 Spiner Value Setting
                         if(mNetStatus!=null && mNetStatus.isNetworkAvailible()) {
+                            // 위도
+                            double latitude = gps.getLatitude();
+                            // 경도
+                            double longitude = gps.getLongitude();
+
+                            //latitude = 37.5204504; longitude = 126.9149769;
+                            //latitude = 37.4691758; longitude = 126.8978739;
+                            GeoPoint in_pt = new GeoPoint(longitude, latitude);
+                            GeoPoint out_pt = GeoTrans.convert(GeoTrans.GEO, GeoTrans.UTMK, in_pt);
+                            String setText = "위도 : " + String.valueOf(latitude) + " 경도 : " + String.valueOf(longitude);
+                            Log.d(TAG, " result : " + setText);
+                            String addr = gps.getAddress(latitude, longitude);
+                            Log.d(TAG, "addr : " + addr);
+                            String convert = "변환X: " + out_pt.getX() + " ,변환Y: " + out_pt.getY();
+                            Log.d(TAG, "convert : " + convert);
+                            //Toast.makeText(getActivity().getApplicationContext(), "당신의 위치 - \n위도: " + latitude + "\n경도: " + longitude+ "\n변환X: " + out_pt.getX()+ "\n변환Y: " + out_pt.getY(), Toast.LENGTH_SHORT).show();
+
+                            // 구역이동 Spiner Value Setting
+
                             setAreaFieldValue(addr, out_pt);
                         } else {
                             mNetStatus.networkErrPopup();
@@ -1214,7 +1223,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         return view;
     }
 
-    public void setAreaFieldValue(String addr, GeoPoint point) {
+    private void setAreaFieldValue(String addr, GeoPoint point) {
         Log.d(TAG, "setAreaFieldValue addr : " + addr);
         String address[] = addr.split(" ");
         String sigungu = "";
