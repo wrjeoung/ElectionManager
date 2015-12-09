@@ -5,6 +5,7 @@ package com.jsloves.election.activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -52,7 +53,6 @@ public class ElectionManagerActivity extends AppCompatActivity
         , com.jsloves.election.view.KeyPadLayout.KeyPadListener {
     public static final String TAG = ElectionManagerActivity.class.getSimpleName();
 
-    private EditText mEtPass;
     private TextView mTvPass;
     public static final String ASYNC = "async";
     private ProgressDialog mDialog;
@@ -68,7 +68,6 @@ public class ElectionManagerActivity extends AppCompatActivity
 
     // for pdf file download.
     private String mFileName = "final.pdf";
-    private String mSaveFolder = "/sdcard";
     private String mServerFileURL = null;
 
     private NetworkStatus mNetConn;
@@ -78,6 +77,8 @@ public class ElectionManagerActivity extends AppCompatActivity
     }
 
     private Runnable mSignUpAndLockScreen, mMainCallrunnable = null;
+
+    private File mFile;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -89,13 +90,14 @@ public class ElectionManagerActivity extends AppCompatActivity
         Log.d("JS", "폰번호 : " + phoneInfo.getPhoneNumber() + " IMEI : " + phoneInfo.getImei() + " MacAddress : " + phoneInfo.getMacAddress());
         JSONObject json = new JSONObject();
         String md5chekSum = null;
-        boolean existsPdfAtclient = false;
-        existsPdfAtclient = new File(mSaveFolder + "/" + mFileName).exists();
-        if (existsPdfAtclient == true) {
+
+        mFile = new File(this.getFilesDir(),mFileName);
+
+        if (mFile.exists()) {
             md5chekSum = md5CheckSum();
         }
 
-        json.put("existsPdfAtclient",existsPdfAtclient);
+        json.put("existsPdfAtclient",mFile.exists());
         json.put("TYPE", "CHECK_MACADDRESS");
         json.put("IMEI", phoneInfo.getMacAddress());
         json.put("MD5SUM",md5chekSum);
@@ -167,8 +169,9 @@ public class ElectionManagerActivity extends AppCompatActivity
         FileInputStream fis=null;
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
-            Log.d(TAG,"md5CheckSum() mSaveFolder : "+mSaveFolder+" mFileName : "+mFileName);
-            fis = new FileInputStream(mSaveFolder+"/"+mFileName);
+            Log.d(TAG,"md5CheckSum() this.getFilesDir() : "+getFilesDir().getAbsolutePath()+" mFileName : "+mFileName);
+            //fis = new FileInputStream(mSaveFolder+"/"+mFileName);
+            fis = openFileInput(mFileName);
 
             byte[] dataBytes = new byte[1024];
 
@@ -226,6 +229,12 @@ public class ElectionManagerActivity extends AppCompatActivity
     }
 
     private class AsyncTaskForFileDownLoad extends AsyncTask {
+        private Context mContext;
+
+        public AsyncTaskForFileDownLoad(Context context) {
+            mContext = context;
+        }
+
 
         @Override
         protected void onPreExecute() {
@@ -247,21 +256,19 @@ public class ElectionManagerActivity extends AppCompatActivity
             HttpURLConnection conn = null;
 
             try {
-                File dir = new File(mSaveFolder);
-                if (!dir.exists()) {
-                    dir.mkdir();
-                }
                 // 2015.11.14 rjeong
                 // mSeverFileURL - macaddress가 등록되지 않은 기기에서 앱 실행시 DB에 PDFPATH 컬럼이 존재 하지 않기 때문에 null리턴.
-                if (new File(mSaveFolder + "/" + mFileName).exists() == false && mServerFileURL != null) {
+                if (mFile.exists() == false && mServerFileURL != null) {
                     Log.d("rjeong",mServerFileURL);
                     pdfUrl = new URL(mServerFileURL);
                     conn = (HttpURLConnection) pdfUrl.openConnection();
                     int len = conn.getContentLength();
                     byte[] tmpByte = new byte[len];
                     is = conn.getInputStream();
-                    File file = new File(mSaveFolder + "/" + mFileName);
-                    fos = new FileOutputStream(file);
+                    //File file = new File(mContext.getFilesDir(), mFileName);
+                    //fos = new FileOutputStream(file);
+                    fos = openFileOutput(mFileName,Context.MODE_PRIVATE);
+
                     for (; ; ) {
                         Read = is.read(tmpByte);
                         if (Read <= 0) {
@@ -362,10 +369,10 @@ public class ElectionManagerActivity extends AppCompatActivity
                 mHandler.post(mMainCallrunnable);
             }
             boolean updatePdfFile = (Boolean) re.get("updatePdfFile");
-            Log.d(TAG,"updatePdfFile : "+updatePdfFile);
+            Log.d(TAG, "updatePdfFile : " + updatePdfFile);
             if(updatePdfFile
-                    || !(new File(mSaveFolder + "/" + mFileName).exists())) {
-                AsyncTaskForFileDownLoad task = new AsyncTaskForFileDownLoad();
+                    || !(mFile.exists())) {
+                AsyncTaskForFileDownLoad task = new AsyncTaskForFileDownLoad(this);
                 task.execute();
             }
         } catch (Exception e) {

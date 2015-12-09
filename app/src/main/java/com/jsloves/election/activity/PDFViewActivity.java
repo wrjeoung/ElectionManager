@@ -39,6 +39,7 @@ public class PDFViewActivity extends Activity implements View.OnClickListener {
     private static final String TAG = PDFViewActivity.class.getSimpleName();
     private PDFView pdfView;
     private String mSavedFilePath = "/sdcard/final.pdf";
+    private String mFileName = "final.pdf";
     private int mStartPageNum;
     private int mEndPageNum;
 
@@ -72,8 +73,9 @@ public class PDFViewActivity extends Activity implements View.OnClickListener {
         });
         Log.d(TAG, "absolutepath : " + Environment.getExternalStorageDirectory().getAbsolutePath());
         try {
-            if(new File(mSavedFilePath).exists()) {
-                pdfView.fromFile(new File(mSavedFilePath))
+            File file = new File(this.getFilesDir(),mFileName);
+            if(file.exists()) {
+                pdfView.fromFile(file)
                         // pdfView.fromAsset("final.pdf")
                         //.pages(0, 2, 1, 3, 3, 3)
                         .defaultPage(mStartPageNum)
