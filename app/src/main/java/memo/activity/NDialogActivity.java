@@ -31,6 +31,7 @@ import com.google.gson.reflect.TypeToken;
 import com.jsloves.election.activity.R;
 import com.jsloves.election.application.ElectionManagerApp;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.io.File;
@@ -77,6 +78,7 @@ public class NDialogActivity extends BaseActivity implements AdapterView.OnItemS
     private Spinner mSp0;
     private Spinner mSp1;
     private Spinner mSp2;
+    private boolean ignoreUpdate;
 
     private Context mContext;
     private String mInputType;
@@ -112,6 +114,7 @@ public class NDialogActivity extends BaseActivity implements AdapterView.OnItemS
     public void onInit() {
 
         mContext = this;
+        ignoreUpdate = false;
 
         getWindow().getAttributes().width = mResolutionutils.convertWidth(680);
         getWindow().getAttributes().height = mResolutionutils.convertHeight(720);
@@ -129,10 +132,37 @@ public class NDialogActivity extends BaseActivity implements AdapterView.OnItemS
         if (mInputType.equals(INPUT_TYPE_MEMO_UPDATE)) {
             initMemoInfo();
         }
-        initSpinner();
+        initSpinner(mAdmCd);
     }
 
-    private void initSpinner() {
+    private void initSpinner(String admCd) {
+        ignoreUpdate = true;
+
+        String haengCode = admCd.split("-")[0];
+        String sigunguCode = admCd.substring(0,5);
+
+        JSONObject joCode1 = (JSONObject)ElectionManagerApp.getInstance().getSelectItemsCodeObject();
+        JSONObject joCode2 = (JSONObject)joCode1.get("HAENGJOUNGDONG");
+        JSONObject joCode3 = (JSONObject)joCode1.get("TUPYOGU");
+
+        JSONObject joText1 = (JSONObject)ElectionManagerApp.getInstance().getSelectItemsObject();
+        JSONObject joText2 = (JSONObject)joText1.get("HAENGJOUNGDONG");
+        JSONObject joText3 = (JSONObject)joText1.get("TUPYOGU");
+
+        int sigunguIndex = ElectionManagerApp.getIndex((JSONArray) joCode1.get("SIGUNGU"), sigunguCode);
+        int haengIndex = ElectionManagerApp.getIndex((JSONArray) joCode2.get(sigunguCode), haengCode);
+        int tupyoguIndex = ElectionManagerApp.getIndex((JSONArray) joCode3.get(haengCode), admCd);
+
+        String sigunguText = (String)((JSONArray)joText1.get("SIGUNGU")).get(sigunguIndex);
+        String haengText = (String)((JSONArray)(joText2.get(sigunguText))).get(haengIndex);
+
+        mSp0.setSelection(sigunguIndex);
+        setUpSpinner(mSp1, joText2.get(sigunguText).toString());
+        mSp1.setSelection(haengIndex);
+        setUpSpinner(mSp2, joText3.get(haengText).toString());
+        mSp2.setSelection(tupyoguIndex);
+        Log.d("kjh","tupyoguIndex = "+tupyoguIndex);
+        /*
         setUpSpinner(mSp0, ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU").toString());
         String sigungu = (String) mSp0.getSelectedItem();
         JSONObject jo1 = (JSONObject) ElectionManagerApp.getInstance().getSelectItemsObject().get("HAENGJOUNGDONG");
@@ -140,6 +170,7 @@ public class NDialogActivity extends BaseActivity implements AdapterView.OnItemS
         String haengjoungdong = (String) mSp1.getSelectedItem();
         JSONObject jo2 = (JSONObject) ElectionManagerApp.getInstance().getSelectItemsObject().get("TUPYOGU");
         setUpSpinner(mSp2, jo2.get(haengjoungdong).toString());
+        */
     }
 
     private void setUpSpinner(Spinner spinner, String items) {
@@ -491,21 +522,20 @@ public class NDialogActivity extends BaseActivity implements AdapterView.OnItemS
         context.startActivityForResult(intent, requestCode);
 
         Log.e("nam", "admCd : " + admCd);
-
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int i, long l) {
         final int viewId = parent.getId();
         // TODO Auto-generated method stub
-        /*
+
         if (ignoreUpdate) {
-            if(viewId != R.id.spinner_3) {
+            if(viewId != R.id.sp2) {
                 return;
             }
             ignoreUpdate = false;
         }
-       */
+
         switch (viewId) {
             case R.id.sp0:
                 String sigungu = (String) parent.getSelectedItem();

@@ -14,7 +14,11 @@ import android.widget.TextView;
 
 
 import com.jsloves.election.activity.R;
+import com.jsloves.election.application.ElectionManagerApp;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -95,10 +99,7 @@ public class TimeLineAdapter extends RecyclerArrayAdapter<BoardListBody.BoardDTO
             viewHolder.mTvMemo.setVisibility(View.GONE);
         }
 
-        /*
-        if(!TextUtils.isEmpty(memoData.userName))
-            viewHolder.mTvWriter.setText(memoData.userName);
-        */
+        viewHolder.mTvTupyogu.setText(getAdmText(memoData.admCd));
         if(!TextUtils.isEmpty(memoData.imgShow)) {
             viewHolder.mImgPhoto.setVisibility(View.VISIBLE);
             Log.e("nam", memoData.imgShow);
@@ -148,7 +149,7 @@ public class TimeLineAdapter extends RecyclerArrayAdapter<BoardListBody.BoardDTO
     class ItemViewHolder extends RecyclerView.ViewHolder {
         TextView mTvTime;
         TextView mTvMemo;
-        TextView mTvWriter;
+        TextView mTvTupyogu;
         NImageView mImgPhoto;
         View mImgTime;
         FrameLayout mLayoutTime;
@@ -159,7 +160,7 @@ public class TimeLineAdapter extends RecyclerArrayAdapter<BoardListBody.BoardDTO
 
             mImgTime = view.findViewById(R.id.img_time);
             mTvTime = (TextView) view.findViewById(R.id.tv_time);
-            mTvWriter = (TextView) view.findViewById(R.id.tv_writer);
+            mTvTupyogu = (TextView) view.findViewById(R.id.tv_tupyogu);
             mTvMemo = (TextView) view.findViewById(R.id.tv_memo);
             mImgPhoto = (NImageView) view.findViewById(R.id.img_photo);
             mLayoutTime = (FrameLayout) view.findViewById(R.id.layout_time);
@@ -213,6 +214,36 @@ public class TimeLineAdapter extends RecyclerArrayAdapter<BoardListBody.BoardDTO
     private String convertTimeHour(long time){
         SimpleDateFormat sdf = new SimpleDateFormat("HH시 mm분");
         return sdf.format(time);
+    }
+
+
+    private String getAdmText(String admCd) {
+        String haengCode = admCd.split("-")[0];
+        String sigunguCode = admCd.substring(0,5);
+
+        StringBuffer buffer = new StringBuffer();
+
+        JSONObject joCode1 = (JSONObject) ElectionManagerApp.getInstance().getSelectItemsCodeObject();
+        JSONObject joCode2 = (JSONObject)joCode1.get("HAENGJOUNGDONG");
+        JSONObject joCode3 = (JSONObject)joCode1.get("TUPYOGU");
+
+        JSONObject joText1 = (JSONObject)ElectionManagerApp.getInstance().getSelectItemsObject();
+        JSONObject joText2 = (JSONObject)joText1.get("HAENGJOUNGDONG");
+        JSONObject joText3 = (JSONObject)joText1.get("TUPYOGU");
+
+        int sigunguIndex = ElectionManagerApp.getIndex((JSONArray) joCode1.get("SIGUNGU"), sigunguCode);
+        int haengIndex = ElectionManagerApp.getIndex((JSONArray) joCode2.get(sigunguCode), haengCode);
+        int tupyoguIndex = ElectionManagerApp.getIndex((JSONArray) joCode3.get(haengCode), admCd);
+
+        String sigunguText = (String)((JSONArray)joText1.get("SIGUNGU")).get(sigunguIndex);
+        String haengText = (String)((JSONArray)(joText2.get(sigunguText))).get(haengIndex);
+        String tupyoguText = (String)((JSONArray)(joText3.get(haengText))).get(tupyoguIndex);
+
+        buffer.append(haengText);
+        buffer.append("\n");
+        buffer.append(tupyoguText);
+
+        return buffer.toString();
     }
 }
 

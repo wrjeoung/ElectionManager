@@ -64,7 +64,7 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/tv_writer"
+                android:id="@+id/tv_tupyogu"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|bottom"

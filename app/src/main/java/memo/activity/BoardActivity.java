@@ -190,6 +190,14 @@ public class BoardActivity extends BaseActivity implements AdapterView.OnItemSel
                             }
                         }).show();
                  */
+                String sigungu = (String) mSp0.getSelectedItem();
+                String haengjoungdong = (String) mSp1.getSelectedItem();
+                String tupyoguStr = (String) mSp2.getSelectedItem();
+                String[] array = {sigungu, haengjoungdong, tupyoguStr};
+                String adm_cd = ElectionManagerApp.getInstance().getTupyoguCode(array);
+
+                mAdmCd = adm_cd;
+
                 NDialogActivity.callActivityForResult((Activity) mContext, NDialogActivity.INPUT_TYPE_MEMO, mAdmCd, null, REQUEST_CODE_MEMO);
             }
         });
