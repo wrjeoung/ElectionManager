@@ -1043,13 +1043,6 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 mNetStatus.networkErrPopup();
             }
 
-            final String currentTitle = ((ElectionMainActivity)getActivity()).getActionBarTitle();
-            if(!currentTitle.equals(mSigungu)) {
-                String[] array2 = {mSigungu, "전체", "전체"};
-                final String adm_cd2 = ElectionManagerApp.getInstance().getTupyoguCode(array2);
-                ElectionManagerApp.getInstance().setDefaultAdm_Cd(adm_cd2);
-            }
-
             /*mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {

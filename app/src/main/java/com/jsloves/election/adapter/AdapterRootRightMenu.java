@@ -184,13 +184,16 @@ public class AdapterRootRightMenu extends BaseExpandableListAdapter {
                     //[수정] 왜 getItem(0)으로 얻어오는 SearchFragment는 myWebview멤버가 null 일까?? 생성한 SearchFragment 객체가 아닌듯한데!?...
                     //((SearchFragment)mViewPagerAdapter.getItem(0)).tupyoguClickByRightMenu(selectedSg, selectedHd, selectedTg);
 
-                    ((ElectionMainActivity) mContext).getmVpageAdapter().getmSearchFragment().tupyoguClickByRightMenu(selectedSg, selectedHd, selectedTg);
                     ((ElectionMainActivity) mContext).getmDrawerLayout().closeDrawer(GravityCompat.END);
                     if (!((ElectionMainActivity) mContext).getActionBarTitle().equals(selectedSg)) {
-                        ((ElectionMainActivity) mContext).setActionBarTitle(selectedSg);
+                        String[] array2 = {selectedSg, "전체", "전체"};
+                        final String adm_cd2 = ElectionManagerApp.getInstance().getTupyoguCode(array2);
+                        ElectionManagerApp.getInstance().setDefaultAdm_Cd(adm_cd2);
                         ((ElectionMainActivity) mContext).getmVpageAdapter().notifyDataSetChanged();
+                        ((ElectionMainActivity) mContext).setActionBarTitle(selectedSg);
                     }
                     mPager.setCurrentItem(0);
+                    ((ElectionMainActivity) mContext).getmVpageAdapter().getmSearchFragment().tupyoguClickByRightMenu(selectedSg, selectedHd, selectedTg);
                 } else {
                     mNetConn.networkErrPopup();
                 }
