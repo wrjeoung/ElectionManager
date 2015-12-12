@@ -31,8 +31,10 @@ import com.jsloves.election.fragment.AsyncListener;
 import com.jsloves.election.util.NetworkStatus;
 import com.jsloves.election.util.PhoneInfo;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -67,8 +69,7 @@ public class ElectionManagerActivity extends AppCompatActivity
     private ImageView inputPassBox4;
 
     // for pdf file download.
-    private String mFileName = "final.pdf";
-    private String mServerFileURL = null;
+    private String mServerFileURL[];
 
     private NetworkStatus mNetConn;
 
@@ -78,7 +79,10 @@ public class ElectionManagerActivity extends AppCompatActivity
 
     private Runnable mSignUpAndLockScreen, mMainCallrunnable = null;
 
-    private File mFile;
+    private File mFile[];
+    private int mPdfCount;
+
+    private String mFileName[];
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -91,13 +95,8 @@ public class ElectionManagerActivity extends AppCompatActivity
         JSONObject json = new JSONObject();
         String md5chekSum = null;
 
-        mFile = new File(this.getFilesDir(),mFileName);
-
-        if (mFile.exists()) {
-            md5chekSum = md5CheckSum();
-        }
-
-        json.put("existsPdfAtclient",mFile.exists());
+//
+//        json.put("existsPdfAtclient",mFile.exists());
         json.put("TYPE", "CHECK_MACADDRESS");
         json.put("IMEI", phoneInfo.getMacAddress());
         json.put("MD5SUM",md5chekSum);
@@ -121,11 +120,7 @@ public class ElectionManagerActivity extends AppCompatActivity
 
                     if(isAuthorizedUser()) {
                         if (no_question_pass) {
-                            JSONObject json = new JSONObject();
-                            json.put("TYPE", "SELECTITEMS");
-                            json.put("ADM_CD", ElectionManagerApp.getInstance().getDefaultAdm_Cd());
-                            json.put("CLASSCD", mClasscd);
-                            network_join(getString(R.string.server_url), json.toString());
+                            post_selectitems();
                             //network_join("http://192.168.0.6:8080/ElectionManager_server/MobileReq.jsp", json.toString());
                         } else {
                             setContentView(R.layout.layout_lock_screen_activity);
@@ -163,15 +158,15 @@ public class ElectionManagerActivity extends AppCompatActivity
             return false;
     }
 
-    private String md5CheckSum()
+    private String md5CheckSum(File file, int index)
     {
         String result=null;
         FileInputStream fis=null;
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
-            Log.d(TAG,"md5CheckSum() this.getFilesDir() : "+getFilesDir().getAbsolutePath()+" mFileName : "+mFileName);
+            //Log.d(TAG,"md5CheckSum() this.getFilesDir() : "+getFilesDir().getAbsolutePath()+" mFileName : "+mFileName);
             //fis = new FileInputStream(mSaveFolder+"/"+mFileName);
-            fis = openFileInput(mFileName);
+            fis = openFileInput(mFileName[index]);
 
             byte[] dataBytes = new byte[1024];
 
@@ -258,23 +253,27 @@ public class ElectionManagerActivity extends AppCompatActivity
             try {
                 // 2015.11.14 rjeong
                 // mSeverFileURL - macaddress가 등록되지 않은 기기에서 앱 실행시 DB에 PDFPATH 컬럼이 존재 하지 않기 때문에 null리턴.
-                if (mFile.exists() == false && mServerFileURL != null) {
-                    Log.d("rjeong",mServerFileURL);
-                    pdfUrl = new URL(mServerFileURL);
-                    conn = (HttpURLConnection) pdfUrl.openConnection();
-                    int len = conn.getContentLength();
-                    byte[] tmpByte = new byte[len];
-                    is = conn.getInputStream();
-                    //File file = new File(mContext.getFilesDir(), mFileName);
-                    //fos = new FileOutputStream(file);
-                    fos = openFileOutput(mFileName,Context.MODE_PRIVATE);
+                for(int i=0; i<mPdfCount; i++) {
+                    Log.d(TAG, "doInBackground mServerFileURL["+i+"] :  "+ mServerFileURL[i]);
+                    if ( mFile[i]!=null
+                            && !mFile[i].exists()
+                            && mServerFileURL[i]!=null) {
+                        pdfUrl = new URL(mServerFileURL[i]);
+                        conn = (HttpURLConnection) pdfUrl.openConnection();
+                        int len = conn.getContentLength();
+                        byte[] tmpByte = new byte[len];
+                        is = conn.getInputStream();
+                        File file = new File(mContext.getFilesDir(), mFileName[i]);
+                        fos = new FileOutputStream(file);
+                        fos = openFileOutput(mFileName[i],Context.MODE_PRIVATE);
 
-                    for (; ; ) {
-                        Read = is.read(tmpByte);
-                        if (Read <= 0) {
-                            break;
+                        for (; ; ) {
+                            Read = is.read(tmpByte);
+                            if (Read <= 0) {
+                                break;
+                            }
+                            fos.write(tmpByte, 0, Read);
                         }
-                        fos.write(tmpByte, 0, Read);
                     }
                 }
 
@@ -357,8 +356,6 @@ public class ElectionManagerActivity extends AppCompatActivity
             if (type.equals("CHECK_MACADDRESS")) {
                 mIsExistMacAdd = (Boolean) re.get("RESULT");
                 mPwd = (String) re.get("PWD");
-                Log.d(TAG,"pdfpath : "+(String) re.get("PDFPATH"));
-                mServerFileURL = (String) re.get("PDFPATH");
                 ElectionManagerApp.getInstance().setDefaultAdm_Cd((String) re.get("ADM_CD"));
                 mClasscd = (String)re.get("CLASSCD");
                 mHandler.postDelayed(mSignUpAndLockScreen, 500);
@@ -366,14 +363,37 @@ public class ElectionManagerActivity extends AppCompatActivity
             } else if (type.equals("SELECTITEMS")) {
                 ElectionManagerApp.getInstance().setSelectItems(((JSONObject) re.get("SELECTITEMS")).toString());
                 ElectionManagerApp.getInstance().setSelectItemsCode(((JSONObject) re.get("SELECTITEMS_CODE")).toString());
+                JSONArray pdfPathArrays;
+                pdfPathArrays=(JSONArray)re.get("PDFPATHARRAYS");
+                Log.d(TAG,"onPostExecute SELECTITEMS pdfPathArrays : "+pdfPathArrays);
+                mPdfCount = pdfPathArrays.size();
+                mServerFileURL = new String[mPdfCount];
+                mFileName = new String[mPdfCount];
+                mFile = new File[mPdfCount];
+                for(int i=0; i<mPdfCount; i++ ) {
+                    String pdfpath = pdfPathArrays.get(i).toString();
+                    mServerFileURL[i] = pdfpath;
+                    int index = pdfpath.lastIndexOf("/");
+                    pdfpath = pdfpath.substring(index+1);
+                    mFileName[i] = pdfpath;
+                    mFile[i] = new File(this.getFilesDir(), mFileName[i]);
+                    Log.d(TAG,"onPostExecute SELECTITEMS mFile["+i+"].exists() : "+mFile[i].exists());
+                    if (mFile[i]!=null
+                            && !mFile[i].exists()) {
+                        AsyncTaskForFileDownLoad task = new AsyncTaskForFileDownLoad(this);
+                        task.execute();
+                    }
+                    Log.d(TAG,"pdfPath : "+pdfpath);
+                }
+                ((ElectionManagerApp)getApplication()).setFileName(mFileName);
                 mHandler.post(mMainCallrunnable);
             }
             boolean updatePdfFile = (Boolean) re.get("updatePdfFile");
             Log.d(TAG, "updatePdfFile : " + updatePdfFile);
             if(updatePdfFile
-                    || !(mFile.exists())) {
-                AsyncTaskForFileDownLoad task = new AsyncTaskForFileDownLoad(this);
-                task.execute();
+                    //|| !(mFile.exists())
+                    ) {
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -399,12 +419,7 @@ public class ElectionManagerActivity extends AppCompatActivity
                     //intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(intent);
                     finish();*/
-                    JSONObject json = new JSONObject();
-                    //json.put("TYPE", "SELECTITEMS2");
-                    json.put("TYPE", "SELECTITEMS");
-                    json.put("ADM_CD", ElectionManagerApp.getInstance().getDefaultAdm_Cd());
-                    json.put("CLASSCD", mClasscd);
-                    network_join(getString(R.string.server_url), json.toString());
+                    post_selectitems();
                     //network_join("http://192.168.0.6:8080/ElectionManager_server/MobileReq.jsp", json.toString());
                 } else {
                     Vibrator vr = (Vibrator) getSystemService(VIBRATOR_SERVICE);
@@ -420,6 +435,28 @@ public class ElectionManagerActivity extends AppCompatActivity
             }
         }
         setPinImage();
+    }
+
+    private void post_selectitems() {
+        JSONObject json = new JSONObject();
+        JSONArray jsonArry = new JSONArray();
+        Log.d(TAG,"post_selectitems() mFile : "+mFile);
+        if(mFile!=null) {
+            for (int i = 0; i < mFile.length; i++) {
+                if(mFile[i]!=null) {
+                    String md5sum = md5CheckSum(mFile[i], i);
+                    jsonArry.add(md5sum);
+                    Log.d(TAG,"post_selectitems md5sum : "+md5sum);
+                }
+            }
+        }
+        Log.d(TAG,"post_selectitems() jsonArry : "+jsonArry);
+        PhoneInfo phoneInfo = PhoneInfo.getInstance(getApplicationContext());
+        json.put("TYPE", "SELECTITEMS");
+        json.put("MACADDRESS", phoneInfo.getMacAddress());
+        json.put("ADM_CD", ElectionManagerApp.getInstance().getDefaultAdm_Cd());
+        json.put("CLASSCD", mClasscd);
+        network_join(getString(R.string.server_url), json.toString());
     }
 
     private void network_join(String url,String params) {
