@@ -257,21 +257,18 @@
 
         <TableRow
             android:id="@+id/wrapper_voteratesub_header"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:background="@color/tableTitleColor"
                 android:textColor="@color/black"
                 android:gravity="center"
                 android:text="구분" />
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:layout_marginLeft="1dp"
                 android:background="@color/tableTitleColor"
                 android:textColor="@color/black"
@@ -279,8 +276,7 @@
                 android:text="평균" />
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:layout_marginLeft="1dp"
                 android:background="@color/tableTitleColor"
                 android:textColor="@color/black"
@@ -288,8 +284,7 @@
                 android:text="6 지선" />
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:layout_marginLeft="1dp"
                 android:background="@color/tableTitleColor"
                 android:textColor="@color/black"
@@ -297,8 +292,7 @@
                 android:text="19 총선" />
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:layout_marginLeft="1dp"
                 android:background="@color/tableTitleColor"
                 android:textColor="@color/black"
@@ -306,8 +300,8 @@
                 android:text="18 대선" />
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:visibility="gone"
                 android:layout_marginLeft="1dp"
                 android:background="@color/tableTitleColor"
                 android:textColor="@color/black"
@@ -318,14 +312,13 @@
         <TableRow
             android:id="@+id/wrapper_voteratesub_sungugu"
             android:visibility="gone"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp">
 
             <TextView
                 android:id="@+id/voteratesub_sungugu"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:background="@color/white"
                 android:textColor="@color/tableValueTextColor"
                 android:gravity="center"
@@ -333,8 +326,7 @@
 
             <TextView
                 android:id="@+id/voteratesub_sungugu_avg"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:layout_marginLeft="1dp"
                 android:background="@color/white"
                 android:textColor="@color/tableValueTextColor"
@@ -343,8 +335,7 @@
 
             <TextView
                 android:id="@+id/voteratesub_sungugu_6th"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:layout_marginLeft="1dp"
                 android:background="@color/white"
                 android:textColor="@color/tableValueTextColor"
@@ -353,8 +344,7 @@
 
             <TextView
                 android:id="@+id/voteratesub_sungugu_19th"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:layout_marginLeft="1dp"
                 android:background="@color/white"
                 android:textColor="@color/tableValueTextColor"
@@ -363,8 +353,7 @@
 
             <TextView
                 android:id="@+id/voteratesub_sungugu_18th_1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:layout_marginLeft="1dp"
                 android:background="@color/white"
                 android:textColor="@color/tableValueTextColor"
@@ -373,8 +362,8 @@
 
             <TextView
                 android:id="@+id/voteratesub_sungugu_18th_2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:layout_weight="1"
                 android:layout_marginLeft="1dp"
                 android:background="@color/white"
                 android:textColor="@color/tableValueTextColor"
@@ -385,14 +374,13 @@
         <TableRow
             android:id="@+id/wrapper_voteratesub_haengjoung"
             android:visibility="gone"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp">
 
             <TextView
                 android:id="@+id/voteratesub_haengjoung"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:textColor="@color/tableValueTextColor"
                 android:background="@color/white"
                 android:gravity="center"
@@ -400,8 +388,7 @@
 
             <TextView
                 android:id="@+id/voteratesub_haengjoung_avg"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:layout_marginLeft="1dp"
                 android:background="@color/white"
                 android:textColor="@color/tableValueTextColor"
@@ -410,8 +397,7 @@
 
             <TextView
                 android:id="@+id/voteratesub_haengjoung_6th"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:layout_marginLeft="1dp"
                 android:background="@color/white"
                 android:textColor="@color/tableValueTextColor"
@@ -420,8 +406,7 @@
 
             <TextView
                 android:id="@+id/voteratesub_haengjoung_19th"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:layout_marginLeft="1dp"
                 android:background="@color/white"
                 android:textColor="@color/tableValueTextColor"
@@ -430,8 +415,7 @@
 
             <TextView
                 android:id="@+id/voteratesub_haengjoung_18th_1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:layout_marginLeft="1dp"
                 android:background="@color/white"
                 android:textColor="@color/tableValueTextColor"
@@ -440,8 +424,8 @@
 
             <TextView
                 android:id="@+id/voteratesub_haengjoung_18th_2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:layout_weight="1"
                 android:layout_marginLeft="1dp"
                 android:background="@color/white"
                 android:textColor="@color/tableValueTextColor"
@@ -452,14 +436,13 @@
         <TableRow
             android:id="@+id/wrapper_voteratesub_tupyogu"
             android:visibility="gone"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp">
 
             <TextView
                 android:id="@+id/voteratesub_tupyogu"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:textColor="@color/tableValueTextColor"
                 android:background="@color/white"
                 android:gravity="center"
@@ -467,8 +450,7 @@
 
             <TextView
                 android:id="@+id/voteratesub_tupyogu_avg"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:layout_marginLeft="1dp"
                 android:background="@color/white"
                 android:textColor="@color/tableValueTextColor"
@@ -477,8 +459,7 @@
 
             <TextView
                 android:id="@+id/voteratesub_tupyogu_6th"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:layout_marginLeft="1dp"
                 android:background="@color/white"
                 android:textColor="@color/tableValueTextColor"
@@ -487,8 +468,7 @@
 
             <TextView
                 android:id="@+id/voteratesub_tupyogu_19th"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:layout_marginLeft="1dp"
                 android:background="@color/white"
                 android:textColor="@color/tableValueTextColor"
@@ -497,8 +477,7 @@
 
             <TextView
                 android:id="@+id/voteratesub_tupyogu_18th_1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:layout_marginLeft="1dp"
                 android:background="@color/white"
                 android:textColor="@color/tableValueTextColor"
@@ -507,8 +486,8 @@
 
             <TextView
                 android:id="@+id/voteratesub_tupyogu_18th_2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:layout_weight="1"
                 android:layout_marginLeft="1dp"
                 android:background="@color/white"
                 android:textColor="@color/tableValueTextColor"
@@ -541,6 +520,223 @@
             android:textStyle="bold"
             android:textColor="@color/black"
             android:text="득표율 격차 분석(map)" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/saenuri_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/detail_selector_1"
+                android:background="@null"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:text="새누리기반" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/saejoungchi_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/detail_selector_1"
+                android:background="@null"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:text="새정치기반" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/proportion_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/detail_selector_1"
+                android:background="@null"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:text="기여율" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btn_19th_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/detail_selector_1"
+                android:background="@null"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:text="19대 총선 격차" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btn_19th_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/detail_selector_1"
+                android:background="@null"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:text="19대 총선 기여율" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="15dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/btn_19th_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/detail_selector_1"
+            android:background="@null"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:text="19대 새누리(정당 - 후보)" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="50dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/etc_btn_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/detail_selector_1"
+                android:background="@null"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:text="기타1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/etc_btn_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/detail_selector_1"
+                android:background="@null"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:text="기타2" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
