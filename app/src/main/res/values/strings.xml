@@ -29,7 +29,8 @@
     <string name="sungugu_jihyung_bunsuk">선거구 지형분석</string>
 
     <!--Woori research server.-->
-    <string name="server_url">http://222.122.149.161:7070/ElectionManager_server/MobileReq.jsp</string>
+    <!-- <string name="server_url">http://222.122.149.161:7070/ElectionManager_server/MobileReq.jsp</string> -->
+    <string name="server_url">http://172.30.84.175:8080/ElectionManager_server/MobileReq.jsp</string>
     <!--wrjeoung home. -->
     <!--<string name="server_url">http://192.168.0.57:8080/ElectionManager_server/MobileReq.jsp</string>-->
     <!--for starbucks. -->

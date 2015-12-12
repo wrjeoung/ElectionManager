@@ -156,21 +156,12 @@ public class NDialogActivity extends BaseActivity implements AdapterView.OnItemS
         String sigunguText = (String)((JSONArray)joText1.get("SIGUNGU")).get(sigunguIndex);
         String haengText = (String)((JSONArray)(joText2.get(sigunguText))).get(haengIndex);
 
+        setUpSpinner(mSp0, joText1.get("SIGUNGU").toString());
         mSp0.setSelection(sigunguIndex);
         setUpSpinner(mSp1, joText2.get(sigunguText).toString());
         mSp1.setSelection(haengIndex);
         setUpSpinner(mSp2, joText3.get(haengText).toString());
         mSp2.setSelection(tupyoguIndex);
-        Log.d("kjh","tupyoguIndex = "+tupyoguIndex);
-        /*
-        setUpSpinner(mSp0, ElectionManagerApp.getInstance().getSelectItemsObject().get("SIGUNGU").toString());
-        String sigungu = (String) mSp0.getSelectedItem();
-        JSONObject jo1 = (JSONObject) ElectionManagerApp.getInstance().getSelectItemsObject().get("HAENGJOUNGDONG");
-        setUpSpinner(mSp1, jo1.get(sigungu).toString());
-        String haengjoungdong = (String) mSp1.getSelectedItem();
-        JSONObject jo2 = (JSONObject) ElectionManagerApp.getInstance().getSelectItemsObject().get("TUPYOGU");
-        setUpSpinner(mSp2, jo2.get(haengjoungdong).toString());
-        */
     }
 
     private void setUpSpinner(Spinner spinner, String items) {
@@ -276,11 +267,12 @@ public class NDialogActivity extends BaseActivity implements AdapterView.OnItemS
         btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*
                 if(mInputType.equals(INPUT_TYPE_MEMO) && (mSp1.getSelectedItemPosition() == 0 || mSp2.getSelectedItemPosition() == 0)) {
                     errorNoti(mContext, getString(R.string.not_selected_tupyogu), false);
                     return;
                 }
-
+                */
                 String msg = mInputMsg.getText().toString();
                 if (TextUtils.isEmpty(msg)) {
                     errorNoti(mContext, getString(R.string.input_msg_empty), false);
