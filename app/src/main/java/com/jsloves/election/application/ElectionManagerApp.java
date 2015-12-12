@@ -12,9 +12,18 @@ import org.json.simple.parser.ParseException;
  */
 public class ElectionManagerApp extends Application {
     private static ElectionManagerApp instance;
+    private String mFileName[];
     private String selectItems= null;
     private String selectItemsCode = null;
     private String defaultAdm_Cd = null;
+
+    public String[] getFileName() {
+        return mFileName;
+    }
+
+    public void setFileName(String[] fileName) {
+        this.mFileName = fileName;
+    }
 
     public void setDefaultAdm_Cd(String adm_cd) {
         defaultAdm_Cd = adm_cd;

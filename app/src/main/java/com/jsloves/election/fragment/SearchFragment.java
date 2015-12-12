@@ -630,6 +630,8 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
             if(mNetStatus!=null && mNetStatus.isNetworkAvailible()) {
                 Intent intent = new Intent(getActivity(), PDFViewActivity.class);
+                String file[] = ((ElectionManagerApp)(getActivity().getApplication())).getFileName();
+                intent.putExtra("filename",file[sp1.getSelectedItemPosition()]);
                 String[] pages = v.getTag().toString().split(";");
 
                 int startPageNum = Integer.parseInt(pages[0]);
