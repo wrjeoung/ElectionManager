@@ -38,7 +38,8 @@ import java.io.File;
 public class PDFViewActivity extends Activity implements View.OnClickListener {
     private static final String TAG = PDFViewActivity.class.getSimpleName();
     private PDFView pdfView;
-    private String mFileName;
+    private String mSavedFilePath = "/sdcard/final.pdf";
+    private String mFileName = "final.pdf";
     private int mStartPageNum;
     private int mEndPageNum;
 
@@ -59,7 +60,6 @@ public class PDFViewActivity extends Activity implements View.OnClickListener {
         img_bt_l.setOnClickListener(this);
         img_bt_r.setOnClickListener(this);
         bt_e.setOnClickListener(this);
-        mFileName=getIntent().getStringExtra("filename");
         mStartPageNum = getIntent().getIntExtra("pdfStartPageNum", 1);
         mEndPageNum = getIntent().getIntExtra("pdfEndPageNum", 1);
 

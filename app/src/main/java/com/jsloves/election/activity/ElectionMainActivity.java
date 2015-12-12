@@ -65,7 +65,6 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
     private ActionBar mActionbar;
     private NetworkStatus mNetConn;
     private OnBackPressedListener mOnBackPressedListner;
-    private String mFileName[];
 
     public void setBackKeyListnerbyFragment(OnBackPressedListener obpl) {
         mOnBackPressedListner = obpl;

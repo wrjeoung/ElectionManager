@@ -45,8 +45,6 @@ import com.jsloves.election.DTO.FamilyDAO;
 import com.jsloves.election.DTO.PdfDAO;
 import com.jsloves.election.DTO.StatsDAO;
 import com.jsloves.election.DTO.VoteDAO;
-import com.jsloves.election.activity.ElectionMainActivity;
-import com.jsloves.election.activity.ElectionManagerActivity;
 import com.jsloves.election.activity.PDFViewActivity;
 import com.jsloves.election.activity.R;
 import com.jsloves.election.application.ElectionManagerApp;
@@ -344,6 +342,13 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         mVoteratesub_btnM = (ImageButton) view.findViewById(R.id.voteratesub_btnM);
         mVoteratesub_btnP = (ImageButton) view.findViewById(R.id.voteratesub_btnP);
 
+        mSaenuri_btn = (ImageButton) view.findViewById(R.id.saenuri_btn);
+        mSaejoungchi_btn = (ImageButton) view.findViewById(R.id.saejoungchi_btn);
+        mProportion_btn = (ImageButton) view.findViewById(R.id.proportion_btn);
+        m19th_1_btn = (ImageButton) view.findViewById(R.id.btn_19th_1);
+        m19th_2_btn = (ImageButton) view.findViewById(R.id.btn_19th_2);
+        m19th_3_btn = (ImageButton) view.findViewById(R.id.btn_19th_3);
+
         mWrapper_voteratesub_header = (TableRow) view.findViewById(R.id.wrapper_voteratesub_header);
         // sunggugu
         mWrapper_voteratesub_sungugu = (TableRow) view.findViewById(R.id.wrapper_voteratesub_sungugu);
@@ -625,9 +630,8 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
             if(mNetStatus!=null && mNetStatus.isNetworkAvailible()) {
                 Intent intent = new Intent(getActivity(), PDFViewActivity.class);
-                String file[] = ((ElectionManagerApp)(getActivity().getApplication())).getFileName();
-                intent.putExtra("filename",file[sp1.getSelectedItemPosition()]);
                 String[] pages = v.getTag().toString().split(";");
+
                 int startPageNum = Integer.parseInt(pages[0]);
                 int endPageNum = pages.length > 1 ? Integer.parseInt(pages[pages.length-1]) : startPageNum;
                 intent.putExtra("pdfStartPageNum",startPageNum);
@@ -949,8 +953,19 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 if(pdf_etc.equalsIgnoreCase("p")) {
                     mButton_memberOfHouseHold.setTag(pdf_page);
                 }
+            } else if(pdf_code.equals("B_32")) {
+                if(pdf_etc.equalsIgnoreCase("p")) {
+                    mSaenuri_btn.setTag(pdf_page);
+                }
+            } else if(pdf_code.equals("B_33")) {
+                if(pdf_etc.equalsIgnoreCase("p")) {
+                    mSaejoungchi_btn.setTag(pdf_page);
+                }
+            } else if(pdf_code.equals("B_31")) {
+                if(pdf_etc.equalsIgnoreCase("p")) {
+                    mProportion_btn.setTag(pdf_page);
+                }
             }
-
         }
     }
 
@@ -1119,7 +1134,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 switch (action) {
                     case MotionEvent.ACTION_DOWN:
                         // Disallow ScrollView to intercept touch events.
-                        if(mNetStatus!=null && mNetStatus.isNetworkAvailible()) {
+                        if (mNetStatus != null && mNetStatus.isNetworkAvailible()) {
                             v.getParent().requestDisallowInterceptTouchEvent(true);
                         } else {
                             mNetStatus.networkErrPopup();
@@ -1147,7 +1162,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
 
                 Log.d(TAG, "tupyoguStr = " + tupyoguStr + " ,adm_cd = " + adm_cd);
-                if(mNetStatus!=null && mNetStatus.isNetworkAvailible()) {
+                if (mNetStatus != null && mNetStatus.isNetworkAvailible()) {
                     areaSearch(adm_cd);
                 } else {
                     mNetStatus.networkErrPopup();
@@ -1160,6 +1175,10 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         mVoterate_btn.setOnClickListener(pdfOnCLick);
         mVoteratesub_btnM.setOnClickListener(pdfOnCLick);
         mVoteratesub_btnP.setOnClickListener(pdfOnCLick);
+
+        mSaenuri_btn.setOnClickListener(pdfOnCLick);
+        mSaejoungchi_btn.setOnClickListener(pdfOnCLick);
+        mProportion_btn.setOnClickListener(pdfOnCLick);
 
         mPerson = (ImageButton) view.findViewById(R.id.person);
         mPerson.setOnClickListener(pdfOnCLick);
@@ -1175,6 +1194,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         mButton_myhouse.setOnClickListener(pdfOnCLick);
         mButton_apt.setOnClickListener(pdfOnCLick);
         mButton_40m_over.setOnClickListener(pdfOnCLick);
+
 
         gpsSearchBtn = (ImageButton) view.findViewById(R.id.gpsSearch);
         gpsSearchBtn.setOnClickListener(new View.OnClickListener() {
