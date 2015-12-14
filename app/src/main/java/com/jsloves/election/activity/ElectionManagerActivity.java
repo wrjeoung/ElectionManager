@@ -25,11 +25,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.jsloves.election.application.ElectionManagerApp;
 import com.jsloves.election.fragment.AsyncFragment;
 import com.jsloves.election.fragment.AsyncListener;
 import com.jsloves.election.util.NetworkStatus;
 import com.jsloves.election.util.PhoneInfo;
+import com.jsloves.election.util.PreferenceManager;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -83,12 +85,15 @@ public class ElectionManagerActivity extends AppCompatActivity
     private int mPdfCount;
 
     private String mFileName[];
+    private boolean mUpdatePdfFile[];
+    private PreferenceManager mPreferenceManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         PhoneInfo phoneInfo = PhoneInfo.getInstance(this);
         mNetConn = new NetworkStatus(this);
+        mPreferenceManager = PreferenceManager.getInstance(this);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         Log.d("JS", "폰번호 : " + phoneInfo.getPhoneNumber() + " IMEI : " + phoneInfo.getImei() + " MacAddress : " + phoneInfo.getMacAddress());
@@ -256,7 +261,7 @@ public class ElectionManagerActivity extends AppCompatActivity
                 for(int i=0; i<mPdfCount; i++) {
                     Log.d(TAG, "doInBackground mServerFileURL["+i+"] :  "+ mServerFileURL[i]);
                     if ( mFile[i]!=null
-                            && !mFile[i].exists()
+                            && ( !mFile[i].exists() || mUpdatePdfFile[i])
                             && mServerFileURL[i]!=null) {
                         pdfUrl = new URL(mServerFileURL[i]);
                         conn = (HttpURLConnection) pdfUrl.openConnection();
@@ -363,28 +368,42 @@ public class ElectionManagerActivity extends AppCompatActivity
             } else if (type.equals("SELECTITEMS")) {
                 ElectionManagerApp.getInstance().setSelectItems(((JSONObject) re.get("SELECTITEMS")).toString());
                 ElectionManagerApp.getInstance().setSelectItemsCode(((JSONObject) re.get("SELECTITEMS_CODE")).toString());
-                JSONArray pdfPathArrays;
-                pdfPathArrays=(JSONArray)re.get("PDFPATHARRAYS");
-                Log.d(TAG,"onPostExecute SELECTITEMS pdfPathArrays : "+pdfPathArrays);
-                mPdfCount = pdfPathArrays.size();
+                JSONArray pdfInfoArrays;
+                pdfInfoArrays=(JSONArray)re.get("PDFINFOARRAYS");
+                Log.d(TAG,"onPostExecute SELECTITEMS pdfInfoArrays : "+pdfInfoArrays);
+                mPdfCount = pdfInfoArrays.size();
                 mServerFileURL = new String[mPdfCount];
                 mFileName = new String[mPdfCount];
                 mFile = new File[mPdfCount];
+                mUpdatePdfFile = new boolean[mPdfCount];
                 for(int i=0; i<mPdfCount; i++ ) {
-                    String pdfpath = pdfPathArrays.get(i).toString();
+                    JSONObject pdfFileInfo = (JSONObject)pdfInfoArrays.get(i);
+                    String pdfpath = (String)pdfFileInfo.get("PDFPATH");
+                    boolean updatePdfFile = (Boolean)pdfFileInfo.get("UPDATE_PDF_FILE");
+
                     mServerFileURL[i] = pdfpath;
                     int index = pdfpath.lastIndexOf("/");
                     pdfpath = pdfpath.substring(index+1);
                     mFileName[i] = pdfpath;
                     mFile[i] = new File(this.getFilesDir(), mFileName[i]);
+                    mUpdatePdfFile[i] = updatePdfFile;
                     Log.d(TAG,"onPostExecute SELECTITEMS mFile["+i+"].exists() : "+mFile[i].exists());
+                    Log.d(TAG,"onPostExecute SELECTITEMS updatePdfFile : "+updatePdfFile);
+                    Log.d(TAG,"onPostExecute SELECTITEMS fileName : "+mFileName[i]);
                     if (mFile[i]!=null
-                            && !mFile[i].exists()) {
+                            && (!mFile[i].exists()
+                                || updatePdfFile)
+                    ) {
                         AsyncTaskForFileDownLoad task = new AsyncTaskForFileDownLoad(this);
                         task.execute();
                     }
                     Log.d(TAG,"pdfPath : "+pdfpath);
                 }
+
+                Gson gson = new Gson();
+                String jsonData = gson.toJson(mFileName);
+                mPreferenceManager.setStringValue("FILE_NAME",jsonData);
+
                 ((ElectionManagerApp)getApplication()).setFileName(mFileName);
                 mHandler.post(mMainCallrunnable);
             }
@@ -440,7 +459,29 @@ public class ElectionManagerActivity extends AppCompatActivity
     private void post_selectitems() {
         JSONObject json = new JSONObject();
         JSONArray jsonArry = new JSONArray();
+        Gson gson = new Gson();
+        String fileName = mPreferenceManager.getStringValue("FILE_NAME", "");
+        if(fileName != null && fileName.length() > 0) {
+            String[] fileNames = gson.fromJson(fileName, String[].class);
+            int fileCount = fileNames.length;
+            mFile = new File[fileCount];
+            mFileName = new String[fileCount];
+            for(int i = 0; i < fileCount; i++) {
+                mFile[i] = new File(getFilesDir(), fileNames[i]);
+                if(mFile[i].exists()) {
+                    JSONObject fileJson = new JSONObject();
+                    mFileName[i] = fileNames[i];
+
+                    String md5sum = md5CheckSum(mFile[i], i);
+                    fileJson.put("FILE_NAME",fileNames[i]);
+                    fileJson.put("MD5SUM",md5sum);
+                    jsonArry.add(fileJson);
+                }
+            }
+        }
+
         Log.d(TAG,"post_selectitems() mFile : "+mFile);
+        /*
         if(mFile!=null) {
             for (int i = 0; i < mFile.length; i++) {
                 if(mFile[i]!=null) {
@@ -449,13 +490,14 @@ public class ElectionManagerActivity extends AppCompatActivity
                     Log.d(TAG,"post_selectitems md5sum : "+md5sum);
                 }
             }
-        }
+        }*/
         Log.d(TAG,"post_selectitems() jsonArry : "+jsonArry);
         PhoneInfo phoneInfo = PhoneInfo.getInstance(getApplicationContext());
         json.put("TYPE", "SELECTITEMS");
         json.put("MACADDRESS", phoneInfo.getMacAddress());
         json.put("ADM_CD", ElectionManagerApp.getInstance().getDefaultAdm_Cd());
         json.put("CLASSCD", mClasscd);
+        json.put("FILE_INFO",jsonArry);
         network_join(getString(R.string.server_url), json.toString());
     }
 
