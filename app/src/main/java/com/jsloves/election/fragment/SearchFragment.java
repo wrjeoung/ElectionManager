@@ -194,6 +194,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     // statistics of population.
     // avarage age.
     private LinearLayout mLwrraper_header_population;
+    private TextView mLwrraper_header_tv2;
     private LinearLayout mLwrraper_age;
     private ImageButton mButton_age;
     private TextView mTtupyogu_age;
@@ -647,6 +648,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
     private void initStatisticsOfpopulation(View view) {
         mLwrraper_header_population = (LinearLayout) view.findViewById(R.id.wrraper_header_population);
+        mLwrraper_header_tv2 = (TextView) view.findViewById(R.id.wrraper_header_tv2);
         mLwrraper_age = (LinearLayout) view.findViewById(R.id.wrraper_age);
         mButton_age = (ImageButton) view.findViewById(R.id.button_age);
         mButton_age.setBackgroundColor(Color.WHITE);
@@ -728,12 +730,16 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
         for (int i = 0; i < data.size(); i++) {
             StatsDAO sd = gs.fromJson((String) data.get(i), StatsDAO.class);
+            int level = sd.getLevel();
+            String headerText = level < 3 ? "행정동" : "투표구";
+
             switch (i) {
                 case 0:
+                    mLwrraper_header_tv2.setText(headerText);
                     mTsungugu_age.setText(String.valueOf(sd.getAge_avg()));
                     mTsungugu_wife.setText(String.valueOf(sd.getPartner_yn()));
                     mTsungugu_univercity.setText(String.valueOf(sd.getUniv_over()));
-                    mTsungugu_population.setText(String.valueOf(sd.getPop_dnsity()));
+                    mTsungugu_population.setText(get_Number(String.valueOf(sd.getPop_dnsity())));
                     mTsungugu_ageing.setText(String.valueOf(sd.getAged_child_ratio()));
                     mTsungugu_dependency.setText(String.valueOf(sd.getChildhood_alimony()));
 
@@ -743,10 +749,11 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                     Log.d(TAG, "setDataStatisticsOfpopulation sd.getPop_dnsity() : " + sd.getPop_dnsity());
                     break;
                 case 1:
+                    mLwrraper_header_tv2.setText(headerText);
                     mTtupyogu_age.setText(String.valueOf(sd.getAge_avg()));
                     mTtupyogu_wife.setText(String.valueOf(sd.getPartner_yn()));
                     mTtupyogu_univercity.setText(String.valueOf(sd.getUniv_over()));
-                    mTtupyogu_population.setText(String.valueOf(sd.getPop_dnsity()));
+                    mTtupyogu_population.setText(get_Number(String.valueOf(sd.getPop_dnsity())));
                     mTtupyogu_ageing.setText(String.valueOf(sd.getChildhood_alimony()));
                     mTtupyogu_dependency.setText(String.valueOf(sd.getChildhood_alimony()));
                     break;
