@@ -14,6 +14,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.os.Vibrator;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -57,12 +58,16 @@ public class ElectionManagerActivity extends AppCompatActivity
         , com.jsloves.election.view.KeyPadLayout.KeyPadListener {
     public static final String TAG = ElectionManagerActivity.class.getSimpleName();
 
+    private static final int SIGNUP_AND_LOCKSCREEN = 1;
+    private static final int RESET_PASSWORD = 2;
+    private static final int MAIN = 3;
+    private static final int MD5SUM_CHECK_FINISH = 4;
+
     private TextView mTvPass;
     public static final String ASYNC = "async";
     private ProgressDialog mDialog;
     private boolean mIsExistMacAdd = false;
     private String mClasscd;
-    private Handler mHandler = new Handler();
     private String mPwd = "";
     private String lockPassword = "";
     private ImageView inputPassBox1;
@@ -78,8 +83,6 @@ public class ElectionManagerActivity extends AppCompatActivity
     private boolean isCheckPassWord() {
         return lockPassword.equals(mPwd);
     }
-
-    private Runnable mSignUpAndLockScreen, mMainCallrunnable = null;
 
     private File mFile[];
     private int mPdfCount;
@@ -104,56 +107,8 @@ public class ElectionManagerActivity extends AppCompatActivity
 //        json.put("existsPdfAtclient",mFile.exists());
         json.put("TYPE", "CHECK_MACADDRESS");
         json.put("IMEI", phoneInfo.getMacAddress());
-        json.put("MD5SUM",md5chekSum);
+        json.put("MD5SUM", md5chekSum);
         network_join(getString(R.string.server_url), json.toString());
-
-        mSignUpAndLockScreen = new Runnable() {
-            @Override
-            public boolean equals(Object o) {
-                return super.equals(o);
-            }
-
-            @Override
-            public void run() {
-                Log.d(TAG,"exist macAdd : "+mIsExistMacAdd);
-                Log.d(TAG,"mClasscd : "+mClasscd);
-
-                if (mIsExistMacAdd) {
-                    SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
-                    Boolean no_question_pass = pref.getBoolean("no_question_pass",false);
-                    Log.d(TAG,"no_question_pass : "+no_question_pass);
-
-                    if(isAuthorizedUser()) {
-                        if (no_question_pass) {
-                            post_selectitems();
-                            //network_join("http://192.168.0.6:8080/ElectionManager_server/MobileReq.jsp", json.toString());
-                        } else {
-                            setContentView(R.layout.layout_lock_screen_activity);
-                            initView();
-                        }
-                    } else {
-                        Toast toast = Toast.makeText(getApplicationContext(),"관리자의 승인이 필요합니다.\r\n승인 완료 후 접속해주세요",Toast.LENGTH_LONG);
-                        toast.show();
-                        finish();
-                    }
-
-                } else {
-                    Intent intent = new Intent(ElectionManagerActivity.this, JoinActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-            }
-        };
-
-        mMainCallrunnable = new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(ElectionManagerActivity.this, ElectionHomeActivity.class);
-                //intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
-                finish();
-            }
-        };
     }
     // ZZZ 는 승인되지 않은 초기 사용자 코드.
     private boolean isAuthorizedUser() {
@@ -163,7 +118,7 @@ public class ElectionManagerActivity extends AppCompatActivity
             return false;
     }
 
-    private String md5CheckSum(File file, int index)
+    private String md5CheckSum(int index)
     {
         String result=null;
         FileInputStream fis=null;
@@ -213,19 +168,52 @@ public class ElectionManagerActivity extends AppCompatActivity
         return result;
     }
 
-
-    private Runnable mRunnable = new Runnable() {
-        @Override
-        public void run() {
-            lockPassword = "";
-            setPinImage();
-        }
-    };
-
     @Override
     protected void onResume() {
         super.onResume();
 
+    }
+
+    private class AsyncTaskForMd5kSumCheck extends AsyncTask<Void, Void, JSONArray> {
+        private int mFileCount;
+
+        public AsyncTaskForMd5kSumCheck(int fileCount) {
+            mFileCount = fileCount;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            Log.d(TAG, "AsyncTaskForMd5kSumCheck onPreExecute");
+            if (mDialog == null) {
+                prepareProgressDialog();
+            }
+            mDialog.show();
+        }
+
+        @Override
+        protected JSONArray doInBackground(Void... params) {
+            Log.d(TAG, "AsyncTaskForMd5kSumCheck doinBackground");
+            JSONArray jsonArry = new JSONArray();
+
+            for(int i = 0 ; i < mFileCount; i++) {
+                if(mFileName[i] != null && mFileName[i].length() > 0) {
+                    JSONObject fileJson = new JSONObject();
+                    String md5Sum = md5CheckSum(i);
+                    fileJson.put("FILE_NAME",mFileName[i]);
+                    fileJson.put("MD5SUM",md5Sum);
+                    jsonArry.add(fileJson);
+                }
+            }
+            return jsonArry;
+        }
+
+        @Override
+        protected void onPostExecute(JSONArray jsonArray) {
+            Message message = Message.obtain();
+            message.obj = jsonArray;
+            message.what = MD5SUM_CHECK_FINISH;
+            mHandler.sendMessage(message);
+        }
     }
 
     private class AsyncTaskForFileDownLoad extends AsyncTask {
@@ -242,7 +230,10 @@ public class ElectionManagerActivity extends AppCompatActivity
             if (mDialog == null) {
                 prepareProgressDialog();
             }
-            mDialog.show();
+
+            if(!mDialog.isShowing()) {
+                mDialog.show();
+            }
         }
 
         @Override
@@ -310,6 +301,68 @@ public class ElectionManagerActivity extends AppCompatActivity
         }
     }
 
+    private final Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch(msg.what) {
+                case SIGNUP_AND_LOCKSCREEN :
+                    Log.d(TAG, "exist macAdd : " + mIsExistMacAdd);
+                    Log.d(TAG, "mClasscd : " + mClasscd);
+
+                    if (mIsExistMacAdd) {
+                        SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
+                        Boolean no_question_pass = pref.getBoolean("no_question_pass",false);
+                        Log.d(TAG,"no_question_pass : "+no_question_pass);
+
+                        if(isAuthorizedUser()) {
+                            if (no_question_pass) {
+                                String fileNames = mPreferenceManager.getStringValue("FILE_NAME", "");
+                                if(fileNames != null && fileNames.length() > 0) {
+                                    md5SumCheck(fileNames);
+                                } else {
+                                    post_selectitems();
+                                }
+                                //network_join("http://192.168.0.6:8080/ElectionManager_server/MobileReq.jsp", json.toString());
+                            } else {
+                                setContentView(R.layout.layout_lock_screen_activity);
+                                initView();
+                            }
+                        } else {
+                            Toast toast = Toast.makeText(getApplicationContext(),"관리자의 승인이 필요합니다.\r\n승인 완료 후 접속해주세요",Toast.LENGTH_LONG);
+                            toast.show();
+                            finish();
+                        }
+
+                    } else {
+                        Intent intent = new Intent(ElectionManagerActivity.this, JoinActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                    break;
+
+                case RESET_PASSWORD :
+                    lockPassword = "";
+                    setPinImage();
+                    break;
+
+                case MAIN:
+                    Intent intent = new Intent(ElectionManagerActivity.this, ElectionHomeActivity.class);
+                    //intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intent);
+                    finish();
+                    break;
+
+                case MD5SUM_CHECK_FINISH :
+                    JSONArray jArray = (JSONArray)msg.obj;
+                    post_selectitems(jArray);
+                    break;
+
+                default :
+                    break;
+            }
+        }
+    };
+
     private void prepareProgressDialog() {
         mDialog = new ProgressDialog(this);
         mDialog.setMessage("Please wait...");
@@ -339,7 +392,11 @@ public class ElectionManagerActivity extends AppCompatActivity
         if (mDialog == null) {
             prepareProgressDialog();
         }
-        mDialog.show();
+
+        if(!mDialog.isShowing()) {
+            mDialog.show();
+        }
+
     }
 
     @Override
@@ -363,8 +420,7 @@ public class ElectionManagerActivity extends AppCompatActivity
                 mPwd = (String) re.get("PWD");
                 ElectionManagerApp.getInstance().setDefaultAdm_Cd((String) re.get("ADM_CD"));
                 mClasscd = (String)re.get("CLASSCD");
-                mHandler.postDelayed(mSignUpAndLockScreen, 500);
-
+                mHandler.sendEmptyMessageDelayed(SIGNUP_AND_LOCKSCREEN, 500);
             } else if (type.equals("SELECTITEMS")) {
                 ElectionManagerApp.getInstance().setSelectItems(((JSONObject) re.get("SELECTITEMS")).toString());
                 ElectionManagerApp.getInstance().setSelectItemsCode(((JSONObject) re.get("SELECTITEMS_CODE")).toString());
@@ -404,15 +460,8 @@ public class ElectionManagerActivity extends AppCompatActivity
                 String jsonData = gson.toJson(mFileName);
                 mPreferenceManager.setStringValue("FILE_NAME",jsonData);
 
-                ((ElectionManagerApp)getApplication()).setFileName(mFileName);
-                mHandler.post(mMainCallrunnable);
-            }
-            boolean updatePdfFile = (Boolean) re.get("updatePdfFile");
-            Log.d(TAG, "updatePdfFile : " + updatePdfFile);
-            if(updatePdfFile
-                    //|| !(mFile.exists())
-                    ) {
-
+                ((ElectionManagerApp) getApplication()).setFileName(mFileName);
+                mHandler.sendEmptyMessage(MAIN);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -438,14 +487,19 @@ public class ElectionManagerActivity extends AppCompatActivity
                     //intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(intent);
                     finish();*/
-                    post_selectitems();
+                    String fileNames = mPreferenceManager.getStringValue("FILE_NAME", "");
+                    if(fileNames != null && fileNames.length() > 0) {
+                        md5SumCheck(fileNames);
+                    } else {
+                        post_selectitems();
+                    }
                     //network_join("http://192.168.0.6:8080/ElectionManager_server/MobileReq.jsp", json.toString());
                 } else {
                     Vibrator vr = (Vibrator) getSystemService(VIBRATOR_SERVICE);
                     vr.vibrate(700);
                     mTvPass.setTextColor(Color.parseColor("#ff4444"));
                     mTvPass.setText("암호가 일치하지 않습니다.");
-                    mHandler.postDelayed(mRunnable, 700);
+                    mHandler.sendEmptyMessageDelayed(RESET_PASSWORD,700);
                 }
             }
         } else {
@@ -456,48 +510,45 @@ public class ElectionManagerActivity extends AppCompatActivity
         setPinImage();
     }
 
-    private void post_selectitems() {
-        JSONObject json = new JSONObject();
-        JSONArray jsonArry = new JSONArray();
+    private void md5SumCheck(String fileName) {
+        if(fileName == null || fileName.length() < 1) {
+            return;
+        }
         Gson gson = new Gson();
-        String fileName = mPreferenceManager.getStringValue("FILE_NAME", "");
-        if(fileName != null && fileName.length() > 0) {
-            String[] fileNames = gson.fromJson(fileName, String[].class);
-            int fileCount = fileNames.length;
-            mFile = new File[fileCount];
-            mFileName = new String[fileCount];
-            for(int i = 0; i < fileCount; i++) {
-                mFile[i] = new File(getFilesDir(), fileNames[i]);
-                if(mFile[i].exists()) {
-                    JSONObject fileJson = new JSONObject();
-                    mFileName[i] = fileNames[i];
+        String[] fileNameArray = gson.fromJson(fileName, String[].class);
+        int fileCount = fileNameArray.length;
 
-                    String md5sum = md5CheckSum(mFile[i], i);
-                    fileJson.put("FILE_NAME",fileNames[i]);
-                    fileJson.put("MD5SUM",md5sum);
-                    jsonArry.add(fileJson);
-                }
+        mFileName = new String[fileCount];
+        for(int i = 0 ; i < fileCount; i++) {
+            File file = new File(getFilesDir(), fileNameArray[i]);
+            if(file.exists()) {
+                mFileName[i] = fileNameArray[i];
             }
         }
+        new AsyncTaskForMd5kSumCheck(fileCount).execute();
+    }
 
-        Log.d(TAG,"post_selectitems() mFile : "+mFile);
-        /*
-        if(mFile!=null) {
-            for (int i = 0; i < mFile.length; i++) {
-                if(mFile[i]!=null) {
-                    String md5sum = md5CheckSum(mFile[i], i);
-                    jsonArry.add(md5sum);
-                    Log.d(TAG,"post_selectitems md5sum : "+md5sum);
-                }
-            }
-        }*/
-        Log.d(TAG,"post_selectitems() jsonArry : "+jsonArry);
+    private void post_selectitems(JSONArray jArray) {
+        JSONObject json = new JSONObject();
+
         PhoneInfo phoneInfo = PhoneInfo.getInstance(getApplicationContext());
         json.put("TYPE", "SELECTITEMS");
         json.put("MACADDRESS", phoneInfo.getMacAddress());
         json.put("ADM_CD", ElectionManagerApp.getInstance().getDefaultAdm_Cd());
         json.put("CLASSCD", mClasscd);
-        json.put("FILE_INFO",jsonArry);
+        json.put("FILE_INFO",jArray);
+        network_join(getString(R.string.server_url), json.toString());
+    }
+
+    private void post_selectitems() {
+        JSONObject json = new JSONObject();
+
+        Log.d(TAG, "post_selectitems() mFile : "+mFile);
+        PhoneInfo phoneInfo = PhoneInfo.getInstance(getApplicationContext());
+        json.put("TYPE", "SELECTITEMS");
+        json.put("MACADDRESS", phoneInfo.getMacAddress());
+        json.put("ADM_CD", ElectionManagerApp.getInstance().getDefaultAdm_Cd());
+        json.put("CLASSCD", mClasscd);
         network_join(getString(R.string.server_url), json.toString());
     }
 
