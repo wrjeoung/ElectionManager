@@ -194,7 +194,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     // statistics of population.
     // avarage age.
     private LinearLayout mLwrraper_header_population;
-    private TextView mLwrraper_header_tv2;
+    private TextView mLwrraper_header_population_tv2;
     private LinearLayout mLwrraper_age;
     private ImageButton mButton_age;
     private TextView mTtupyogu_age;
@@ -227,6 +227,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
     // statistics of memberOfHouseHold
     private LinearLayout mLwrraper_header_familly;
+    private TextView mLwrraper_header_familly_tv2;
     private LinearLayout mLwrraper_one_man;
     private ImageButton mButton_one_man;
     private TextView mTtupyogu_one_man;
@@ -648,7 +649,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
     private void initStatisticsOfpopulation(View view) {
         mLwrraper_header_population = (LinearLayout) view.findViewById(R.id.wrraper_header_population);
-        mLwrraper_header_tv2 = (TextView) view.findViewById(R.id.wrraper_header_tv2);
+        mLwrraper_header_population_tv2 = (TextView) view.findViewById(R.id.wrraper_header_population_tv2);
         mLwrraper_age = (LinearLayout) view.findViewById(R.id.wrraper_age);
         mButton_age = (ImageButton) view.findViewById(R.id.button_age);
         mButton_age.setBackgroundColor(Color.WHITE);
@@ -735,7 +736,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
             switch (i) {
                 case 0:
-                    mLwrraper_header_tv2.setText(headerText);
+                    mLwrraper_header_population_tv2.setText(headerText);
                     mTsungugu_age.setText(String.valueOf(sd.getAge_avg()));
                     mTsungugu_wife.setText(String.valueOf(sd.getPartner_yn()));
                     mTsungugu_univercity.setText(String.valueOf(sd.getUniv_over()));
@@ -749,7 +750,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                     Log.d(TAG, "setDataStatisticsOfpopulation sd.getPop_dnsity() : " + sd.getPop_dnsity());
                     break;
                 case 1:
-                    mLwrraper_header_tv2.setText(headerText);
+                    mLwrraper_header_population_tv2.setText(headerText);
                     mTtupyogu_age.setText(String.valueOf(sd.getAge_avg()));
                     mTtupyogu_wife.setText(String.valueOf(sd.getPartner_yn()));
                     mTtupyogu_univercity.setText(String.valueOf(sd.getUniv_over()));
@@ -775,6 +776,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
     private void initStatisticsOfFamily(View view) {
         mLwrraper_header_familly = (LinearLayout) view.findViewById(R.id.wrraper_header_familly);
+        mLwrraper_header_familly_tv2 = (TextView) view.findViewById(R.id.wrraper_header_familly_tv2);
         mLwrraper_one_man = (LinearLayout) view.findViewById(R.id.wrraper_one_man);
         mButton_one_man = (ImageButton) view.findViewById(R.id.button_one_man);
         mButton_one_man.setBackgroundColor(Color.WHITE);
@@ -856,8 +858,12 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
 
         for (int i = 0; i < data.size(); i++) {
             FamilyDAO fd = gs.fromJson((String) data.get(i), FamilyDAO.class);
+            int level = fd.getLevel();
+            String headerText = level < 3 ? "행정동" : "투표구";
+
             switch (i) {
                 case 0:
+                    mLwrraper_header_familly_tv2.setText(headerText);
                     mTsungugu_one_man.setText(String.valueOf(fd.getFamily_one()));
                     mTsungugu_two_more.setText(String.valueOf(fd.getFamily_two_over()));
                     mTsungugu_myhouse.setText(String.valueOf(fd.getMyhome_ratio()));
@@ -866,6 +872,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                     mTsungugu_memberOfHouseHold.setText(String.valueOf(fd.getFamily_avg()));
                     break;
                 case 1:
+                    mLwrraper_header_familly_tv2.setText(headerText);
                     mTtupyogu_one_man.setText(String.valueOf(fd.getFamily_one()));
                     mTtupyogu_two_more.setText(String.valueOf(fd.getFamily_two_over()));
                     mTtupyogu_myhouse.setText(String.valueOf(fd.getMyhome_ratio()));

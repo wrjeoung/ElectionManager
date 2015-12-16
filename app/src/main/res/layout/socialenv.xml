@@ -486,7 +486,7 @@
             android:text="구분" />
 
         <TextView
-            android:id="@+id/wrraper_header_tv2"
+            android:id="@+id/wrraper_header_population_tv2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginTop="1dp"
@@ -853,7 +853,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/black"
                 android:paddingBottom="3dip"
-                android:text="가구통계(투표구)"/>
+                android:text="가구통계(구역)"/>
         </LinearLayout>
    </LinearLayout>
 
@@ -862,7 +862,7 @@
         android:id="@+id/wrraper_header_familly"
         android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginLeft="47dp"
         android:layout_marginTop="5dp"
         android:background="@color/tableBgColor"
@@ -881,6 +881,7 @@
             android:text="구분" />
 
         <TextView
+            android:id="@+id/wrraper_header_familly_tv2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginTop="1dp"
@@ -1136,7 +1137,7 @@
             android:background="@color/white"
             android:textColor="@color/tableValueTextColor"
             android:gravity="center"
-            android:text="40m" />
+            android:text="40㎡" />
 
         <TextView
             android:id="@+id/tupyogu_40m_over"
