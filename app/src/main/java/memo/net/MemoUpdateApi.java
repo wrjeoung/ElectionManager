@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.jsloves.election.net.RestApiProvider;
+
 import org.apache.http.entity.mime.MultipartEntity;
 
 import java.util.ArrayList;
@@ -36,7 +38,7 @@ public class MemoUpdateApi extends AsyncTask<Void, Void, MultipartResponse> {
         mContext = context;
         mMemoListener = listener;
 
-        mUrl = "http://222.122.149.161:7070/ElectionManager_server/MemoServlet?Type=Update";
+        mUrl = RestApiProvider.API_MEMO_URL+"?Type=Update";
         //mUrl = "http://10.11.1.164:8080/ElectionManager_server/MemoServlet?Type=Update";
         mMemo = memo;
         mTag = tag;

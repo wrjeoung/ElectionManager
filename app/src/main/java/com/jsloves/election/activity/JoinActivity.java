@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.jsloves.election.fragment.AsyncFragment;
 import com.jsloves.election.fragment.AsyncListener;
+import com.jsloves.election.net.RestApiProvider;
 import com.jsloves.election.util.NetworkStatus;
 
 import org.json.simple.JSONArray;
@@ -159,7 +160,7 @@ public class JoinActivity extends AppCompatActivity implements AsyncListener<Int
                         jo.put("TYPE","MODIFYPASS");
                         jo.put("PASS",pass);
                         jo.put("MACADD",mac);
-                        network_join(getString(R.string.server_url), jo.toString());
+                        network_join(RestApiProvider.API_COMMON_URL, jo.toString());
                     }
                 }
             });
@@ -188,7 +189,7 @@ public class JoinActivity extends AppCompatActivity implements AsyncListener<Int
                             }
 
                             System.out.println("[IDCHECK] before http call");
-                            network_join(getString(R.string.server_url), jo1.toString());
+                            network_join(RestApiProvider.API_COMMON_URL, jo1.toString());
                             System.out.println("[IDCHECK] after http call");
 
                         } catch (Exception e) {
@@ -247,7 +248,7 @@ public class JoinActivity extends AppCompatActivity implements AsyncListener<Int
                             }
 
                             System.out.println("[JOIN] before http call");
-                            network_join(getString(R.string.server_url), jo1.toString());
+                            network_join(RestApiProvider.API_COMMON_URL, jo1.toString());
                             System.out.println("[JOIN] after http call");
 
                         } catch (Exception e) {

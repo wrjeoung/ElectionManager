@@ -32,6 +32,7 @@ import com.jsloves.election.activity.R;
 import com.jsloves.election.adapter.BusinessListAdapter;
 import com.jsloves.election.application.ElectionManagerApp;
 import com.jsloves.election.layout.DataClass;
+import com.jsloves.election.net.RestApiProvider;
 import com.jsloves.election.util.HttpConnection;
 import com.jsloves.election.util.NetworkStatus;
 
@@ -233,7 +234,7 @@ public class BusinessListFragment extends Fragment implements AdapterView.OnItem
     private void requestBKInfo() {
         JSONObject json1 = new JSONObject();
         json1.put("TYPE", "BUSINESSKIND");
-        excuteTask(getString(R.string.server_url), json1.toString());
+        excuteTask(RestApiProvider.API_COMMON_URL, json1.toString());
         //excuteTask("http://192.168.0.6:8080/ElectionManager_server/MobileReq.jsp", json1.toString());
     }
 
@@ -246,7 +247,7 @@ public class BusinessListFragment extends Fragment implements AdapterView.OnItem
         String[] array = {sigungu, haengjoungdong, tupyoguStr};
         String adm_cd = ElectionManagerApp.getInstance().getTupyoguCode(array);
         json1.put("ADM_CD", adm_cd);
-        excuteTask(getString(R.string.server_url), json1.toString());
+        excuteTask(RestApiProvider.API_COMMON_URL, json1.toString());
         //excuteTask("http://192.168.0.6:8080/ElectionManager_server/MobileReq.jsp", json1.toString());
     }
 

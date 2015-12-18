@@ -22,6 +22,7 @@ import android.webkit.WebViewClient;
 import com.jsloves.election.activity.ElectionMainActivity;
 import com.jsloves.election.activity.R;
 import com.jsloves.election.common.OnBackPressedListener;
+import com.jsloves.election.policy.AppPolicy;
 import com.jsloves.election.util.NetworkStatus;
 
 /**
@@ -131,7 +132,7 @@ public class BusinessDetailFragment extends Fragment implements OnBackPressedLis
                 }
             });
 
-            myWebview.loadUrl("http://222.122.149.161:7070/ElectionManager_server/BusinessInfoDetail.jsp?bn_seq=" + business_seq);
+            myWebview.loadUrl(AppPolicy.URI_SERVER+"/BusinessInfoDetail.jsp?bn_seq=" + business_seq);
         } else {
             mNetConn.networkErrPopup();
         }

@@ -32,6 +32,6 @@ public class MemoDeleteApi extends BaseApi {
 
     @Override
     public String getPath() {
-        return "/ElectionManager_server/MemoServlet";
+        return "/MemoServlet";
     }
 }

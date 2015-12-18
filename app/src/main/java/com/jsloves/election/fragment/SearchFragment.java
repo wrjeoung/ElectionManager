@@ -48,6 +48,8 @@ import com.jsloves.election.DTO.VoteDAO;
 import com.jsloves.election.activity.PDFViewActivity;
 import com.jsloves.election.activity.R;
 import com.jsloves.election.application.ElectionManagerApp;
+import com.jsloves.election.net.RestApiProvider;
+import com.jsloves.election.policy.AppPolicy;
 import com.jsloves.election.util.GeoPoint;
 import com.jsloves.election.util.GeoTrans;
 import com.jsloves.election.util.GpsInfo;
@@ -1024,7 +1026,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         public void onPageFinished(WebView view, String url) {
             Log.d(TAG,"onPageFinished() isAdded() : "+isAdded());
             if(isAdded()) {
-                if (url.equals(getString(R.string.mapView_url))) {
+                if (url.equals(AppPolicy.URI_SERVER+"/areaMap.jsp")) {
                     mPageLoadFinished = true;
                 }
 
@@ -1062,11 +1064,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         Log.d(TAG, "areaSearch jo : " + jo);
 
         //excuteTask(getString(R.string.server_url), jo.toString());
-        excuteTask(getString(R.string.server_url), jo.toString());
-        /*myWebview.loadUrl("javascript:drawMap('" + jo.toString() + "')");
-        if(myWebview.getVisibility()!= View.VISIBLE)
-            myWebview.setVisibility(View.VISIBLE);
-        */
+        excuteTask(RestApiProvider.API_COMMON_URL, jo.toString());
     }
 
     public void tupyoguClickByRightMenu(String sigungu, String hanjungdong, String tupyogu) {
@@ -1141,7 +1139,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         mPageLoadFinished = false;
         mMapdata = null;
 
-        myWebview.loadUrl(getString(R.string.mapView_url));
+        myWebview.loadUrl(AppPolicy.URI_SERVER+"/areaMap.jsp");
         myWebview.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -1290,7 +1288,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         //cox = 943731.0; coy = 1947957.0; // haengjoungdong
         json.put("COX", point.getX());
         json.put("COY", point.getY());
-        excuteTask(getString(R.string.server_url), json.toString());
+        excuteTask(RestApiProvider.API_COMMON_URL, json.toString());
 
         //excuteTask(url, json.toString());
     }

@@ -31,6 +31,7 @@ import com.jsloves.election.activity.R;
 import com.jsloves.election.application.ElectionManagerApp;
 import com.jsloves.election.layout.CustomBaseAdapter;
 import com.jsloves.election.layout.DataClass;
+import com.jsloves.election.net.RestApiProvider;
 import com.jsloves.election.util.HttpConnection;
 import com.jsloves.election.util.NetworkStatus;
 
@@ -244,7 +245,7 @@ public class OrganIntroFragment extends Fragment implements OnItemSelectedListen
                     Log.d("lcy", adm_cd);
 
                     //excuteTask("http://192.168.42.189:8080/ElectionManager_server/MobileReq.jsp", json1.toString());
-                    excuteTask(getString(R.string.server_url), json1.toString());
+                    excuteTask(RestApiProvider.API_COMMON_URL, json1.toString());
                 } else {
                     mNetConn.networkErrPopup();
                 }

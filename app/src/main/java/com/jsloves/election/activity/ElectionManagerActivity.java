@@ -30,6 +30,7 @@ import com.google.gson.Gson;
 import com.jsloves.election.application.ElectionManagerApp;
 import com.jsloves.election.fragment.AsyncFragment;
 import com.jsloves.election.fragment.AsyncListener;
+import com.jsloves.election.net.RestApiProvider;
 import com.jsloves.election.util.NetworkStatus;
 import com.jsloves.election.util.PhoneInfo;
 import com.jsloves.election.util.PreferenceManager;
@@ -108,7 +109,7 @@ public class ElectionManagerActivity extends AppCompatActivity
         json.put("TYPE", "CHECK_MACADDRESS");
         json.put("IMEI", phoneInfo.getMacAddress());
         json.put("MD5SUM", md5chekSum);
-        network_join(getString(R.string.server_url), json.toString());
+        network_join(RestApiProvider.API_COMMON_URL, json.toString());
     }
     // ZZZ 는 승인되지 않은 초기 사용자 코드.
     private boolean isAuthorizedUser() {
@@ -537,7 +538,7 @@ public class ElectionManagerActivity extends AppCompatActivity
         json.put("ADM_CD", ElectionManagerApp.getInstance().getDefaultAdm_Cd());
         json.put("CLASSCD", mClasscd);
         json.put("FILE_INFO",jArray);
-        network_join(getString(R.string.server_url), json.toString());
+        network_join(RestApiProvider.API_COMMON_URL, json.toString());
     }
 
     private void post_selectitems() {
@@ -549,7 +550,7 @@ public class ElectionManagerActivity extends AppCompatActivity
         json.put("MACADDRESS", phoneInfo.getMacAddress());
         json.put("ADM_CD", ElectionManagerApp.getInstance().getDefaultAdm_Cd());
         json.put("CLASSCD", mClasscd);
-        network_join(getString(R.string.server_url), json.toString());
+        network_join(RestApiProvider.API_COMMON_URL, json.toString());
     }
 
     private void network_join(String url,String params) {

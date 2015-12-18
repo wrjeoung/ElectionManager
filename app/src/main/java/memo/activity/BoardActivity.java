@@ -23,6 +23,7 @@ import com.google.gson.reflect.TypeToken;
 import com.jsloves.election.DTO.ImageInfoDTO;
 import com.jsloves.election.activity.R;
 import com.jsloves.election.application.ElectionManagerApp;
+import com.jsloves.election.policy.AppPolicy;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersTouchListener;
 
@@ -336,7 +337,7 @@ public class BoardActivity extends BaseActivity implements AdapterView.OnItemSel
                     newMemo.contents = "";
                 }
 
-                String imgUrl = "http://222.122.149.161:7070/ElectionManager_server/memo_upload/" + memo.imgFileList.get(nImgCount).imgUrl;
+                String imgUrl = AppPolicy.URI_SERVER+"/memo_upload/" + memo.imgFileList.get(nImgCount).imgUrl;
                 newMemo.imgShow = imgUrl;
                 newData.add(newMemo);
                 nImgCount++;
