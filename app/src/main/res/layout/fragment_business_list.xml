@@ -58,9 +58,10 @@
                     android:hint="사업명(단어검색)"
                     android:imeOptions="actionSearch"
                     android:singleLine="true"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/grey"
-                    android:textSize="20.0sp" />
+                    android:textColor="#000000"
+                    android:textColorHint="#D3D3D3"
+                    android:textSize="20sp"
+                    />
 
                 <ImageButton
                     android:id="@+id/button_search"
@@ -83,7 +84,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="30px"
+                android:textSize="20sp"
                 android:textColor="#5D5D5D"
                 android:singleLine="true"
                 android:text="사업종류"
@@ -93,7 +94,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="3"
                 android:layout_height="wrap_content"
-                android:textSize="30px"
+                android:textSize="20sp"
                 android:textColor="#5D5D5D"
                 android:text="사업명"
                 android:gravity="center_horizontal"
