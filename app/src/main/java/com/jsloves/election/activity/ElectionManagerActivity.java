@@ -91,6 +91,7 @@ public class ElectionManagerActivity extends AppCompatActivity
     private String mFileName[];
     private boolean mUpdatePdfFile[];
     private PreferenceManager mPreferenceManager;
+    private static final String PREFIX_HIDDEN_PATH = ".";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -200,7 +201,9 @@ public class ElectionManagerActivity extends AppCompatActivity
                 if(mFileName[i] != null && mFileName[i].length() > 0) {
                     JSONObject fileJson = new JSONObject();
                     String md5Sum = md5CheckSum(i);
-                    fileJson.put("FILE_NAME",mFileName[i]);
+                    String originalFileName = mFileName[i].substring(PREFIX_HIDDEN_PATH.length());
+
+                    fileJson.put("FILE_NAME",originalFileName);
                     fileJson.put("MD5SUM",md5Sum);
                     jsonArry.add(fileJson);
                 }
@@ -441,7 +444,7 @@ public class ElectionManagerActivity extends AppCompatActivity
                     mServerFileURL[i] = pdfpath;
                     int index = pdfpath.lastIndexOf("/");
                     pdfpath = pdfpath.substring(index+1);
-                    mFileName[i] = pdfpath;
+                    mFileName[i] = PREFIX_HIDDEN_PATH + pdfpath;
                     mFile[i] = new File(this.getFilesDir(), mFileName[i]);
                     mUpdatePdfFile[i] = updatePdfFile;
                     Log.d(TAG,"onPostExecute SELECTITEMS mFile["+i+"].exists() : "+mFile[i].exists());
