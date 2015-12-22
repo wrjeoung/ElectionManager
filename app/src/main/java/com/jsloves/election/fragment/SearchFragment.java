@@ -1278,8 +1278,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         Log.d(TAG, "sigungu : " + sigungu + " doroBubjoung : " + doroBubjoung + " gunmulBunji : " + gunmulBunji);
         String url = "http://192.168.0.7:8080/ElectionManager_server/MobileReq.jsp";
         JSONObject json = new JSONObject();
-        //json.put("TYPE", "GPS");
-        json.put("TYPE", "GPSTEST");
+        json.put("TYPE", "GPS");
         json.put("SIGUNGU", sigungu);
         json.put("SIGUNGUTEXT", sigungutext);
         json.put("DOROBUBJOUNG", doroBubjoung);
