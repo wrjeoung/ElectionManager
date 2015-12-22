@@ -143,7 +143,7 @@ public class ElectionMainActivity extends AppCompatActivity implements CommonVal
         titles[0] = getString(R.string.area_info);
         titles[1] = getString(R.string.gigwan_info);
         titles[2] = getString(R.string.jooyo_saup);
-        titles[3] = getString(R.string.board);
+        //titles[3] = getString(R.string.board);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.navdrawer);

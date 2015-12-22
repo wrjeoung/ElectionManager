@@ -34,7 +34,6 @@ public class ViewPagerAdapter extends FragmentPagerAdapter implements CommonValu
             // 상단 메뉴 및 좌측메뉴.
             // Open FragmentTab1.java
             case 0:
-                //return SampleFragment.newInstance(position);
                 Log.d("ViewPagerAdapter","onCreateView mSearchFramgent : "+SearchFragment.newInstance("aa","bb"));
                 mSearchFragment=SearchFragment.newInstance("aa", "bb");
                 return mSearchFragment;
@@ -43,15 +42,6 @@ public class ViewPagerAdapter extends FragmentPagerAdapter implements CommonValu
                 return FragmentTab.newInstance("aa","bb");
             case 2:
                 return BusinessListFragment.newInstance();
-            case 3:
-                //return SampleFragment.newInstance(position);
-                //return OrganIntroFragment.newInstance("aaa", "bbb");
-                return SampleFragment.newInstance(position);
-            case 4:
-                return SampleFragment.newInstance(position);
-            case 5:
-                return SampleFragment.newInstance(position);
-
         }
         return null;
     }
