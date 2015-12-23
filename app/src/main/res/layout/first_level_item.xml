@@ -15,6 +15,7 @@
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
 			android:layout_marginLeft="8.0dip"
+			android:textSize="18sp"
 			android:layout_weight="1.0"
 			android:ellipsize="end"
 			android:singleLine="true" />
