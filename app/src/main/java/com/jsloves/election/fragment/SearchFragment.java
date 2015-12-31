@@ -135,6 +135,9 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
     private ImageButton m19th_1_btn;
     private ImageButton m19th_2_btn;
     private ImageButton m19th_3_btn;
+    private ImageButton mEtc_btn_1;
+    private ImageButton mEtc_btn_2;
+
 
     // header
     private TableRow mWrapper_voteratesub_header;
@@ -352,6 +355,8 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         m19th_1_btn = (ImageButton) view.findViewById(R.id.btn_19th_1);
         m19th_2_btn = (ImageButton) view.findViewById(R.id.btn_19th_2);
         m19th_3_btn = (ImageButton) view.findViewById(R.id.btn_19th_3);
+        mEtc_btn_1 = (ImageButton) view.findViewById(R.id.etc_btn_1);
+        mEtc_btn_2 = (ImageButton) view.findViewById(R.id.etc_btn_2);
 
         mWrapper_voteratesub_header = (TableRow) view.findViewById(R.id.wrapper_voteratesub_header);
         // sunggugu
@@ -983,6 +988,16 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                 if(pdf_etc.equalsIgnoreCase("p")) {
                     mProportion_btn.setTag(pdf_page);
                 }
+            } else if(pdf_code.equals("B_35")) {
+                m19th_1_btn.setTag(pdf_page);
+            } else if(pdf_code.equals("B_36")) {
+                m19th_2_btn.setTag(pdf_page);
+            } else if(pdf_code.equals("B_37")) {
+                m19th_3_btn.setTag(pdf_page);
+            } else if(pdf_code.equals("B_38")) {
+                mEtc_btn_1.setTag(pdf_page);
+            } else if(pdf_code.equals("B_39")) {
+                mEtc_btn_2.setTag(pdf_page);
             }
         }
     }
@@ -1193,6 +1208,11 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
         mSaenuri_btn.setOnClickListener(pdfOnCLick);
         mSaejoungchi_btn.setOnClickListener(pdfOnCLick);
         mProportion_btn.setOnClickListener(pdfOnCLick);
+        m19th_1_btn.setOnClickListener(pdfOnCLick);
+        m19th_2_btn.setOnClickListener(pdfOnCLick);
+        m19th_3_btn.setOnClickListener(pdfOnCLick);
+        mEtc_btn_1.setOnClickListener(pdfOnCLick);
+        mEtc_btn_2.setOnClickListener(pdfOnCLick);
 
         mPerson = (ImageButton) view.findViewById(R.id.person);
         mPerson.setOnClickListener(pdfOnCLick);
