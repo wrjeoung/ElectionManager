@@ -7,6 +7,9 @@ import android.support.v4.app.FragmentTabHost;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TabHost;
+import android.widget.TabWidget;
+import android.widget.TextView;
 
 import com.jsloves.election.activity.R;
 
@@ -50,13 +53,49 @@ public class FragmentTab extends Fragment {
         mTabHost.addTab(mTabHost.newTabSpec("contacts").setIndicator(getString(R.string.str_org2), null),
                 OrganIntroFragment2.class, b2);
 
-        mTabHost.getTabWidget().getChildTabViewAt(0).setBackgroundColor(Color.parseColor("#BDBDBD"));
+        int currentPos = mTabHost.getCurrentTab();
+        final TabWidget widget = mTabHost.getTabWidget();
+        final int childCount = widget.getChildCount();
+
+        for(int i = 0; i < childCount; i++) {
+            View tabView = widget.getChildTabViewAt(i);
+            TextView tv = (TextView)tabView.findViewById(android.R.id.title);
+            if (i == currentPos) {
+                tabView.setBackgroundColor(Color.parseColor("#AAAAAA"));
+                tv.setTextColor(Color.parseColor("#FFFFFF"));
+            } else {
+                tabView.setBackgroundColor(Color.parseColor("#BDBDBD"));
+                tv.setTextColor(Color.parseColor("#000000"));
+            }
+        }
+
+        mTabHost.getTabWidget().getChildTabViewAt(0).setBackgroundColor(Color.parseColor("#AAAAAA"));
         mTabHost.getTabWidget().getChildTabViewAt(1).setBackgroundColor(Color.parseColor("#BDBDBD"));
+
+        mTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String tabId) {
+                int currentPos = mTabHost.getCurrentTab();
+
+                for (int i = 0; i < childCount; i++) {
+                    View tabView = widget.getChildTabViewAt(i);
+                    TextView tv = (TextView)tabView.findViewById(android.R.id.title);
+                    if (i == currentPos) {
+                        tabView.setBackgroundColor(Color.parseColor("#AAAAAA"));
+                        tv.setTextColor(Color.parseColor("#FFFFFF"));
+                    } else {
+                        tabView.setBackgroundColor(Color.parseColor("#BDBDBD"));
+                        tv.setTextColor(Color.parseColor("#000000"));
+                    }
+
+                }
+            }
+        });
 
         return mTabHost;
     }
 
-    @Override
+        @Override
     public void onDestroyView() {
         super.onDestroyView();
         mTabHost = null;
