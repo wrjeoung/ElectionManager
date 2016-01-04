@@ -265,6 +265,7 @@
                 android:layout_height="30dp"
                 android:background="@color/tableTitleColor"
                 android:textColor="@color/black"
+                android:textSize="16sp"
                 android:gravity="center"
                 android:text="구분" />
 
@@ -274,6 +275,7 @@
                 android:layout_marginLeft="1dp"
                 android:background="@color/tableTitleColor"
                 android:textColor="@color/black"
+                android:textSize="16sp"
                 android:gravity="center"
                 android:text="평균" />
 
@@ -283,6 +285,7 @@
                 android:layout_marginLeft="1dp"
                 android:background="@color/tableTitleColor"
                 android:textColor="@color/black"
+                android:textSize="16sp"
                 android:gravity="center"
                 android:text="6 지선" />
 
@@ -292,6 +295,7 @@
                 android:layout_marginLeft="1dp"
                 android:background="@color/tableTitleColor"
                 android:textColor="@color/black"
+                android:textSize="16sp"
                 android:gravity="center"
                 android:text="19 총선" />
 
@@ -301,6 +305,7 @@
                 android:layout_marginLeft="1dp"
                 android:background="@color/tableTitleColor"
                 android:textColor="@color/black"
+                android:textSize="16sp"
                 android:gravity="center"
                 android:text="18 대선" />
 
@@ -311,6 +316,7 @@
                 android:layout_marginLeft="1dp"
                 android:background="@color/tableTitleColor"
                 android:textColor="@color/black"
+                android:textSize="16sp"
                 android:gravity="center"
                 android:text="18 총선" />
         </TableRow>
@@ -327,6 +333,7 @@
                 android:layout_weight="1"
                 android:background="@color/white"
                 android:textColor="@color/tableValueTextColor"
+                android:textSize="16sp"
                 android:gravity="center"
                 android:text="선거구" />
 
@@ -336,6 +343,7 @@
                 android:layout_marginLeft="1dp"
                 android:background="@color/white"
                 android:textColor="@color/tableValueTextColor"
+                android:textSize="16sp"
                 android:gravity="center"
                 android:text="-6.4" />
 
@@ -345,6 +353,7 @@
                 android:layout_marginLeft="1dp"
                 android:background="@color/white"
                 android:textColor="@color/tableValueTextColor"
+                android:textSize="16sp"
                 android:gravity="center"
                 android:text="3.5" />
 
@@ -354,6 +363,7 @@
                 android:layout_marginLeft="1dp"
                 android:background="@color/white"
                 android:textColor="@color/tableValueTextColor"
+                android:textSize="16sp"
                 android:gravity="center"
                 android:text="-10.6" />
 
@@ -363,6 +373,7 @@
                 android:layout_marginLeft="1dp"
                 android:background="@color/white"
                 android:textColor="@color/tableValueTextColor"
+                android:textSize="16sp"
                 android:gravity="center"
                 android:text="2.0" />
 
@@ -373,6 +384,7 @@
                 android:layout_marginLeft="1dp"
                 android:background="@color/white"
                 android:textColor="@color/tableValueTextColor"
+                android:textSize="16sp"
                 android:gravity="center"
                 android:text="5.0" />
         </TableRow>
@@ -388,6 +400,7 @@
                 android:id="@+id/voteratesub_haengjoung"
                 android:layout_weight="1"
                 android:textColor="@color/tableValueTextColor"
+                android:textSize="16sp"
                 android:background="@color/white"
                 android:gravity="center"
                 android:text="행정동" />
@@ -398,6 +411,7 @@
                 android:layout_marginLeft="1dp"
                 android:background="@color/white"
                 android:textColor="@color/tableValueTextColor"
+                android:textSize="16sp"
                 android:gravity="center"
                 android:text="-5.0" />
 
@@ -407,6 +421,7 @@
                 android:layout_marginLeft="1dp"
                 android:background="@color/white"
                 android:textColor="@color/tableValueTextColor"
+                android:textSize="16sp"
                 android:gravity="center"
                 android:text="2.5" />
 
@@ -416,6 +431,7 @@
                 android:layout_marginLeft="1dp"
                 android:background="@color/white"
                 android:textColor="@color/tableValueTextColor"
+                android:textSize="16sp"
                 android:gravity="center"
                 android:text="-12.5" />
 
@@ -425,6 +441,7 @@
                 android:layout_marginLeft="1dp"
                 android:background="@color/white"
                 android:textColor="@color/tableValueTextColor"
+                android:textSize="16sp"
                 android:gravity="center"
                 android:text="-1.5" />
 
@@ -435,6 +452,7 @@
                 android:layout_marginLeft="1dp"
                 android:background="@color/white"
                 android:textColor="@color/tableValueTextColor"
+                android:textSize="16sp"
                 android:gravity="center"
                 android:text="2.0" />
         </TableRow>
@@ -450,6 +468,7 @@
                 android:id="@+id/voteratesub_tupyogu"
                 android:layout_weight="1"
                 android:textColor="@color/tableValueTextColor"
+                android:textSize="16sp"
                 android:background="@color/white"
                 android:gravity="center"
                 android:text="투표구" />
@@ -460,6 +479,7 @@
                 android:layout_marginLeft="1dp"
                 android:background="@color/white"
                 android:textColor="@color/tableValueTextColor"
+                android:textSize="16sp"
                 android:gravity="center"
                 android:text="-3.2" />
 
@@ -469,6 +489,7 @@
                 android:layout_marginLeft="1dp"
                 android:background="@color/white"
                 android:textColor="@color/tableValueTextColor"
+                android:textSize="16sp"
                 android:gravity="center"
                 android:text="없음" />
 
@@ -478,6 +499,7 @@
                 android:layout_marginLeft="1dp"
                 android:background="@color/white"
                 android:textColor="@color/tableValueTextColor"
+                android:textSize="16sp"
                 android:gravity="center"
                 android:text="-11.3" />
 
@@ -487,6 +509,7 @@
                 android:layout_marginLeft="1dp"
                 android:background="@color/white"
                 android:textColor="@color/tableValueTextColor"
+                android:textSize="16sp"
                 android:gravity="center"
                 android:text="1.6" />
 
@@ -497,6 +520,7 @@
                 android:layout_marginLeft="1dp"
                 android:background="@color/white"
                 android:textColor="@color/tableValueTextColor"
+                android:textSize="16sp"
                 android:gravity="center"
                 android:text="3.2" />
         </TableRow>
