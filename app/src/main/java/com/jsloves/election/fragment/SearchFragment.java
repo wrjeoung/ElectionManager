@@ -762,7 +762,7 @@ public class SearchFragment extends Fragment implements OnItemSelectedListener {
                     mTtupyogu_wife.setText(String.valueOf(sd.getPartner_yn()));
                     mTtupyogu_univercity.setText(String.valueOf(sd.getUniv_over()));
                     mTtupyogu_population.setText(get_Number(String.valueOf(sd.getPop_dnsity())));
-                    mTtupyogu_ageing.setText(String.valueOf(sd.getChildhood_alimony()));
+                    mTtupyogu_ageing.setText(String.valueOf(sd.getAged_child_ratio()));
                     mTtupyogu_dependency.setText(String.valueOf(sd.getChildhood_alimony()));
                     break;
                 default:
